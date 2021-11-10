@@ -20,11 +20,16 @@ class _NavigationBottomState extends State<NavigationBottom> {
           children: [
             AppBar(
               automaticallyImplyLeading: false,
+<<<<<<< HEAD
               title: const Text("G-Store ESPRIT"),
+=======
+              title: const Text(""),
+>>>>>>> cba5cf8 (Database Connection with User)
             ),
             ListTile(
               title: Row(
                 children: const [
+<<<<<<< HEAD
                   Icon(Icons.edit),
                   SizedBox(
                     width: 10,
@@ -64,16 +69,34 @@ class _NavigationBottomState extends State<NavigationBottom> {
 
               },
             )
+=======
+                  Icon(Icons.message),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(""),
+                ],
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, "/");
+              },
+            ),
+>>>>>>> cba5cf8 (Database Connection with User)
           ],
         ),
       ),
       appBar: AppBar(
+<<<<<<< HEAD
         title: const Text("G-Store ESPRIT"),
+=======
+        title: const Text(""),
+>>>>>>> cba5cf8 (Database Connection with User)
       ),
       body: _interfaces[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
+<<<<<<< HEAD
             label: "Store",
             icon: Icon(Icons.home)
           ),
@@ -84,6 +107,14 @@ class _NavigationBottomState extends State<NavigationBottom> {
           BottomNavigationBarItem(
               label: "Panier",
               icon: Icon(Icons.shopping_basket_rounded)
+=======
+            label: "",
+            icon: Icon(Icons.message)
+          ),
+          BottomNavigationBarItem(
+              label: "",
+              icon: Icon(Icons.wysiwyg)
+>>>>>>> cba5cf8 (Database Connection with User)
           )
         ],
         currentIndex: _currentIndex,
