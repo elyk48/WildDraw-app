@@ -1,0 +1,183 @@
+import 'dart:math';
+
+import 'package:cardgameapp/home.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'navigation_menus/nav_tab.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+  static const String Appname ="Card Card App";
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: Appname,
+      routes:
+          {
+            "/home":(BuildContext context){
+              return const Home(title: Appname);
+            }
+          },
+      theme: ThemeData(
+
+        primarySwatch: Colors.blue,
+      ),
+      home: const NavigationTab(),
+    );
+  }
+}
+
+
+
+
+/*
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp( const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+   const MyApp({Key? key}) : super(key: key);
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+}
+
+
+class _MyAppState extends State<MyApp> {
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Card Game',
+      theme: ThemeData(
+
+        primarySwatch: Colors.blue,
+      ),
+      home: FutureBuilder(
+       future: _fbApp,
+        builder: (context, snapshot){
+         if(snapshot.hasError){
+           print("Error! ${snapshot.error.toString()}");
+           return const Text("Error");
+         }
+         else if(snapshot.hasData)
+           {
+             return const MyHomePage(title: 'Test');
+           }
+         else {
+           return const Center(
+             child: CircularProgressIndicator(),
+           );
+         }
+        },
+      ),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+  Future<void> addUser() {
+    // Call the user's CollectionReference to add a new user
+    return users
+        .add({
+      'full_name': "Elyes", // John Doe
+      'company': "Gamix", // Stokes and Sons
+      'age': 69 // 42
+    })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
+  void _incrementCounter() {
+    setState(() {
+
+      addUser();
+
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return /*FutureBuilder<DocumentSnapshot>(
+      future: users.doc("SbpSsLkvygcax8dz5CbV").get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return Text("Document does not exist");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          return Text("User: $data");
+        }
+
+        return Text("loading");
+      },
+    );
+      */Scaffold(
+      appBar: AppBar(
+
+        title: Text(widget.title),
+      ),
+      body: Center(
+
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+*/
+
+
+
+
+/*DatabaseReference _testRef = FirebaseDatabase.instance.reference().child("Numbers");
+      int random = Random().nextInt(100);
+      _testRef.child("Anas' Number").set(random);
+      _testRef.child("Elyas' Number").set(random+1);
+      _counter = random;*/
