@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import 'dart:math';
-
-import 'package:cardgameapp/home.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'navigation_menus/nav_tab.dart';
-
-void main() {
-=======
 import 'package:cardgameapp/authentication_service.dart';
 import 'package:cardgameapp/home.dart';
 import 'package:cardgameapp/signin.dart';
@@ -22,30 +10,17 @@ import 'navigation_menus/nav_tab.dart';
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
->>>>>>> cba5cf8 (Database Connection with User)
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-<<<<<<< HEAD
-=======
 
->>>>>>> cba5cf8 (Database Connection with User)
   const MyApp({Key? key}) : super(key: key);
   static const String Appname ="Card Card App";
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return MaterialApp(
-      title: Appname,
-      routes:
-          {
-            "/home":(BuildContext context){
-              return const Home(title: Appname);
-            }
-          },
-=======
+    //Make multiple Widgets with Providers
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
@@ -67,19 +42,10 @@ class MyApp extends StatelessWidget {
           return SignInPage();
         }
       },
->>>>>>> cba5cf8 (Database Connection with User)
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-<<<<<<< HEAD
-      home: const NavigationTab(),
-    );
-  }
-}
-
-
-=======
       home: const AuthenticationWrapper(key: null),
     ),);
   }
@@ -98,7 +64,6 @@ class AuthenticationWrapper extends StatelessWidget{
     return SignInPage();
   }
 }
->>>>>>> cba5cf8 (Database Connection with User)
 
 
 /*

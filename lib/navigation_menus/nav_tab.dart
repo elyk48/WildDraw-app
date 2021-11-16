@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:provider/src/provider.dart';
 
 import '../authentication_service.dart';
->>>>>>> cba5cf8 (Database Connection with User)
 
 class NavigationTab extends StatelessWidget {
   static const String Appname ="Card Card App";
@@ -116,13 +113,8 @@ class NavigationTab extends StatelessWidget {
                     Text("Se déconnecter"),
                   ],
                 ),
-<<<<<<< HEAD
-                onTap: () async{
-
-=======
                 onTap: () {
                   context.read<AuthenticationService>().signOut();
->>>>>>> cba5cf8 (Database Connection with User)
                 },
               )
             ],

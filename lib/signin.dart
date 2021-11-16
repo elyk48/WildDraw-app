@@ -1,4 +1,5 @@
 
+import 'package:cardgameapp/controllers/publicationcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,10 +28,13 @@ class SignInPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
+              publicationController pc = publicationController();
+              pc.addPublication();
               context.read<AuthenticationService>().signIn(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim(),
               );
+
             },
             child: const Text("Sign in"),
           )
