@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "690543073987",
+    "project_id": "cardgameapp-1960b",
+    "storage_bucket": "cardgameapp-1960b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690543073987:android:e1af8867ae3b0d5d306076",
+        "android_client_info": {
+          "package_name": "com.overclocked.cardgameapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690543073987-upa3498j6lilr2nm9bd8rciqj06vntti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKkh44tZs9VhpFDjZQ-O0vHyaQAgEWcWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690543073987-upa3498j6lilr2nm9bd8rciqj06vntti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
