@@ -15,11 +15,34 @@ class publicationController{
             'username':pub.username,
             'content': pub.content,
             'likes': 0,
-            'postenOn': pub.postedOn,
+            'postedOn': pub.postedOn,
           }
       );
     pub.id = docRef.id;
     print(pub.id);
     return pub;
   }
+    Future<List> getAllPubs() async{
+     QuerySnapshot querySnapshot;
+     List pubs=[];
+     try{
+       querySnapshot = await publications.get();
+       if(querySnapshot.docs.isNotEmpty)
+         {
+           for(var doc in querySnapshot.docs.toList())
+             {
+               Map a = {"id": doc.id,"content":doc["content"],"id_user":doc["id_user"],"likes":doc["likes"],"postedOn":doc["postedOn"],"username":doc["username"]};
+               pubs.add(a);
+             }
+           return pubs;
+         }
+     }catch(e){
+       print(e);
+     }
+     return pubs;
+    }
+
+
+
+
   }

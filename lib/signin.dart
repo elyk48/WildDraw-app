@@ -36,7 +36,7 @@ class SignInPage extends StatelessWidget {
               );
               Publication pub =  Publication.newPub("Helicopter !",id,username);
               publicationController PC = publicationController();
-              Future<Publication> fp= PC.addPublication(pub);
+              //PC.addPublication(pub);
             },
             child: const Text("Sign in"),
           )

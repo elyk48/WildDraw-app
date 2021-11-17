@@ -1,4 +1,47 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
+class PublicationCard extends StatelessWidget {
+  late final String _id_user;
+  late final String _id;
+  late final String _content;
+  late final int _likes;
+  late final Timestamp _postedOn;
+  late final String _username;
+
+  PublicationCard(this._id_user, this._id, this._content, this._likes,
+      this._postedOn, this._username);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (BuildContext context) {
+                return PublicationCard(_id_user, _id, _content, _likes, _postedOn, _username);
+              }
+          ));
+        },
+        child: Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_username),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(_content, textScaleFactor: 2)
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class Publication {
   late String _id_user;

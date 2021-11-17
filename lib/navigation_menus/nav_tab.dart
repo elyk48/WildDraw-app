@@ -1,3 +1,4 @@
+import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
@@ -131,6 +132,7 @@ class NavigationTab extends StatelessWidget {
               Tab(
                 icon: Icon(Icons.wysiwyg),
                 text: "Publication",
+
               ),
               Tab(
                 icon: Icon(Icons.attach_money),
@@ -139,7 +141,11 @@ class NavigationTab extends StatelessWidget {
             ],
           ),
         ),
-        //body:
+        body: const TabBarView(
+        children: [
+          Text("OnGoing"),PublicationView(),Text("OnGoing")
+        ],
+      ),
       ),
     );
   }
