@@ -1,5 +1,6 @@
 import 'package:cardgameapp/controllers/authentication_service.dart';
 import 'package:cardgameapp/home.dart';
+import 'package:cardgameapp/profile.dart';
 import 'package:cardgameapp/signin.dart';
 import 'package:cardgameapp/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,15 +37,21 @@ class MyApp extends StatelessWidget {
       title: Appname,
       routes: // <- Routes
       {
-        "/home":(BuildContext context){
-          return const Home(title: Appname);
-        },
+
         "/singin":(BuildContext context){
           return SignInPage();
         },
         "/signup":(BuildContext context){
           return Signup();
         },
+        "/profile":(BuildContext context){
+          return Profile();
+        },
+        "/home":(BuildContext context){
+          return NavigationTab();
+        },
+
+
       },
       theme: ThemeData(
 

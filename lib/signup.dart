@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,11 +46,20 @@ class _SignupState extends State<Signup> {
         onPressed: () async{
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
+
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: user.email,
           password: user.password.toString());
+      user.id =await FirebaseAuth.instance.currentUser!.uid;
+      Map<String, dynamic> userData = {
+        "username": user.username,
+        "uid" :user.id
+      };
 
-      await userC.addUser(user.email, user.password, user.username);
+      await userC.addUser(user.email, user.password, user.username,user.birth,user.address);
+
+      _keyForm.currentState!.reset();
+      Navigator.pushReplacementNamed(context, "/singin");
     }
         },
         padding: EdgeInsets.all(20),
@@ -218,7 +228,7 @@ class _SignupState extends State<Signup> {
                   labelStyle: new TextStyle(color: Colors.black),
                 ),
                 onSaved: (String? value) {
-                  _birth = value;
+                  user.birth = value!;
                 },
                 validator: (value) {
                   if(value == null || value.isEmpty) {
@@ -253,14 +263,14 @@ class _SignupState extends State<Signup> {
                   labelStyle: new TextStyle(color: Colors.black),
                 ),
                 onSaved: (String? value) {
-                  _address = value;
+                  user.address = value!;
                 },
                 validator: (value) {
                   if(value == null || value.isEmpty) {
                     return "L'adresse email ne doit pas etre vide";
                   }
                   else if(value.length < 20) {
-                    return "Le mot de passe doit avoir au moins 20 caractères";
+                    return "Le mot de passe doit avoir au moins 10 caractères";
                   }
                   else {
                     return null;

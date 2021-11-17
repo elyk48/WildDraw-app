@@ -30,7 +30,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+       Navigator.pushReplacementNamed(context, "/profile");
                 },
               ),
               ListTile(

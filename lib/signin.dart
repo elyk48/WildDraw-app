@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/authentication_service.dart';
 
@@ -57,8 +58,10 @@ late String? _password;
 
    final user =await context.read<AuthenticationService>().getUser();
    print(user!.uid.toString());
-
-
+      SharedPreferences.setMockInitialValues({});
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString("userId",user.uid.toString());
+      print(prefs.getString("userId"));
 
     }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class UserE extends StatelessWidget {
@@ -7,13 +9,13 @@ class UserE extends StatelessWidget {
   late String _password;
   late String _birth;
   late String _address;
-  late String _Level;
+  late String _level;
   late String _Rank;
   late String _id_Col;
 
 
   UserE(this._id, this._username, this._email, this._password, this._birth,
-      this._address, this._Level, this._Rank, this._id_Col);
+      this._address, this._level, this._Rank, this._id_Col, );
 
   String get id => _id;
 
@@ -38,10 +40,10 @@ class UserE extends StatelessWidget {
     _Rank = value;
   }
 
-  String get Level => _Level;
+  String get level => _level;
 
-  set Level(String value) {
-    _Level = value;
+  set level(String value) {
+    _level = value;
   }
 
   String get address => _address;
@@ -74,10 +76,40 @@ class UserE extends StatelessWidget {
     _username = value;
   }
 
-  UserE.NewUser(email ,password,username){
+  UserE.NewUser(email ,password,username,birthdate,address){
  _email=email;
  _password=password;
  _username=username;
+ _birth=birthdate;
+ _address=address;
+_level="1000";
+_Rank="0";
+_id_Col="1";
 
   }
-}
+
+
+
+ /* factory UserE.fromJson(Map<String,dynamic> json){
+    return UserE(
+      _id : json["Id"],
+      Rank :json["Rank"],
+      address:json["address"],
+      birth: json["birthdate"],
+      email: json["email"],
+      id_Col: json["id_Col"],
+      level :json["level"],
+      password: json["password"],
+      username :json["username"],
+
+
+
+    ); */
+
+  }
+
+
+
+
+
+
