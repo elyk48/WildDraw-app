@@ -115,6 +115,7 @@ class NavigationTab extends StatelessWidget {
                 ),
                 onTap: () {
                   context.read<AuthenticationService>().signOut();
+                  Navigator.pushReplacementNamed(context, "/singin");
                 },
               )
             ],

@@ -62,7 +62,7 @@ late String? _password;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("userId",user.uid.toString());
       print(prefs.getString("userId"));
-
+      Navigator.pushReplacementNamed(context, "/home");
     }
 
 
