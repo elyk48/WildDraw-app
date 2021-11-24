@@ -34,9 +34,9 @@ class SignInPage extends StatelessWidget {
                 email: emailController.text.trim(),
                 password: passwordController.text.trim(),
               );
-              Publication pub =  Publication.newPub("Helicopter !",id,username);
+              /*Publication pub =  Publication.newPub("Helicopter !",id,username);
               publicationController PC = publicationController();
-              //PC.addPublication(pub);
+              PC.addPublication(pub);*/
             },
             child: const Text("Sign in"),
           )

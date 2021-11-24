@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 late String idGenerated;
 
 class publicationController{
-  CollectionReference publications = FirebaseFirestore.instance.collection('publications');
+  static CollectionReference publications = FirebaseFirestore.instance.collection('publications');
   Future<Publication> addPublication(Publication pub) async{
     DocumentReference docRef = await publications.add(
           {
@@ -22,16 +22,16 @@ class publicationController{
     print(pub.id);
     return pub;
   }
-    Future<List> getAllPubs() async{
+   static Future<List> getAllPubs() async{
      QuerySnapshot querySnapshot;
-     List pubs=[];
+     List<Map<String,dynamic>> pubs=[];
      try{
        querySnapshot = await publications.get();
        if(querySnapshot.docs.isNotEmpty)
          {
            for(var doc in querySnapshot.docs.toList())
              {
-               Map a = {"id": doc.id,"content":doc["content"],"id_user":doc["id_user"],"likes":doc["likes"],"postedOn":doc["postedOn"],"username":doc["username"]};
+               Map<String,dynamic> a = {"id": doc.id,"content":doc["content"],"id_user":doc["id_user"],"likes":doc["likes"],"postedOn":doc["postedOn"],"username":doc["username"]};
                pubs.add(a);
              }
            return pubs;
