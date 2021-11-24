@@ -1,3 +1,4 @@
+import 'package:cardgameapp/views/actualite_view.dart';
 import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
@@ -143,7 +144,7 @@ class NavigationTab extends StatelessWidget {
         ),
         body: const TabBarView(
         children: [
-          Text("OnGoing"),PublicationView(),Text("OnGoing")
+          actualiteView(),PublicationView(),Text("OnGoing")
         ],
       ),
       ),

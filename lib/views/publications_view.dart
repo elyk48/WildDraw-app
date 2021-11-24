@@ -12,9 +12,10 @@ class PublicationView extends StatefulWidget {
 class _PublicationViewState extends State<PublicationView> {
   late List<dynamic> _AllPubs=[];
   late Future<List> futurepubs;
-  final TextEditingController ContentController = TextEditingController();
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
   final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+  final String username="Anas (Dev)";
 
   CollectionReference publications = FirebaseFirestore.instance.collection('publications');
 
@@ -23,7 +24,7 @@ class _PublicationViewState extends State<PublicationView> {
     return FBPublicationList();
   }
   FutureBuilder<List> FBPublicationList() {
-    Publication pub = Publication.newPub("Bienvenue à esprit Méteo !", "VGvmMwarbvUJtsjAzfvHR9tvfd72", "Elyes Kabous");
+    Publication pub = Publication.newPub("Bienvenue à esprit Méteo !", "VGvmMwarbvUJtsjAzfvHR9tvfd72", username);
     return FutureBuilder(
       future: futurepubs,
       builder: (context, snapshot) {
@@ -96,7 +97,7 @@ class _PublicationViewState extends State<PublicationView> {
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1,
-                      mainAxisExtent: 150
+                      mainAxisExtent: 160
                   ),
                 ),
               ],
