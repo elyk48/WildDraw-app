@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class UserE extends StatelessWidget {
@@ -12,10 +14,18 @@ class UserE extends StatelessWidget {
   late String _level;
   late String _Rank;
   late String _id_Col;
+  late String _image;
 
 
   UserE(this._id, this._username, this._email, this._password, this._birth,
-      this._address, this._level, this._Rank, this._id_Col, );
+      this._address, this._level, this._Rank, this._id_Col,);
+
+
+  String get image => _image;
+
+  set image(String value) {
+    _image = value;
+  }
 
   String get id => _id;
 
@@ -76,7 +86,7 @@ class UserE extends StatelessWidget {
     _username = value;
   }
 
-  UserE.NewUser(email ,password,username,birthdate,address){
+  UserE.NewUser(email ,password,username,birthdate,address, String image){
  _email=email;
  _password=password;
  _username=username;
@@ -85,8 +95,12 @@ class UserE extends StatelessWidget {
 _level="1000";
 _Rank="0";
 _id_Col="1";
+_image=image;
 
   }
+
+
+
 
 
 

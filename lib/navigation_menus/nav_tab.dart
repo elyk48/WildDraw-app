@@ -44,7 +44,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushReplacementNamed(context, "/friends");
                 },
               ),
               ListTile(

@@ -13,9 +13,9 @@ import 'package:shared_preferences/shared_preferences.dart';
    CollectionReference users = FirebaseFirestore.instance.collection('users');
 
    Future<void> addUser(String email, String password, String username,
-       String birthdate, String Address) {
+       String birthdate, String Address,String image) {
      usercurrentId = FirebaseAuth.instance.currentUser!.uid;
-     UserE user1 = UserE.NewUser(email, password, username, birthdate, Address);
+     UserE user1 = UserE.NewUser(email, password, username, birthdate, Address,image);
 
      Future<void> Userref = users.doc(usercurrentId).set({
 
@@ -28,6 +28,7 @@ import 'package:shared_preferences/shared_preferences.dart';
        "level": user1.level,
        "id_Col": user1.id_Col,
        "Id": usercurrentId,
+       "image":user1.image,
 
 
      })

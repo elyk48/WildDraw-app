@@ -1,6 +1,9 @@
 import 'package:cardgameapp/controllers/authentication_service.dart';
+import 'package:cardgameapp/edit_profile.dart';
+import 'package:cardgameapp/friendsList.dart';
 import 'package:cardgameapp/home.dart';
 import 'package:cardgameapp/profile.dart';
+import 'package:cardgameapp/searchfriend.dart';
 import 'package:cardgameapp/signin.dart';
 import 'package:cardgameapp/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,6 +52,15 @@ class MyApp extends StatelessWidget {
         },
         "/home":(BuildContext context){
           return NavigationTab();
+        },
+        "/editProfile":(BuildContext context){
+          return EditProfile();
+        },
+        "/friends":(BuildContext context){
+          return FriendsList();
+        },
+        "/searchfriends":(BuildContext context){
+          return SearchFriend();
         },
 
 

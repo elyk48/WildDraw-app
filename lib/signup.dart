@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/authentication_service.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +30,19 @@ class _SignupState extends State<Signup> {
   late String? _Level;
   late String? _Rank;
   late String? _id_Col;
+  late File _image;
+  late String _imageLink="https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
+
+  Future getImage()  async {
+
+    final   image= await ImagePicker().pickImage(source: ImageSource.gallery);
+setState(() {
+  //_image= image as FileImage;
+});
+
+  }
+
+
    late final UserE user = new UserE("1", "646","ely.kab@esprit.tn","123456","1278", "manzeh è", "500", "1", "105648");
   userController userC= userController();
 
@@ -55,8 +73,8 @@ class _SignupState extends State<Signup> {
         "username": user.username,
         "uid" :user.id
       };
-
-      await userC.addUser(user.email, user.password, user.username,user.birth,user.address);
+ user.image=_imageLink;
+      await userC.addUser(user.email, user.password, user.username,user.birth,user.address,user.image);
 
       _keyForm.currentState!.reset();
       Navigator.pushReplacementNamed(context, "/singin");
@@ -96,12 +114,61 @@ class _SignupState extends State<Signup> {
         foregroundColor: Colors.amberAccent,
       ),
       body: Form(
+
         key: _keyForm,
         child: ListView(
+
           children: [
+
             Container(
-              margin: const EdgeInsets.fromLTRB(120, 30, 10, 10),
-              child: Text("Welcome to BodyCard !!!"),
+             alignment: Alignment.center,
+              margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
+              child: Text("Welcome to BodyCard !!!",textScaleFactor: 2),
+            ),
+
+             Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
+
+              child: CircleAvatar(
+                child: ClipOval(
+                  child:Image.network(_imageLink),
+
+                ),
+                radius: 100,
+
+              ),
+            ),
+
+
+            Container(
+             alignment: Alignment.center,
+
+              margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              child: FloatingActionButton(
+                tooltip: 'Image',
+                onPressed: () async {
+
+                var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
+                FirebaseStorage fs =FirebaseStorage.instance;
+                Reference rootref =fs.ref();
+                Reference picFolderRef  =rootref.child("profilePics").child("image");
+                File file =File(_image!.path);
+                picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
+         String Link = await storageTask.ref.getDownloadURL();
+         print("Image Uploaded");
+         setState(() {
+            _imageLink= Link;
+
+         });
+
+                });
+
+            },
+                child: Icon(Icons.camera_alt,color: Colors.black,),
+
+              ),
+
             ),
 
             Container(

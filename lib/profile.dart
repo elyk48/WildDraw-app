@@ -38,6 +38,7 @@ class _ProfileState extends State<Profile> {
   var mylevel ;
   var myaddress;
   var myBirthdate;
+  var myImage;
 
 
   @override
@@ -258,7 +259,7 @@ class _ProfileState extends State<Profile> {
                                elevation: 6,
                              ),
                              onPressed: () {
-
+        Navigator.pushReplacementNamed(context, "/editProfile");
                              }
                              ,),
 
@@ -327,12 +328,25 @@ class _ProfileState extends State<Profile> {
         print(e);
       });
   }
-  updateUser(selecteddoc ,newValues){
-FirebaseFirestore.instance.collection("users").doc(selecteddoc).update(newValues).catchError((e){
-print(e);
-});
+  updateUser(UserE user){
+ var id=  FirebaseAuth.instance.currentUser!.uid;
+FirebaseFirestore.instance.collection("users").doc(id).set({
+  "email": user.email,
+  'password': user.password,
+  'username': user.username,
+  "birthdate": user.birth,
+  "address": user.address,
+  "Rank": user.Rank,
+  "level": user.level,
+  "id_Col": user.id_Col,
+  "Id": id,
+  "image":user.image,
 
 
+}).catchError((error) => print("Failed to update User  : $error"));
+
+FirebaseAuth.instance.currentUser!.updateEmail(user.email).catchError((error) => print("Failed to Update User Email  : $error"));
+FirebaseAuth.instance.currentUser!.updatePassword(user.password).catchError((error) => print("Failed to Update User password  : $error"));
 
 
   }
@@ -341,6 +355,9 @@ print(e);
     FirebaseFirestore.instance.collection("users").doc(docId).delete().catchError((e){
       print(e);
     });
+    FirebaseAuth.instance.currentUser!.delete();
+
+   
 
   }
 
