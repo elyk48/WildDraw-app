@@ -65,7 +65,8 @@ class ActualiteDetails extends StatelessWidget {
         children: [
         Text(_title, textScaleFactor: 2),
         Text(_content, textScaleFactor: 3),
-        Text("Written by: "+_author, textScaleFactor: 1),
+        Text("Written by "+_author, textScaleFactor: 1),
+          Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
     ],
     ),
     );

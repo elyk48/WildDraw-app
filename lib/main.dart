@@ -1,6 +1,7 @@
 import 'package:cardgameapp/authentication_service.dart';
 import 'package:cardgameapp/home.dart';
 import 'package:cardgameapp/signin.dart';
+import 'package:cardgameapp/views/bug_report_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         },
         "/singin":(BuildContext context){
           return SignInPage();
+        },
+        "/bugReport":(BuildContext context){
+          return BugReportView();
         }
       },
       theme: ThemeData(

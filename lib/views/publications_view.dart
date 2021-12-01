@@ -37,6 +37,8 @@ class _PublicationViewState extends State<PublicationView> {
                  child: Column(
                    children: [
                      TextFormField(
+                       maxLength: 200,
+                       enableInteractiveSelection: true,
                        keyboardType: TextInputType.multiline,
                        maxLines: null,
                        decoration: const InputDecoration(
@@ -56,7 +58,7 @@ class _PublicationViewState extends State<PublicationView> {
                              if(pub.content != "" && pub.content!=null) {
                                publicationController PC = await publicationController();
                                PC.addPublication(pub);
-                               setState(() {
+                               setState((){
                                  _AllPubs = <dynamic>[];
                                  futurepubs = getAllPubs(_AllPubs);
                                });
@@ -72,7 +74,7 @@ class _PublicationViewState extends State<PublicationView> {
 
                 ),
 
-                GridView.builder(
+                if(!_AllPubs.isEmpty)GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _AllPubs.length,
                   shrinkWrap: true,
@@ -99,7 +101,7 @@ class _PublicationViewState extends State<PublicationView> {
                       mainAxisSpacing: 1,
                       mainAxisExtent: 160
                   ),
-                ),
+                ),if(_AllPubs.isEmpty)CircularProgressIndicator(),
               ],
             ),
           );

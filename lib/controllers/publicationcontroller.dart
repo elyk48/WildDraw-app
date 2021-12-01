@@ -41,8 +41,4 @@ class publicationController{
      }
      return pubs;
     }
-
-
-
-
   }

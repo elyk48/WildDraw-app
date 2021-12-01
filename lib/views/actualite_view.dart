@@ -11,13 +11,14 @@ class actualiteView extends StatefulWidget {
 
 class _actualiteViewState extends State<actualiteView> {
 
+
   late List<dynamic> _AllActs=[];
   late Future<List> futureActs;
   CollectionReference actualites = FirebaseFirestore.instance.collection('actualites');
   late actualite act = actualite.newAct(id, "Test", "Yes", "Me");
 
   final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
-  final bool isAdmin = false;
+  final bool isAdmin = true;
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
@@ -59,6 +60,7 @@ class _actualiteViewState extends State<actualiteView> {
         .catchError((e) => print(e));
   }
   FutureBuilder<List> FBActualieList() {
+
     return FutureBuilder(
       future: futureActs,
       builder: (context, snapshot) {
@@ -71,7 +73,8 @@ class _actualiteViewState extends State<actualiteView> {
                   child: Column(
                     children: [
                       TextFormField(
-                        maxLines: null,
+                        maxLines: 1,
+                        maxLength: 50,
                         decoration: const InputDecoration(
                           labelText: "Title",
                         ),
@@ -80,6 +83,7 @@ class _actualiteViewState extends State<actualiteView> {
                         },
                       ),
                       TextFormField(
+
                         keyboardType: TextInputType.multiline,
                         maxLines: 15,
                         decoration: const InputDecoration(
@@ -122,7 +126,7 @@ class _actualiteViewState extends State<actualiteView> {
 
                 ),
 
-                GridView.builder(
+                if(!_AllActs.isEmpty)GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: _AllActs.length,
                   shrinkWrap: true,
@@ -147,9 +151,9 @@ class _actualiteViewState extends State<actualiteView> {
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 10,
-                      mainAxisExtent: 50
+                      mainAxisExtent: 100
                   ),
-                ),
+                ),if(_AllActs.isEmpty)CircularProgressIndicator(),
               ],
             ),
           );

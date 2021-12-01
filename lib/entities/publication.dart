@@ -29,7 +29,11 @@ class PublicationCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(_content, textScaleFactor: 2)
+                Text(_content, textScaleFactor: 2),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
               ],
             )
           ],
@@ -71,7 +75,8 @@ class Publicationform extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(_content, textScaleFactor: 2)
+                Text(_content, textScaleFactor: 2),
+
               ],
             )
           ],
