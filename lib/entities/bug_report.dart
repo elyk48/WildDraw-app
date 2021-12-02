@@ -1,33 +1,24 @@
+import 'package:cardgameapp/controllers/bugreportcontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BugReportForm extends StatefulWidget {
   late final GlobalKey<FormState> _keyForm;
+  late BugReport _bugReport;
 
-
-  BugReportForm.newFrom(this._keyForm);
+  BugReportForm.newFrom(this._keyForm,this._bugReport);
 
   @override
   State<BugReportForm> createState() => _BugReportFormState();
 }
 
 class _BugReportFormState extends State<BugReportForm> {
-  late String _id;
-
-  late String _reporterId;
-
-  late String _title;
-
-  late String _type;
-
-  late int _severity;
-
-  late String _details;
-
-  late Timestamp _postedOn;
 
   String bug_type ="Functional error";
   String bug_severity ="Low";
+
+
+  String idRep ="VGvmMwarbvUJtsjAzfvHR9tvfd72";
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +33,17 @@ class _BugReportFormState extends State<BugReportForm> {
               labelText: "Title",
             ),
             onSaved: (String? value) {
-                    _title = value!;
+                    widget._bugReport._title = value!;
             },
           ),
             TextFormField(
-              maxLength: 250,
-              maxLines: 6,
+              maxLength: 200,
+              maxLines: 5,
               decoration: const InputDecoration(
                 labelText: "Details",
               ),
               onSaved: (String? value) {
-                _details= value!;
+                widget._bugReport._details= value!;
               },
             ),
             Row(
@@ -124,13 +115,130 @@ class _BugReportFormState extends State<BugReportForm> {
               ],
             ),
             ElevatedButton(
-                onPressed:(){
+                onPressed:()async{
+                  if (widget._keyForm.currentState!.validate()) {
+                    widget._keyForm.currentState!.save();
+                    if(widget._bugReport.details!="" && widget._bugReport._title!="")
+                    {
+                      widget._bugReport._severity = bug_severity;
+                      widget._bugReport._type = bug_type;
+                      widget._bugReport._reporterId = idRep;
+                      await BugReportController.addBugReport(widget._bugReport);
+                      showAlertDialog(context);
 
-            },
+                      setState(() {
+
+                      });
+                    }
+                  }
+                        },
                 child: const Text("Report"),
             )
           ],
         ),
+    );
+  }
+}
+class reportBugsGrid extends StatefulWidget {
+  late List<dynamic> _AllReports=[];
+  late Future<List> _futureReports;
+
+
+  @override
+  _reportBugsGridState createState() => _reportBugsGridState();
+}
+
+class _reportBugsGridState extends State<reportBugsGrid> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: widget._futureReports,
+        builder: (context, snapshot) {
+          if(snapshot.hasData)
+            {
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      crossAxisSpacing: 1,
+                      mainAxisSpacing: 10,
+                      mainAxisExtent: 200
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: widget._AllReports.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Wrap(
+                      children:[
+                        Text(widget._AllReports[index]),
+                        //ReportCard(widget._AllReports[index]),
+                        /*if(_AllActs[index]["id_user"] == id && isAdmin) ElevatedButton(
+                          onPressed: ()async{
+                            await deleteActualite(_AllActs[index]["id"]);
+                            setState(() {
+                              _AllActs = <dynamic>[];
+                              futureActs =getAllActs(_AllActs);
+                            });
+                          },
+                          child: const Text("Delete"),
+                        ),*/
+                      ],
+                    );
+                  }
+              );
+            }
+          else if(snapshot.hasError)
+            {
+              return Text(snapshot.error.toString());
+            }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }
+    );
+  }
+
+  @override
+  void initState(){
+    //
+    widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+    super.initState();
+  }
+}
+class ReportCard extends StatelessWidget {
+  late BugReport _bugReport;
+
+
+  ReportCard(this._bugReport);
+
+  @override
+  Widget build(BuildContext context) {
+     return Card(
+      child: InkWell(
+        /*onTap: () {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ActualiteDetails(_id, _idUser, _title, _content, _author, _postedOn);
+              }
+          ));
+        },*/
+        child: Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(_bugReport._title, textScaleFactor: 2),
+                Text(_bugReport._type),
+                const SizedBox(
+                  height: 5,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -144,12 +252,23 @@ class BugReport{
   late String _reporterId;
   late String _title;
   late String _type;
-  late int _severity;
+  late String _severity;
   late String _details;
   late Timestamp _postedOn;
 
   BugReport(this._id, this._reporterId, this._title, this._type, this._severity,
       this._details, this._postedOn);
+
+
+  BugReport.Empty(){
+    _id="";
+    _reporterId="";
+    _title="";
+    _type="";
+    _severity="";
+    _details="";
+    _postedOn=Timestamp.now();
+  }
 
   Timestamp get postedOn => _postedOn;
 
@@ -163,9 +282,10 @@ class BugReport{
     _details = value;
   }
 
-  int get severity => _severity;
 
-  set severity(int value) {
+  String get severity => _severity;
+
+  set severity(String value) {
     _severity = value;
   }
 
@@ -192,4 +312,33 @@ class BugReport{
   set id(String value) {
     _id = value;
   }
+
+
+}
+showAlertDialog(BuildContext context) {
+  // Create button
+  Widget okButton = ElevatedButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+      Navigator.pushReplacementNamed(context, "/navTab");
+    },
+  );
+
+  // Create AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Report"),
+    content: Text("Report has been sent, we will review it as soon as possible !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

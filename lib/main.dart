@@ -44,6 +44,9 @@ class MyApp extends StatelessWidget {
         },
         "/bugReport":(BuildContext context){
           return BugReportView();
+        },
+        "/navTab":(BuildContext context){
+          return NavigationTab();
         }
       },
       theme: ThemeData(

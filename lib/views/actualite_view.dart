@@ -99,14 +99,6 @@ class _actualiteViewState extends State<actualiteView> {
                           onPressed: () async{
                             if (_keyForm.currentState!.validate()) {
                               _keyForm.currentState!.save();
-                              /*if(pub.content != "" && pub.content!=null) {
-                                publicationController PC = await publicationController();
-                                PC.addPublication(pub);
-                                setState(() {
-                                  _AllPubs = <dynamic>[];
-                                  futurepubs = getAllPubs(_AllPubs);
-                                });
-                              }*/
                               if(act.content != "" && act.title!=null && act.title != "" && act.content!=null)
                                 {
                                   await addActualite(act);

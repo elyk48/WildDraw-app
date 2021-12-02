@@ -13,13 +13,23 @@ class BugReportView extends StatefulWidget {
 
 class _BugReportViewState extends State<BugReportView> {
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+  late BugReport _bugReport= BugReport.Empty();
+  final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+  final bool isAdmin = true;
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bug Report"),
       ),
-      body: BugReportForm.newFrom(_keyForm),
+      body: Column(
+        children: [
+          BugReportForm.newFrom(_keyForm,_bugReport)//,reportBugsGrid()
+        ],
+      ),
     );
   }
 }
