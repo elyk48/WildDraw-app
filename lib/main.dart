@@ -2,6 +2,7 @@ import 'package:cardgameapp/controllers/authentication_service.dart';
 import 'package:cardgameapp/edit_profile.dart';
 import 'package:cardgameapp/friendsList.dart';
 import 'package:cardgameapp/home.dart';
+import 'package:cardgameapp/poll_view.dart';
 import 'package:cardgameapp/profile.dart';
 import 'package:cardgameapp/searchfriend.dart';
 import 'package:cardgameapp/signin.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
           return SearchFriend();
         },
         "/poll":(BuildContext context){
+          return MyPollDisplay();
+        },
+ "/createpoll":(BuildContext context){
           return MyPollCreate2();
         },
 

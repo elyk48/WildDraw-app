@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+///poll form model.
 class MyPollForm{
   List<String> optionsData=[];
   late List<String> optionsDataFinal;
   late String question,optionField;
-  /////////////////////////
+  ///getter for the option Text
   String getOptionText(){
-    optionField="Option ";
+    optionField="Option";
     return optionField;
   }
-  /////////////////////////////
+ //////////
+  ///
   setData2(){
     int _number=optionsData.length;
     String uid;
@@ -43,9 +44,6 @@ class MyPollForm{
 
 
 }
-
-
-
 var user=new MyPollForm();
 class MyPollCreate2 extends StatefulWidget {
   @override
@@ -70,6 +68,10 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Create a Poll"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+          onPressed: () => Navigator.of(context).pushReplacementNamed("/poll"),
+        ),
         actions: <Widget>[
           Icon(Icons.poll),
         ],
@@ -152,7 +154,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
                     if(_formkey.currentState!.validate()){
                       _formkey.currentState!.save() ;
                       user.setData2();
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, "/poll");
                     }
                   });
 
@@ -186,7 +188,7 @@ class _InputWidgetState extends State<InputWidget> {
           decoration: InputDecoration(hintText: "${user.getOptionText()}"),
           validator: (value){
             if(value!.isEmpty){
-              return 'Please Enter some text';
+              return 'empty text !!!!';
             }
             return null;
           },

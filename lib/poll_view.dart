@@ -9,8 +9,41 @@ class MyPollDisplay extends StatefulWidget {
 
 class _MyPollDisplayState extends State<MyPollDisplay> {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black38,
+      appBar: AppBar(
+        title: Text("Polls"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+          onPressed: () => Navigator.of(context).pushReplacementNamed("/home"),
+        ),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  Icons.search,
+                  size: 26.0,
+                ),
+              )
+          ),
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+
+                  Navigator.pushReplacementNamed(context, "/createpoll");
+                },
+                child: Icon(
+                    Icons.add,
+                ),
+              )
+          ),
+        ],
+      ),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('poll').snapshots(),
           builder:(BuildContext context,AsyncSnapshot snapshot){
@@ -19,13 +52,13 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
             }
             else{
               return ListView.builder(
-                  itemCount: snapshot.data.documents.length,
+                  itemCount: snapshot.data.docs.length,
                   itemBuilder: (context,index){
-                    DocumentSnapshot mypoll=snapshot.data.documents[index];
+                    DocumentSnapshot mypoll=snapshot.data.docs[index];
                     String question=mypoll['question'];
                     return Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-                      decoration: BoxDecoration(border:Border.all(color: Colors.blueGrey),
+                      decoration: BoxDecoration(border:Border.all(color: Colors.black),
                         borderRadius: BorderRadius.circular(5),),
                       child: Column(children: <Widget>[
                         Container(
@@ -52,10 +85,10 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                               else{
                                 return ListView.builder(
                                     physics: new NeverScrollableScrollPhysics(),
-                                    itemCount: snapshot.data.documents.length,
+                                    itemCount: snapshot.data.docs.length,
                                     itemBuilder:(context,index){
 
-                                      DocumentSnapshot myoptions=snapshot.data.documents[index];
+                                      DocumentSnapshot myoptions=snapshot.data.docs[index];
 
 
                                       return Column(
@@ -65,8 +98,8 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                           Container(
                                             margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                                             decoration: BoxDecoration(
-                                              color: Colors.blue[100],
-                                              border: Border.all(color: Colors.blueGrey),
+                                              color: Colors.amber[100],
+                                              border: Border.all(color: Colors.black),
                                               borderRadius: BorderRadius.circular(5),
                                             ),
                                             child: ListTile(
@@ -77,29 +110,29 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                 String uid;
                                                 int i=0;
 
-                                                FirebaseAuth.instance.currentUser().then((val){
-                                                  uid=val.uid;
+                                                uid=FirebaseAuth.instance.currentUser!.uid;
+
                                                   print(uid);
 
-                                                  var doc=Firestore.instance.collection('poll').document(question).collection('users').document(uid);
+                                                  var doc=FirebaseFirestore.instance.collection('poll').doc(question).collection('users').doc(uid);
                                                   doc.get().then((value){
                                                     if(value.exists){
 
                                                       i=1;
                                                       print("$i");
                                                     }else{
-                                                      String qw=myoptions.documentID;
-                                                      var doc2=Firestore.instance.collection('poll').document(question).collection('options').document(qw);
+                                                      String qw=myoptions.id;
+                                                      var doc2=FirebaseFirestore.instance.collection('poll').doc(question).collection('options').doc(qw);
                                                       print("qw");
-                                                      doc2.updateData({'votes': 1+myoptions['votes']});
+                                                      doc2.update({'votes': 1+myoptions['votes']});
                                                       i=2;
                                                       print("$i");
-                                                      Firestore.instance.collection('poll').document(question).collection('users').document(uid).setData({
+                                                      FirebaseFirestore.instance.collection('poll').doc(question).collection('users').doc(uid).set({
                                                         "votes":true,
-                                                      }).whenComplete((){print("Task Completed");});
+                                                      }).whenComplete((){print("done");});
                                                     }
                                                   });
-                                                });
+
                                               },
                                             ),
                                           ),
