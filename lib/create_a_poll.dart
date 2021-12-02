@@ -12,26 +12,31 @@ class MyPollForm{
     return optionField;
   }
  //////////
-  ///
+  ///function to for setting data
   setData2(){
     int _number=optionsData.length;
     String uid;
     String name;
-
+///getting the current user Uid.
     uid =FirebaseAuth.instance.currentUser!.uid;
-
+///getting the current user name.
       name=FirebaseAuth.instance.currentUser!.displayName!;
+      ///getting document ref of the quetions form the firestore database
       DocumentReference ds=FirebaseFirestore.instance.collection('poll').doc(question);
+      ///creating a map to use it for sending data to the firestore
       Map<String,dynamic> polls ={
         "question":this.question,
         "uid":uid,
         "name":name,
         "length":_number,
       };
+      ///setting data to the document
       ds.set(polls).whenComplete((){
         print("Task completed");
       });
+      ///creating a collection  for each option to a certain question and setting the value of its votes to 0
       for(int i=0;i<_number;i++){
+
         FirebaseFirestore.instance.collection('poll').doc(question).collection('options').doc().set({
           "name":optionsData[i],
           "votes":0,
@@ -44,22 +49,28 @@ class MyPollForm{
 
 
 }
+
+///creating an instance of the mypollform class
 var user=new MyPollForm();
+/// class for the Add view
 class MyPollCreate2 extends StatefulWidget {
   @override
   _MyPollCreate2State createState() => _MyPollCreate2State();
 }
 
 class _MyPollCreate2State extends State<MyPollCreate2> {
+  ///Global key to access and access the current state
   final _formkey=GlobalKey<FormState>();
-  //var user=new MyPollForm();
+
   int optionCount=2;
   @override
   void initState() {
     super.initState();
+    ///a stores how much options in the form
     int a=user.optionsData.length;
-
+///the remove range set to remove options
     user.optionsData.removeRange(0, a);
+
   }
   @override
   Widget build(BuildContext context) {
@@ -80,11 +91,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
       body: Container(
 
         decoration: BoxDecoration(
-          image:DecorationImage(
-            image:AssetImage("assets/images/bar-chart.png"),
-            fit:BoxFit.fitWidth,
-            alignment: Alignment.bottomCenter,
-          ),
+
         ),
         child: Form(
           key:_formkey,
@@ -94,10 +101,10 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
               padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width*.1,0,MediaQuery.of(context).size.width*.1,0),
 
               child: TextFormField(
-                decoration: InputDecoration(hintText: "Ques: Whats your poll question ? "),
+                decoration: InputDecoration(hintText: " Whats your question ?? "),
                 validator: (value){
                   if(value!.isEmpty){
-                    return 'Please Enter some text';
+                    return 'empty';
                   }
                   return null;
                 },
@@ -113,12 +120,15 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
             Row(children: <Widget>[
               Container(
                 child: Expanded(
+                  ///the button to add an option
                   child: FlatButton(
                     color:Colors.blueGrey,
                     child: Text("Add an Option",style: TextStyle(color: Colors.white),),
                     onPressed: (){
                       setState(() {
+                        ///testing on max 5 options
                         if(optionCount<5){
+                          ///optioncount ++ when adding an option
                           optionCount++;
                         }
                       });
@@ -128,6 +138,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
               ),
               Container(
                 child: Expanded(
+                  ///the button to remove an option
                   child: FlatButton(
                       color:Colors.blueGrey[300],
                       child: Text("Remove an Option",style: TextStyle(color: Colors.white),),
@@ -135,7 +146,9 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
                         // if(user.optionCount>2)
                         // user.optionCount--;
                         setState((){
+                          ///minimum 2 options by question
                           if(optionCount>2){
+                            ///optioncount -- when removing an option
                             optionCount--;
                           }
                         },);}
@@ -153,6 +166,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
                   setState(() {
                     if(_formkey.currentState!.validate()){
                       _formkey.currentState!.save() ;
+                      ///calling the setdata function after the validation of the form..
                       user.setData2();
                       Navigator.pushReplacementNamed(context, "/poll");
                     }
@@ -170,7 +184,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
 }
 //////////////////////////////////////////
 
-
+///class used for inputs
 class InputWidget extends StatefulWidget {
   InputWidget(this.count) : super();
   final count;
@@ -182,18 +196,20 @@ class _InputWidgetState extends State<InputWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      ///getting the information about the size of the device and scaling it accordingly
       padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width*.15, 0, MediaQuery.of(context).size.width*.15,0),
       width: MediaQuery.of(context).size.width,
       child:  TextFormField(
           decoration: InputDecoration(hintText: "${user.getOptionText()}"),
           validator: (value){
+            ///testing the user input text
             if(value!.isEmpty){
               return 'empty text !!!!';
             }
             return null;
           },
           onSaved: (value){
-
+///add  the text value when the form is saved !!
             user.optionsData.add(value!);
 
           }
