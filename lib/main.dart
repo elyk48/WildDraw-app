@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'create_a_poll.dart';
 import 'navigation_menus/nav_tab.dart';
 
 Future<void> main() async{
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
         },
         "/searchfriends":(BuildContext context){
           return SearchFriend();
+        },
+        "/poll":(BuildContext context){
+          return MyPollCreate2();
         },
 
 
