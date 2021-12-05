@@ -7,8 +7,6 @@ class BugReportView extends StatefulWidget {
 
   @override
   _BugReportViewState createState() => _BugReportViewState();
-
-
 }
 
 class _BugReportViewState extends State<BugReportView> {
@@ -17,18 +15,18 @@ class _BugReportViewState extends State<BugReportView> {
   final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
   final bool isAdmin = true;
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bug Report"),
       ),
-      body: Column(
-        children: [
-          BugReportForm.newFrom(_keyForm,_bugReport)//,reportBugsGrid()
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BugReportForm.newFrom(_keyForm,_bugReport),if(isAdmin)reportBugsGrid()
+          ],
+        ),
       ),
     );
   }

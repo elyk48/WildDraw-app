@@ -2,6 +2,9 @@ import 'package:cardgameapp/controllers/bugreportcontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+String idRep ="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+bool isAdmin = false;
+
 class BugReportForm extends StatefulWidget {
   late final GlobalKey<FormState> _keyForm;
   late BugReport _bugReport;
@@ -17,8 +20,6 @@ class _BugReportFormState extends State<BugReportForm> {
   String bug_type ="Functional error";
   String bug_severity ="Low";
 
-
-  String idRep ="VGvmMwarbvUJtsjAzfvHR9tvfd72";
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +134,10 @@ class _BugReportFormState extends State<BugReportForm> {
                   }
                         },
                 child: const Text("Report"),
-            )
+            ),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
     );
@@ -156,31 +160,32 @@ class _reportBugsGridState extends State<reportBugsGrid> {
         builder: (context, snapshot) {
           if(snapshot.hasData)
             {
-              return GridView.builder(
+              //return Text(widget._AllReports[0].toString());
+             return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
-                      mainAxisSpacing: 10,
-                      mainAxisExtent: 200
+                      mainAxisSpacing: 1,
+                      mainAxisExtent: 100
                   ),
-                  physics: const NeverScrollableScrollPhysics(),
+                  //physics: const NeverScrollableScrollPhysics(),
                   itemCount: widget._AllReports.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Wrap(
                       children:[
-                        Text(widget._AllReports[index]),
-                        //ReportCard(widget._AllReports[index]),
-                        /*if(_AllActs[index]["id_user"] == id && isAdmin) ElevatedButton(
-                          onPressed: ()async{
-                            await deleteActualite(_AllActs[index]["id"]);
-                            setState(() {
-                              _AllActs = <dynamic>[];
-                              futureActs =getAllActs(_AllActs);
-                            });
-                          },
-                          child: const Text("Delete"),
-                        ),*/
+                       Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         crossAxisAlignment: CrossAxisAlignment.start,
+                         children: [
+                           Text(widget._AllReports[index]["title"], textScaleFactor: 1.65),
+                           Text(widget._AllReports[index]["type"],textScaleFactor: 1.25),
+                           Text(widget._AllReports[index]["details"]),
+                           const SizedBox(
+                             height: 20,
+                           ),
+                         ],
+                       )
                       ],
                     );
                   }
@@ -191,8 +196,16 @@ class _reportBugsGridState extends State<reportBugsGrid> {
               return Text(snapshot.error.toString());
             }
           else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Column(
+                children: const [
+                   Text("Fetching Data..."),
+                   SizedBox(
+                    height: 5,
+                  ),
+                   CircularProgressIndicator(),
+                ],
+              ),
             );
           }
         }
@@ -203,43 +216,8 @@ class _reportBugsGridState extends State<reportBugsGrid> {
   void initState(){
     //
     widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+
     super.initState();
-  }
-}
-class ReportCard extends StatelessWidget {
-  late BugReport _bugReport;
-
-
-  ReportCard(this._bugReport);
-
-  @override
-  Widget build(BuildContext context) {
-     return Card(
-      child: InkWell(
-        /*onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ActualiteDetails(_id, _idUser, _title, _content, _author, _postedOn);
-              }
-          ));
-        },*/
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_bugReport._title, textScaleFactor: 2),
-                Text(_bugReport._type),
-                const SizedBox(
-                  height: 5,
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
   }
 }
 

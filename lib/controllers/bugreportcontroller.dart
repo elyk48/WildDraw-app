@@ -27,7 +27,7 @@ class BugReportController {
       {
         for(var doc in querySnapshot.docs.toList())
         {
-          Map a = {"id": doc.id,"details":doc["details"],"reporterId":doc["reporterId"],"postedOn":doc["postedOn"],"severity":doc["severity"],"type":doc["type"],"title":doc["title"]};
+          Map a = {"id": doc.id,"details":doc["details"],"reporterId":doc["id_user"],"postedOn":doc["postedOn"],"severity":doc["severity"],"type":doc["type"],"title":doc["title"]};
           l.add(a);
         }
         print(l);
