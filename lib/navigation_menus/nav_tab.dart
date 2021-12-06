@@ -74,7 +74,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/collection");
                 },
               ),
               ListTile(

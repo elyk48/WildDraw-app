@@ -71,7 +71,7 @@ class _BugReportFormState extends State<BugReportForm> {
                       bug_type = newValue!;
                     });
                   },
-                    items: <String>["Functional error","Performance defect","Usability defect","Compatibility defect","Security defect"]
+                    items: <String>["Functional error","Visual Defect","Performance defect","Usability defect","Compatibility defect","Security defect"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -126,13 +126,12 @@ class _BugReportFormState extends State<BugReportForm> {
                       widget._bugReport._reporterId = idRep;
                       await BugReportController.addBugReport(widget._bugReport);
                       showAlertDialog(context);
-
                       setState(() {
 
                       });
                     }
                   }
-                        },
+                  },
                 child: const Text("Report"),
             ),
             const SizedBox(
@@ -147,7 +146,6 @@ class reportBugsGrid extends StatefulWidget {
   late List<dynamic> _AllReports=[];
   late Future<List> _futureReports;
 
-
   @override
   _reportBugsGridState createState() => _reportBugsGridState();
 }
@@ -160,15 +158,14 @@ class _reportBugsGridState extends State<reportBugsGrid> {
         builder: (context, snapshot) {
           if(snapshot.hasData)
             {
-              //return Text(widget._AllReports[0].toString());
              return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1,
-                      mainAxisExtent: 100
+                      mainAxisExtent: 110
                   ),
-                  //physics: const NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: widget._AllReports.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
@@ -178,12 +175,15 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                          mainAxisAlignment: MainAxisAlignment.center,
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
+                           const Divider(
+                             thickness: 1.5,
+                             color: Colors.blueGrey,
+                           ),
                            Text(widget._AllReports[index]["title"], textScaleFactor: 1.65),
                            Text(widget._AllReports[index]["type"],textScaleFactor: 1.25),
+                           Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25),
                            Text(widget._AllReports[index]["details"]),
-                           const SizedBox(
-                             height: 20,
-                           ),
+
                          ],
                        )
                       ],
@@ -220,10 +220,6 @@ class _reportBugsGridState extends State<reportBugsGrid> {
     super.initState();
   }
 }
-
-
-
-
 
 class BugReport{
   late String _id;

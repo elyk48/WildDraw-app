@@ -1,0 +1,98 @@
+import 'package:cardgameapp/controllers/collectioncontroller.dart';
+import 'package:flutter/material.dart';
+
+class Collection extends StatefulWidget {
+  late List<Card> _AllCards=[];
+  late Future<List> _futureCards;
+
+  List<dynamic> get AllCards => _AllCards;
+
+  @override
+  _CollectionState createState() => _CollectionState();
+
+  Future<List> get futureCards => _futureCards;
+}
+class _CollectionState extends State<Collection> {
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: widget._futureCards,
+        builder: (context, snapshot) {
+      if(snapshot.hasData)
+      {
+        return  Center(
+          child: Container(
+              width: MediaQuery.of(context).size.width ,
+              height: MediaQuery.of(context).size.height,
+              // Important to keep as a stack to have overlay of cards.
+              child: PageView(
+                children: Covert(widget._AllCards),
+              )
+          ),
+        );
+      }
+      return const CircularProgressIndicator();
+      }
+    );
+  }
+  @override
+  void initState(){
+    //
+    widget._futureCards = CollectionController.getCollection(widget._AllCards);
+    super.initState();
+  }
+}
+class CardView extends StatelessWidget {
+  late Color color=Colors.black;
+  late final Card _card;
+
+
+  CardView(this._card);
+
+  Card get card => _card;
+
+  set card(Card value) {
+    _card = value;
+  }
+
+  CardView.Empty(this.color);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+                decoration: BoxDecoration(
+                  color: color,
+                ),
+      child: Image.network(_card._cardUrl),
+              );
+  }
+}
+class Card{
+  late String _cardUrl;
+  late String _id;
+
+  String get id => _id;
+
+  set id(String value) {
+    _id = value;
+  }
+
+  Card(this._cardUrl, this._id);
+
+  String get cardUrl => _cardUrl;
+
+  set cardUrl(String value) {
+    _cardUrl = value;
+  }
+}
+
+List<CardView> Covert(List<Card> AllCards)
+{
+  List<CardView> l=[];
+  for(int i=0;i<AllCards.length;i++)
+    {
+      l.add(CardView(AllCards[i]));
+    }
+  print(l.toString());
+  return l;
+}

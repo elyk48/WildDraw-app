@@ -24,7 +24,12 @@ class _BugReportViewState extends State<BugReportView> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            BugReportForm.newFrom(_keyForm,_bugReport),if(isAdmin)reportBugsGrid()
+            BugReportForm.newFrom(_keyForm,_bugReport),
+            if(isAdmin)Column(
+              children: [
+              const Text("Other Reports",textScaleFactor: 3),reportBugsGrid()
+            ]
+            )
           ],
         ),
       ),
