@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'create_a_poll.dart';
+import 'create_quest.dart';
+import 'daily_quests_view.dart';
 import 'navigation_menus/nav_tab.dart';
 
 Future<void> main() async{
@@ -69,6 +71,13 @@ class MyApp extends StatelessWidget {
         },
  "/createpoll":(BuildContext context){
           return MyPollCreate2();
+        },
+        "/createQuest":(BuildContext context){
+          return CreateQuest();
+        },
+
+      "/DailyQuests":(BuildContext context){
+          return DailyQuests();
         },
 
 

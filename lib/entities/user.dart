@@ -15,6 +15,7 @@ class UserE extends StatelessWidget {
   late String _Rank;
   late String _id_Col;
   late String _image;
+  late bool _isAdmin;
 
 
   UserE(this._id, this._username, this._email, this._password, this._birth,
