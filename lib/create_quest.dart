@@ -8,14 +8,17 @@ class CreateQuest extends StatefulWidget {
   @override
   _CreateQuestState createState() => _CreateQuestState();
 }
-
+/// create a quest view
 class _CreateQuestState extends State<CreateQuest> {
+  ///instance of a quest
   late final Quest quest = new Quest(" Default","Default","Default","Default");
+  ///instance of the quest controller
   QuestController QuestC= QuestController();
+  ///Global key to access and access the current state
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
+/// the validation button
     final Validatebtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: RaisedButton(
@@ -23,13 +26,16 @@ class _CreateQuestState extends State<CreateQuest> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async{
+          ///testing if the form is valid
           if (_keyForm.currentState!.validate()) {
+            ///saving the form vars
             _keyForm.currentState!.save();
 
-
+///calling the addquest function to add the quest
             await QuestC.addQuest(quest.Qtitle,quest.levelrange,quest.Qdescription);
-
+///resting the form
             _keyForm.currentState!.reset();
+            ///chnaging the route to view the daily quests
             Navigator.pushReplacementNamed(context, "/DailyQuests");
           }
         },
@@ -40,6 +46,7 @@ class _CreateQuestState extends State<CreateQuest> {
     );
 
 
+///the cancel button
     final Cancelbtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: RaisedButton(
@@ -47,8 +54,9 @@ class _CreateQuestState extends State<CreateQuest> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async{
-
+///on cancel rest the form
           _keyForm.currentState!.reset();
+          ///changing the route
           Navigator.pushReplacementNamed(context, "/DailyQuests");
 
         },
@@ -59,6 +67,7 @@ class _CreateQuestState extends State<CreateQuest> {
     );
 
 
+///Add a new quest view
     return Scaffold(
 
       appBar: AppBar(
@@ -66,10 +75,11 @@ class _CreateQuestState extends State<CreateQuest> {
         title: Text("Add a Daily Quest!! "),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+          ///button to retrun to the dailyquest view
           onPressed: () => Navigator.of(context).pushReplacementNamed("/DailyQuests"),
         ),
       ),
-
+///form
 body:  Form(
 
 
@@ -91,10 +101,12 @@ body:  Form(
 
         Container(
           margin: const EdgeInsets.fromLTRB(10, 30, 10, 10),
+          ///quest title textfield
           child: TextFormField(
             cursorColor: Colors.amber,
 
             keyboardType: TextInputType.text,
+            /*****Decoration***/
             decoration:  InputDecoration(
               labelText: "Quest Title",
               hintText: 'Quest Title',
@@ -107,9 +119,11 @@ body:  Form(
               ),
               labelStyle: new TextStyle(color: Colors.black),
             ),
+            ///when the form is saved => setting the quest title to the value entred by the user
             onSaved: (String? value) {
               quest.Qtitle = value!;
             },
+            ///form validation tests
             validator: (String? value) {
               if(value == null || value.isEmpty) {
                 return "Le quest title ne doit pas etre vide";
@@ -123,12 +137,15 @@ body:  Form(
             },
           ),
         ),
+
+        ///level range text field
         Container(
           margin: const EdgeInsets.fromLTRB(10, 30, 10, 10),
           child: TextFormField(
             cursorColor: Colors.amber,
 
             keyboardType: TextInputType.text,
+            /*****Decoration***/
             decoration:  InputDecoration(
               labelText: "level range",
               hintText: 'level range quest',
@@ -141,9 +158,11 @@ body:  Form(
               ),
               labelStyle: new TextStyle(color: Colors.black),
             ),
+            ///when the form is saved => setting the levelrange to the value entred by the user
             onSaved: (String? value) {
               quest.levelrange = value!;
             },
+            ///form validation tests
             validator: (String? value) {
               if(value == null || value.isEmpty) {
                 return "Le quest title ne doit pas etre vide";
@@ -158,7 +177,7 @@ body:  Form(
           ),
         ),
 
-
+///quest decription textfield
         Container(
           margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
           child: TextFormField(
@@ -178,9 +197,11 @@ body:  Form(
               ),
               labelStyle: new TextStyle(color: Colors.black),
             ),
+            ///when the form is saved => setting the quest description to the value entred by the user
             onSaved: (String? value) {
               quest.Qdescription = value!;
             },
+            ///form validation tests
             validator: (value) {
               if(value == null || value.isEmpty) {
                 return "La desc  ne doit pas etre vide";
@@ -195,12 +216,15 @@ body:  Form(
           ),
         ),
         Row(
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ///validation button
             Validatebtn,
             const SizedBox(
               width: 20,
             ),
+            ///cancel button
             Cancelbtn,
           ],
         )

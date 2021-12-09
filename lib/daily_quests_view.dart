@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +10,7 @@ class DailyQuests extends StatefulWidget {
   _DailyQuestsState createState() => _DailyQuestsState();
 }
 
+///DailyQuests view
 class _DailyQuestsState extends State<DailyQuests> {
   @override
   Widget build(BuildContext context) {
@@ -56,16 +59,78 @@ body:StreamBuilder(
     else{
     return ListView.builder(
     ///the number of items in the snapshot..
-    itemCount: snapshot.data.docs.length,
+    itemCount: 3,
     itemBuilder: (context,index) {
-      ///getting a single poll using the index..
+      ///getting a single quest using the index..
       DocumentSnapshot myquest = snapshot.data.docs[index];
 
-      ///geting the poll question..
-      String question = myquest[''];
+      ///geting the quest data
+      String questTitle = myquest['QuestTitle'];
+      String  level=myquest['levelRange'];
+      String Qdesc=myquest['Qdescription'];
+
+      return Container(
+
+        child: SizedBox(
+          height: 100,
+          width: 100,
+          child: Card(
+            child: Column(
+
+              children: [
+
+                Row(
+
+
+                  children: [
+                    IconButton(
+                      icon: Image.asset('assets/Images/reroll.png'),
+                      iconSize: 50,
+                      onPressed: () {
+                        var length = snapshot.data.docs.length;
+                        var rng = new Random();
+
+                        myquest =  snapshot.data.docs[rng.nextInt(length)];
+                        print(myquest.data().toString());
+                        setState(() {
+
+                           questTitle = myquest['QuestTitle'];
+                            level=myquest['levelRange'];
+                          Qdesc=myquest['Qdescription'];
+
+
+                        });
+                      },
+                    ),
+
+                    Column(
+                      children: [
+
+                        Text(questTitle,textScaleFactor: 1.5,),
+                        Text(level),
+                        Text(Qdesc),
+                      ],
+                    )
+
+
+
+
+                  ],
+                )
+
+
+
+          ],
+
+            ),
+
+          ),
+        ),
+
+      );
     });
 
-    };
+    }
 
 
 },
