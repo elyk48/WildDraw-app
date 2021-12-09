@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-
+///Quest class
 class Quest extends StatelessWidget {
 
 
@@ -41,6 +41,7 @@ String get Qdescription => _Qdescription;
     _id = value;
   }
 
+  ///Named constructor
 
 Quest.NewQuest(Qtitle, levelrange ,Qdescription){
 

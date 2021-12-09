@@ -19,8 +19,10 @@ class _DailyQuestsState extends State<DailyQuests> {
       appBar: AppBar(
 
         title: Text("Daily Quests"),
+        ///a button to return to the home page
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+          ///using the navigator to redirect the data to the hoem page
           onPressed: () => Navigator.of(context).pushReplacementNamed("/home"),
         ),
         actions: <Widget>[
@@ -34,11 +36,12 @@ class _DailyQuestsState extends State<DailyQuests> {
                 ),
               )
           ),
+          ///a button to go the create quest view
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
-
+               ///using the navigator to redirect the data to the create quest view
                   Navigator.pushReplacementNamed(context, "/createQuest");
                 },
                 child: Icon(
@@ -68,7 +71,7 @@ body:StreamBuilder(
       String questTitle = myquest['QuestTitle'];
       String  level=myquest['levelRange'];
       String Qdesc=myquest['Qdescription'];
-
+///the quest data view as a card
       return Container(
 
         child: SizedBox(
@@ -83,17 +86,23 @@ body:StreamBuilder(
 
 
                   children: [
+                    ///reroll button
                     IconButton(
                       icon: Image.asset('assets/Images/reroll.png'),
                       iconSize: 50,
+
                       onPressed: () {
+                        ///storing the number of docs inside the snapshot
                         var length = snapshot.data.docs.length;
+                        ///Random instance
                         var rng = new Random();
-
+                        /// getting a random quest
                         myquest =  snapshot.data.docs[rng.nextInt(length)];
+                        ///testing the values
                         print(myquest.data().toString());
+                        ///set state to save the new values
                         setState(() {
-
+                           ///fetching data from the snapshot
                            questTitle = myquest['QuestTitle'];
                             level=myquest['levelRange'];
                           Qdesc=myquest['Qdescription'];
@@ -102,28 +111,22 @@ body:StreamBuilder(
                         });
                       },
                     ),
-
+               /// quest data view
                     Column(
                       children: [
-
+                   ///Title
                         Text(questTitle,textScaleFactor: 1.5,),
+                        ///quest level
                         Text(level),
+                        ///quest decription
                         Text(Qdesc),
                       ],
                     )
 
-
-
-
                   ],
                 )
-
-
-
           ],
-
             ),
-
           ),
         ),
 
