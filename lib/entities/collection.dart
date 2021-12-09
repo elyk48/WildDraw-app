@@ -22,17 +22,25 @@ class _CollectionState extends State<Collection> {
       if(snapshot.hasData)
       {
         return  Center(
-          child: Container(
-              width: MediaQuery.of(context).size.width ,
-              height: MediaQuery.of(context).size.height,
-              // Important to keep as a stack to have overlay of cards.
-              child: PageView(
-                children: Covert(widget._AllCards),
-              )
+          child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Text("You have "+widget._AllCards.length.toString()+" cards in your collection",textScaleFactor: 1.3),
+                Container(
+                    width: MediaQuery.of(context).size.width ,
+                    height: MediaQuery.of(context).size.height,
+                    // Important to keep as a stack to have overlay of cards.
+                    child: PageView(
+                      children: Covert(widget._AllCards),
+                    )
+                ),
+              ],
+            ),
           ),
         );
       }
-      return const CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
       }
     );
   }
@@ -60,10 +68,14 @@ class CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
                 decoration: BoxDecoration(
                   color: color,
                 ),
-      child: Image.network(_card._cardUrl),
+      child: Center(
+        child: Stack(
+            children:[Image.asset("assets/images/Print card.jpg"),const Center(child: CircularProgressIndicator()),Image.network(_card._cardUrl)]),
+      ),
               );
   }
 }
@@ -71,13 +83,13 @@ class Card{
   late String _cardUrl;
   late String _id;
 
+  Card(this._cardUrl, this._id);
+
   String get id => _id;
 
   set id(String value) {
     _id = value;
   }
-
-  Card(this._cardUrl, this._id);
 
   String get cardUrl => _cardUrl;
 

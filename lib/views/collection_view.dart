@@ -13,8 +13,8 @@ class _CollectionViewState extends State<CollectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orangeAccent,
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
         title: const Text("Your Collection"),
       ),
         body: Collection()

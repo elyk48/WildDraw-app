@@ -24,4 +24,46 @@ class CollectionController{
     }
     return l;
   }
+
+  static Future<String> getCardUrl(String cardID) async{
+    QuerySnapshot querySnapshot;
+    try{
+      querySnapshot = await CardCollection.get();
+      if(querySnapshot.docs.isNotEmpty)
+      {
+        for(var doc in querySnapshot.docs.toList())
+        {
+          if(doc.id == cardID)
+            {
+              return doc.id;
+            }
+        }
+      }
+    }catch(e){
+      print(e);
+    }
+    return "";
+  }
+
+
+
+  static Future<String> getCollectionIdFromIdUser(String user_id) async{
+    QuerySnapshot querySnapshot;
+    try{
+      querySnapshot = await FirebaseFirestore.instance.collection('CardCollection').get();
+      if(querySnapshot.docs.isNotEmpty)
+      {
+        for(var doc in querySnapshot.docs.toList())
+        {
+          if(doc["idUser"]==user_id)
+            {
+              return doc.id;
+            }
+        }
+      }
+    }catch(e){
+      print(e);
+    }
+    return "";
+  }
 }
