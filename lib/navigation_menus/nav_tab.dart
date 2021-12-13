@@ -1,10 +1,9 @@
+import 'package:cardgameapp/views/actualite_view.dart';
+import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-=======
 import 'package:provider/src/provider.dart';
 
-import '../authentication_service.dart';
->>>>>>> cba5cf8 (Database Connection with User)
+import '../controllers/authentication_service.dart';
 
 class NavigationTab extends StatelessWidget {
   static const String Appname ="Card Card App";
@@ -33,7 +32,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                    Navigator.pushNamed(context, "/profile");
                 },
               ),
               ListTile(
@@ -47,7 +46,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/friends");
                 },
               ),
               ListTile(
@@ -61,7 +60,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/DailyQuests");
                 },
               ),
               ListTile(
@@ -75,7 +74,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/collection");
                 },
               ),
               ListTile(
@@ -89,7 +88,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/poll");
                 },
               ),
               ListTile(
@@ -103,7 +102,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/bugReport");
                 },
               ),
               ListTile(
@@ -116,13 +115,9 @@ class NavigationTab extends StatelessWidget {
                     Text("Se déconnecter"),
                   ],
                 ),
-<<<<<<< HEAD
-                onTap: () async{
-
-=======
                 onTap: () {
                   context.read<AuthenticationService>().signOut();
->>>>>>> cba5cf8 (Database Connection with User)
+                  Navigator.pushReplacementNamed(context, "/singin");
                 },
               )
             ],
@@ -147,7 +142,9 @@ class NavigationTab extends StatelessWidget {
             ],
           ),
         ),
-        //body:
+        body: const TabBarView(children: [
+          actualiteView(),PublicationView(),Center(child: Text("On Going...",textScaleFactor: 2),)
+        ],)
       ),
     );
   }

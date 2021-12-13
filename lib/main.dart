@@ -1,51 +1,37 @@
-<<<<<<< HEAD
-import 'dart:math';
-
+import 'package:cardgameapp/controllers/authentication_service.dart';
+import 'package:cardgameapp/views/bug_report_view.dart';
+import 'package:cardgameapp/views/collection_view.dart';
+import 'package:cardgameapp/views/edit_profile.dart';
+import 'package:cardgameapp/views/friendsList.dart';
 import 'package:cardgameapp/home.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'navigation_menus/nav_tab.dart';
-
-void main() {
-=======
-import 'package:cardgameapp/authentication_service.dart';
-import 'package:cardgameapp/home.dart';
+import 'package:cardgameapp/views/poll_view.dart';
+import 'package:cardgameapp/views/profile.dart';
+import 'package:cardgameapp/views/searchfriend.dart';
 import 'package:cardgameapp/signin.dart';
+import 'package:cardgameapp/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'views/create_a_poll.dart';
+import 'views/create_quest.dart';
+import 'views/daily_quests_view.dart';
 import 'navigation_menus/nav_tab.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
->>>>>>> cba5cf8 (Database Connection with User)
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-<<<<<<< HEAD
-=======
 
->>>>>>> cba5cf8 (Database Connection with User)
   const MyApp({Key? key}) : super(key: key);
   static const String Appname ="Card Card App";
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return MaterialApp(
-      title: Appname,
-      routes:
-          {
-            "/home":(BuildContext context){
-              return const Home(title: Appname);
-            }
-          },
-=======
+    //Make multiple Widgets with Providers
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
@@ -60,26 +46,57 @@ class MyApp extends StatelessWidget {
       title: Appname,
       routes: // <- Routes
       {
-        "/home":(BuildContext context){
-          return const Home(title: Appname);
-        },
+
         "/singin":(BuildContext context){
           return SignInPage();
-        }
+        },
+        "/signup":(BuildContext context){
+          return Signup();
+        },
+        "/profile":(BuildContext context){
+          return Profile();
+        },
+        "/home":(BuildContext context){
+          return NavigationTab();
+        },
+        "/editProfile":(BuildContext context){
+          return EditProfile();
+        },
+        "/friends":(BuildContext context){
+          return FriendsList();
+        },
+        "/searchfriends":(BuildContext context){
+          return SearchFriend();
+        },
+        "/poll":(BuildContext context){
+          return MyPollDisplay();
+        },
+ "/createpoll":(BuildContext context){
+          return MyPollCreate2();
+        },
+        "/createQuest":(BuildContext context){
+          return CreateQuest();
+        },
+
+      "/DailyQuests":(BuildContext context){
+          return DailyQuests();
+        },
+        "/bugReport":(BuildContext context){
+          return BugReportView();
+        },
+        "/navTab":(BuildContext context){
+          return NavigationTab();
+        },
+        "/collection":(BuildContext context){
+          return CollectionView();
+        },
+
+
       },
->>>>>>> cba5cf8 (Database Connection with User)
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-<<<<<<< HEAD
-      home: const NavigationTab(),
-    );
-  }
-}
-
-
-=======
       home: const AuthenticationWrapper(key: null),
     ),);
   }
@@ -98,7 +115,6 @@ class AuthenticationWrapper extends StatelessWidget{
     return SignInPage();
   }
 }
->>>>>>> cba5cf8 (Database Connection with User)
 
 
 /*
