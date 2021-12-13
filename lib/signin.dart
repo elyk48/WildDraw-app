@@ -62,10 +62,10 @@ late UserE _user;
       );
 
    final user =await context.read<AuthenticationService>().getUser();
-   print(user!.uid.toString());
+   //print(user!.uid.toString());
       SharedPreferences.setMockInitialValues({});
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("userId",user.uid.toString());
+      prefs.setString("userId",user!.uid.toString());
       UserE newUser = UserE(user.uid.toString(), "_username", "_email", "_password", "_birth", "_address", "_level", "_Rank", "_id_Col", "_image", false);
       _user = await getUser(newUser);
       prefs.setString("username",_user.username);
@@ -77,13 +77,8 @@ late UserE _user;
       prefs.setString("rank",_user.Rank);
       prefs.setString("id_col",_user.id_Col);
       prefs.setBool("isAdmin",_user.isAdmin);
-      /*print(prefs.getString("userId"));
-      print(prefs.getString("username"));
-      print(prefs.getBool("isAdmin"));*/
       Navigator.pushReplacementNamed(context, "/home");
     }
-
-
         },
         padding: EdgeInsets.all(12),
         color: Colors.black54,
@@ -158,7 +153,6 @@ late UserE _user;
                   return null;
                 }
               },
-
             ),
             SizedBox(height: 10.0),
 //password

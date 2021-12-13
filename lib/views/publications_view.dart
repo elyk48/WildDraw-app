@@ -144,7 +144,7 @@ class _PublicationViewState extends State<PublicationView> {
             l = doc["username"];
             setState(() {
               username = l;
-              print(username);
+              //print(username);
             });
             return username;
           }

@@ -1,7 +1,10 @@
 import 'package:cardgameapp/entities/actualite.dart';
+import 'package:cardgameapp/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class actualiteView extends StatefulWidget {
   const actualiteView({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class _actualiteViewState extends State<actualiteView> {
 
   late List<dynamic> _AllActs=[];
   late Future<List> futureActs;
+  late UserE userConnected;
 
   late Future<String> futureUsername;
   late String username="";
@@ -64,7 +68,7 @@ class _actualiteViewState extends State<actualiteView> {
             l = doc["username"];
             setState(() {
               username = l;
-              print(username);
+              //print(username);
             });
             return username;
           }
@@ -80,7 +84,7 @@ class _actualiteViewState extends State<actualiteView> {
 
     futureActs =  getAllActs(_AllActs);
     futureUsername = getUsername(username);
-    print(id);
+    getPrefrences();
     super.initState();
   }
   static Future<void> deleteActualite(String docId) async {
@@ -205,4 +209,10 @@ class _actualiteViewState extends State<actualiteView> {
     print(act.id);
     return act;
   }
+}
+Future<void> getPrefrences() async
+{
+  SharedPreferences.getInstance().then((value) => print(value.getString("username")));
+
+
 }
