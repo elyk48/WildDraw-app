@@ -163,7 +163,7 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1,
-                      mainAxisExtent: 110
+                      mainAxisExtent: 90
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: widget._AllReports.length,
@@ -171,23 +171,60 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                   itemBuilder: (BuildContext context, int index) {
                     return Wrap(
                       children:[
-                       Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           const Divider(
-                             thickness: 1.5,
-                             color: Colors.blueGrey,
+                       Dismissible(
+                         direction: DismissDirection.endToStart,
+                         key: Key(widget._AllReports[index]["id"]),
+                         child: Container(
+                           width: 400,
+                           color: Colors.white70,
+                           child: Column(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text(widget._AllReports[index]["title"], textScaleFactor: 1.65),
+                               Text(widget._AllReports[index]["type"],textScaleFactor: 1.25),
+                               if(widget._AllReports[index]["severity"]=="Medium")Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25,
+                                 style: const TextStyle(
+                                   color: Colors.purple,
+                                 ),),
+                               if(widget._AllReports[index]["severity"]=="Critical")Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25,
+                                 style: const TextStyle(
+                                   color: Colors.red,
+                                 ),),
+                               if(widget._AllReports[index]["severity"]=="Low")Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25,
+                                 style: const TextStyle(
+                                   color: Colors.blueAccent,
+                                 ),),
+                               if(widget._AllReports[index]["severity"]=="Major")Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25,
+                                 style: const TextStyle(
+                                   color: Colors.orange,
+                                 ),),
+                               Text(widget._AllReports[index]["details"]),
+                             ],
                            ),
-                           Text(widget._AllReports[index]["title"], textScaleFactor: 1.65),
-                           Text(widget._AllReports[index]["type"],textScaleFactor: 1.25),
-                           Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25),
-                           Text(widget._AllReports[index]["details"]),
-
-                         ],
+                         ),
+                         onDismissed: (direction) {
+                           setState(() {
+                             widget._AllReports.removeAt(index);
+                           });
+                         },
+                         background: Container(
+                             color: Colors.red,
+                             child: Container(
+                               padding: const EdgeInsets.fromLTRB(200, 0, 0, 0),
+                               child: const Center(
+                                   child:
+                                   Text("Dissmiss",
+                                     textScaleFactor: 3,
+                                     style: TextStyle(color: Colors.white)
+                                   )
+                               ),
+                             )
+                         ),
                        )
                       ],
                     );
+
                   }
               );
             }

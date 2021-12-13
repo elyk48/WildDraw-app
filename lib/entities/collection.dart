@@ -2,7 +2,7 @@ import 'package:cardgameapp/controllers/collectioncontroller.dart';
 import 'package:flutter/material.dart';
 
 class Collection extends StatefulWidget {
-  late List<Card> _AllCards=[];
+  late List<PlayCard> _AllCards=[];
   late Future<List> _futureCards;
 
   List<dynamic> get AllCards => _AllCards;
@@ -53,14 +53,14 @@ class _CollectionState extends State<Collection> {
 }
 class CardView extends StatelessWidget {
   late Color color=Colors.black;
-  late final Card _card;
+  late final PlayCard _card;
 
 
   CardView(this._card);
 
-  Card get card => _card;
+  PlayCard get card => _card;
 
-  set card(Card value) {
+  set card(PlayCard value) {
     _card = value;
   }
 
@@ -74,16 +74,25 @@ class CardView extends StatelessWidget {
                 ),
       child: Center(
         child: Stack(
-            children:[Image.asset("assets/images/Print card.jpg"),const Center(child: CircularProgressIndicator()),Image.network(_card._cardUrl)]),
+            children:[
+              Image.asset("assets/images/Print card.jpg"),
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+                  child: const Center(
+                      child: CircularProgressIndicator()
+                  )
+              ),
+              Image.network(_card._cardUrl),
+            ]),
       ),
               );
   }
 }
-class Card{
+class PlayCard{
   late String _cardUrl;
   late String _id;
 
-  Card(this._cardUrl, this._id);
+  PlayCard(this._cardUrl, this._id);
 
   String get id => _id;
 
@@ -98,7 +107,7 @@ class Card{
   }
 }
 
-List<CardView> Covert(List<Card> AllCards)
+List<CardView> Covert(List<PlayCard> AllCards)
 {
   List<CardView> l=[];
   for(int i=0;i<AllCards.length;i++)

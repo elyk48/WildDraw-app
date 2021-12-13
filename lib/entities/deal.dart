@@ -32,7 +32,7 @@ class Deal{
   late String _id;
   late String _idDealer;
   late String _idBuyer;
-  //late Card _card;
+  late PlayCard _card;
   late Float _price;
   late bool _isClosed;
 

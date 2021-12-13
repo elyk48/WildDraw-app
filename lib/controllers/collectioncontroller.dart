@@ -6,7 +6,7 @@ class CollectionController{
 
 
   static CollectionReference CardCollection = FirebaseFirestore.instance.collection('CardCollection').doc(id_Collection).collection('Cards');
-  static Future<List> getCollection(List<Card> l) async{
+  static Future<List> getCollection(List<PlayCard> l) async{
     QuerySnapshot querySnapshot;
     try{
       querySnapshot = await CardCollection.get();
@@ -14,7 +14,7 @@ class CollectionController{
       {
         for(var doc in querySnapshot.docs.toList())
         {
-          l.add(Card(doc["CardUrl"],doc.id));
+          l.add(PlayCard(doc["CardUrl"],doc.id));
         }
         print(l);
         return l;
