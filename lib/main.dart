@@ -1,4 +1,5 @@
 import 'package:cardgameapp/controllers/authentication_service.dart';
+import 'package:cardgameapp/theme.dart';
 import 'package:cardgameapp/views/bug_report_view.dart';
 import 'package:cardgameapp/views/collection_view.dart';
 import 'package:cardgameapp/views/edit_profile.dart';
@@ -93,10 +94,7 @@ class MyApp extends StatelessWidget {
 
 
       },
-      theme: ThemeData(
-
-        primarySwatch: Colors.blue,
-      ),
+      theme: CustomDataTheme(),
       home: const AuthenticationWrapper(key: null),
     ),);
   }

@@ -129,11 +129,11 @@ class NavigationTab extends StatelessWidget {
             tabs: [
               Tab(
                 icon: Icon(Icons.assignment_sharp),
-                text: "Actualités",
+                text: "News",
               ),
               Tab(
                 icon: Icon(Icons.wysiwyg),
-                text: "Publication",
+                text: "Publications",
               ),
               Tab(
                 icon: Icon(Icons.attach_money),

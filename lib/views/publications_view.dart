@@ -91,6 +91,7 @@ class _PublicationViewState extends State<PublicationView> {
                       children:[
                         PublicationCard(_AllPubs[index]["id_user"], _AllPubs[index]["id"],_AllPubs[index]["content"], _AllPubs[index]["likes"], _AllPubs[index]["postedOn"], _AllPubs[index]["username"]),
                         if(_AllPubs[index]["id_user"] == id) ElevatedButton(
+
                             onPressed: ()async{
                               await deletePublication(_AllPubs[index]["id"]);
                               setState(() {
@@ -133,7 +134,7 @@ class _PublicationViewState extends State<PublicationView> {
   Future<String> getUsername(String l) async{
     QuerySnapshot querySnapshot;
     try{
-
+    _fetch();
       querySnapshot = await FirebaseFirestore.instance.collection('users').get();
       if(querySnapshot.docs.isNotEmpty)
       {
@@ -184,5 +185,11 @@ class _PublicationViewState extends State<PublicationView> {
         .delete()
         .whenComplete(() => print('Note item deleted from the database'))
         .catchError((e) => print(e));
+  }
+  Future<void> _fetch() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance().then((value){return value;});
+    username = prefs.getString("username")!;
+    print("Username is : "+username);
   }
 }

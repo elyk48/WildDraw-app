@@ -10,11 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/authentication_service.dart';
 
 class SignInPage extends StatefulWidget {
+
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
+
+
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -23,19 +26,28 @@ late String? _email;
 
 late String? _password;
 
-late UserE _user;
+
+  late var myId;
+  late var myUsername;
+  late var myEmail ;
+  late var myRank ;
+ late var mylevel ;
+  late var myaddress ;
+  late var myBirthdate;
+  late var isAdmin;
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
 
+
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 85,
-        child: Image.asset('assets/Images/logoApp.png'),
+        child: Image.asset('assets/Images/Logo Game.png'),
       ),
     );
 
@@ -50,10 +62,7 @@ late UserE _user;
 
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      Map<String, dynamic> userData = {
-        "username": _email,
-        "password": _password
-      };
+    ;
 
    await context.read<AuthenticationService>().signIn(
         email:_email.toString(),
@@ -62,21 +71,47 @@ late UserE _user;
       );
 
    final user =await context.read<AuthenticationService>().getUser();
-   //print(user!.uid.toString());
+
       SharedPreferences.setMockInitialValues({});
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString("userId",user!.uid.toString());
-      UserE newUser = UserE(user.uid.toString(), "_username", "_email", "_password", "_birth", "_address", "_level", "_Rank", "_id_Col", "_image", false);
-      _user = await getUser(newUser);
-      prefs.setString("username",_user.username);
-      prefs.setString("email",_user.email);
-      prefs.setString("password",_user.password);
-      prefs.setString("birthday",_user.birth);
-      prefs.setString("address",_user.address);
-      prefs.setString("level",_user.level);
-      prefs.setString("rank",_user.Rank);
-      prefs.setString("id_col",_user.id_Col);
-      prefs.setBool("isAdmin",_user.isAdmin);
+      print(user.uid);
+
+
+
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get()
+            .then((ds) {
+          myId=ds.data()!["Id"];
+          myUsername=ds.data()!['username'];
+          myEmail = ds.data()!['email'];
+          myRank = ds.data()!['Rank'];
+          mylevel = ds.data()!['level'];
+          myaddress = ds.data()!['address'];
+          myBirthdate = ds.data()!['birthdate'];
+          isAdmin = ds.data()!["isAdmin"];
+
+
+        }).catchError((e) {
+          print(e);
+        });
+
+     prefs.setString("email",myEmail);
+     prefs.setBool("isAdmin",isAdmin);
+     prefs.setString("username", myUsername);
+
+
+
+/*
+      print(myEmail.toString());
+      print(myaddress.toString());
+      print(isAdmin.toString());
+      print(myBirthdate.toString());
+*/
+
       Navigator.pushReplacementNamed(context, "/home");
     }
         },
@@ -195,34 +230,27 @@ late UserE _user;
       ),
     );
   }
-}
-Future<UserE> getUser(UserE user) async{
-  QuerySnapshot querySnapshot;
-  try{
 
-    querySnapshot = await FirebaseFirestore.instance.collection('users').get();
-    if(querySnapshot.docs.isNotEmpty)
-    {
-      for(var doc in querySnapshot.docs.toList())
-      {
-        if(doc.id == user.id)
-          {
-             user.username = doc["username"];
-             user.id = doc["Id"];
-             user.Rank = doc["Rank"];
-             user.address = doc["address"];
-             user.isAdmin= doc["isAdmin"];
-             user.level = doc["level"];
-             user.password = doc["password"];
-             user.image= doc["image"];
-             user.id_Col = doc["id_Col"];
-             print(user.isAdmin.toString());
-            return user;
-          }
-      }
-    }
-  }catch(e){
-    print(e);
+  _fetch() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null)
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .get()
+          .then((ds) {
+        myId=ds.data()!["Id"];
+        myUsername=ds.data()!['username'];
+        myEmail = ds.data()!['email'];
+        myRank = ds.data()!['Rank'];
+        mylevel = ds.data()!['level'];
+        myaddress = ds.data()!['address'];
+        myBirthdate = ds.data()!['birthdate'];
+        isAdmin = ds.data()!["isAdmin"];
+
+
+      }).catchError((e) {
+        print(e);
+      });
   }
-  return user;
 }
