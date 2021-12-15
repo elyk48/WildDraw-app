@@ -10,11 +10,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/authentication_service.dart';
 
 class SignInPage extends StatefulWidget {
+
   @override
   State<SignInPage> createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
+
+
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -44,7 +47,7 @@ late String? _password;
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 85,
-        child: Image.asset('assets/Images/logoApp.png'),
+        child: Image.asset('assets/Images/Logo_Game.png'),
       ),
     );
 
@@ -100,11 +103,14 @@ late String? _password;
      prefs.setBool("isAdmin",isAdmin);
      prefs.setString("username", myUsername);
 
+
+
+/*
       print(myEmail.toString());
       print(myaddress.toString());
       print(isAdmin.toString());
       print(myBirthdate.toString());
-
+*/
 
       Navigator.pushReplacementNamed(context, "/home");
     }
@@ -142,20 +148,33 @@ late String? _password;
     );
 
     return Scaffold(
-      backgroundColor: Colors.white70,
+      
+      backgroundColor: Colors.brown.shade200,
+      
       body: Form(
+        
         key: _keyForm,
         child: ListView(
+          
 
           shrinkWrap: true,
           padding: EdgeInsets.fromLTRB(20,20,20,20),
           children: [
+
             SizedBox(height: 70),
+            Container(
+              alignment: Alignment.topCenter,
+              padding:  EdgeInsets.fromLTRB(20,20,20,20),
+              child:  Text("WildDraw",textScaleFactor: 4,style:TextStyle(fontFamily: 'Windy-Wood-Demo',color: Colors.black),),
+
+
+            ),
+
                logo,
             SizedBox(height: 48.0),
             //email
             TextFormField(
-              cursorColor: Colors.amber,
+              cursorColor: Colors.black54,
 
               keyboardType: TextInputType.emailAddress,
               decoration:  InputDecoration(
@@ -163,10 +182,10 @@ late String? _password;
                 hintText: 'Email',
                 contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                 enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                borderSide: const BorderSide(color: Colors.black54 ,width: 4),
                 ),
                   focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                    borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                    borderSide: const BorderSide(color: Colors.black54 ,width: 4),
                   ),
                   labelStyle: new TextStyle(color: Colors.black),
               ),
@@ -194,10 +213,10 @@ late String? _password;
                 hintText: 'Password',
                 contentPadding: EdgeInsets.fromLTRB(20.0, 20, 20.0, 10.0),
                 enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                  borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                  borderSide: const BorderSide(color: Colors.black54 ,width: 4),
                 ),
                 focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                  borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                  borderSide: const BorderSide(color: Colors.black54 ,width: 4),
                 ),
                 labelStyle: new TextStyle(color: Colors.black),
                 labelText: "Password",

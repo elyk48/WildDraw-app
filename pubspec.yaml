@@ -44,7 +44,7 @@ dependencies:
   firebase_storage: ^10.1.0
   flutter_swipable: ^1.2.1
   flutter_slidable: ^1.1.0
-
+  http: ^0.13.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,6 +73,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/Images/
+    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -85,10 +86,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+     - family: Windy-Wood-Demo
+       fonts:
+         - asset: assets/fonts/Windy-Wood-Demo.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

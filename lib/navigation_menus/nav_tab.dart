@@ -145,6 +145,7 @@ class NavigationTab extends StatelessWidget {
         body: const TabBarView(children: [
           actualiteView(),PublicationView(),Center(child: Text("On Going...",textScaleFactor: 2),)
         ],)
+
       ),
     );
   }

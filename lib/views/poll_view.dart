@@ -75,8 +75,8 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: Colors.blueGrey,
-                            border: Border.all(color: Colors.blueGrey),
+                            color: Colors.black,
+                            border: Border.all(color: Colors.amber),
                             borderRadius: BorderRadius.circular(5),
 
                           ),
@@ -112,14 +112,14 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                           Container(
                                             margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                                             decoration: BoxDecoration(
-                                              color: Colors.amber[100],
+                                              color: Colors.amberAccent,
                                               border: Border.all(color: Colors.black),
                                               borderRadius: BorderRadius.circular(5),
                                             ),
                                             child: ListTile(
 
-                                              title: Text(myoptions['name']),
-                                              trailing: Text(myoptions['votes'].toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                                              title: Text(myoptions['name'],style: TextStyle(fontWeight: FontWeight.bold,color:Colors.black)),
+                                              trailing: Text(myoptions['votes'].toString(),style: TextStyle(fontWeight: FontWeight.bold,color:Colors.black),textScaleFactor: 1.5),
                                               ///voting part (beta version)...
                                               onTap: (){
                                                 String uid;
@@ -175,10 +175,11 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
 
             /// a button that takes the admin where he can add a new poll....
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add,),
+        backgroundColor: Colors.brown[100],
+          child: Icon(Icons.add,color: Colors.black),
           onPressed:(){
             ///using the navigator to point the context to create poll route
-            Navigator.pushNamed(context,'/pollCreate');
+            Navigator.pushNamed(context,'/createpoll');
           }
       ),
     );

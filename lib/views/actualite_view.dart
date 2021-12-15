@@ -1,5 +1,6 @@
 import 'package:cardgameapp/entities/actualite.dart';
 import 'package:cardgameapp/entities/user.dart';
+import 'package:cardgameapp/views/create_a_poll.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,17 +18,18 @@ class _actualiteViewState extends State<actualiteView> {
 
   late List<dynamic> _AllActs=[];
   late Future<List> futureActs;
-  late UserE userConnected;
+  late Future<SharedPreferences> _futureprefs;
+
 
   late Future<String> futureUsername;
+ 
   late String username="";
-
+  late bool? isAdmin=false;
   CollectionReference actualites = FirebaseFirestore.instance.collection('actualites');
   late actualite act = actualite.newAct(id, "Test", "Yes", username);
 
   final String id=FirebaseAuth.instance.currentUser!.uid;
 
-  final bool isAdmin = true;
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
@@ -36,10 +38,11 @@ class _actualiteViewState extends State<actualiteView> {
     return FBActualieList();
   }
   Future<List> getAllActs(List<dynamic> l) async{
+    _fetch();
     QuerySnapshot querySnapshot;
     try{
-
       querySnapshot = await actualites.get();
+
       if(querySnapshot.docs.isNotEmpty)
       {
         for(var doc in querySnapshot.docs.toList())
@@ -79,12 +82,19 @@ class _actualiteViewState extends State<actualiteView> {
     }
     return username;
   }
-  @override
-  void initState(){
 
+  Future<void> _fetch() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance().then((value){return value;});
+    username = prefs.getString("username")!;
+    isAdmin = prefs.getBool("isAdmin");
+    print("Username is : "+username);
+  }
+
+  @override
+  void initState() {
     futureActs =  getAllActs(_AllActs);
     futureUsername = getUsername(username);
-    getPrefrences();
     super.initState();
   }
   static Future<void> deleteActualite(String docId) async {
@@ -105,7 +115,7 @@ class _actualiteViewState extends State<actualiteView> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                if(isAdmin)Form(
+                if(isAdmin!)Form(
                   key: _keyForm,
                   child: Column(
                     children: [
@@ -163,7 +173,7 @@ class _actualiteViewState extends State<actualiteView> {
                     return Wrap(
                       children:[
                         ActualiteCard( _AllActs[index]["id"],_AllActs[index]["id_user"],_AllActs[index]["title"],_AllActs[index]["content"], _AllActs[index]["author"], _AllActs[index]["postedOn"]),
-                        if(_AllActs[index]["id_user"] == id && isAdmin) ElevatedButton(
+                        if(_AllActs[index]["id_user"] == id && isAdmin!) ElevatedButton(
                           onPressed: ()async{
                             await deleteActualite(_AllActs[index]["id"]);
                             setState(() {
@@ -209,10 +219,4 @@ class _actualiteViewState extends State<actualiteView> {
     print(act.id);
     return act;
   }
-}
-Future<void> getPrefrences() async
-{
-  SharedPreferences.getInstance().then((value) => print(value.getString("username")));
-
-
 }

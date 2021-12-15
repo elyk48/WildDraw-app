@@ -56,9 +56,10 @@ class _ProfileState extends State<Profile> {
         padding: EdgeInsets.all(16.0),
         child: CircleAvatar(
 
-          radius: 80,
+          radius: 85,
           backgroundColor: Colors.black,
-          backgroundImage: AssetImage('assets/Images/Default.png'),
+
+        //backgroundImage: NetworkImage(myImage) ,
 
         ),
       ),
@@ -215,15 +216,19 @@ class _ProfileState extends State<Profile> {
                          height: 30 ,
 
                        ),
-                       Container(
-                         child: Text("Addess : $myaddress",
-                           textScaleFactor: 1.2,style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 16,
-                             fontWeight: FontWeight.bold,
-                           ),),
 
-                       ),
+                        Container(
+                          child: Text("Addess : $myaddress",
+                            textScaleFactor: 1.2,style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+
+                            ),),
+
+                        ),
+
+
                        SizedBox(
                          height: 100,
 
@@ -292,6 +297,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppBar(
+
         title: Text("Profile"),
         backgroundColor: Colors.black54,
         leading: IconButton(
@@ -300,6 +306,8 @@ class _ProfileState extends State<Profile> {
         ),
       ),
       body: body,
+resizeToAvoidBottomInset: true,
+
     );
   }
 
@@ -322,6 +330,7 @@ class _ProfileState extends State<Profile> {
         mylevel = ds.data()!['level'];
         myaddress = ds.data()!['address'];
         myBirthdate = ds.data()!['birthdate'];
+        myImage=ds.data()!["image"];
 
         print(myEmail);
       }).catchError((e) {

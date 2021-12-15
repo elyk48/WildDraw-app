@@ -107,7 +107,7 @@ setState(() {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.brown[100],
       appBar: AppBar(
         title: const Text("Register"),
         backgroundColor: Colors.black54,
@@ -120,10 +120,14 @@ setState(() {
 
           children: [
 
-            Container(
-             alignment: Alignment.center,
-              margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-              child: Text("Welcome to BodyCard !!!",textScaleFactor: 2),
+            SizedBox(
+
+              child: Container(
+
+               alignment: Alignment.topCenter,
+                margin: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                child: Text("WildDraw",textScaleFactor: 3,style:TextStyle(fontFamily:'Windy-Wood-Demo',color: Colors.black,) ),
+              ),
             ),
 
              Container(
@@ -142,10 +146,13 @@ setState(() {
 
 
             Container(
+              height: 70,
+             width: 50,
              alignment: Alignment.center,
 
-              margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: FloatingActionButton(
+                backgroundColor:  Colors.brown.shade200,
                 tooltip: 'Image',
                 onPressed: () async {
 
@@ -165,7 +172,7 @@ setState(() {
                 });
 
             },
-                child: Icon(Icons.camera_alt,color: Colors.black,),
+                child: Icon(Icons.camera_alt,color: Colors.black),
 
               ),
 

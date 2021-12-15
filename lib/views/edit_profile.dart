@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,10 @@ class _EditProfile extends State<EditProfile> {
   var myaddress;
   var myBirthdate;
   var myImage;
+  var isAdmin=false;
 
 
-  late final UserE user = UserE.Normal("1", "646","ely.kab@esprit.tn","123456","1278", "manzeh è", "500", "1", "105648");
+  late final UserE user = UserE("1", "wak","wwwwwwwwwa","ffffff","1998","ffffff", "1", "4444", "2","44444444",false);
   userController userC= userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
@@ -144,11 +146,11 @@ future:  _fetch(),
            child: FloatingActionButton(
              tooltip: 'Image',
              onPressed: () async {
-
+               var rng = new Random();
                var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
                FirebaseStorage fs =FirebaseStorage.instance;
                Reference rootref =fs.ref();
-               Reference picFolderRef  =rootref.child("profilePics").child("image");
+               Reference picFolderRef  =rootref.child("profilePics").child(rng.nextInt(1000).toString());
                File file =File(_image!.path);
                picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
                  String Link = await storageTask.ref.getDownloadURL();
@@ -378,6 +380,7 @@ initialValue: myUsername,
         myBirthdate = ds.data()!['birthdate'];
         myImage=ds.data()!["image"];
         myPassword=ds.data()!["password"];
+        isAdmin=ds.data()!["isAdmin"];
 
         print(myImage);
       }).catchError((e) {
@@ -397,6 +400,7 @@ initialValue: myUsername,
       "id_Col": user.id_Col,
       "Id": id,
       "image":user.image,
+      'isAdmin':user.isAdmin,
 
 
     }).catchError((error) => print("Failed to update User  : $error"));

@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
 
-        title: Text(widget.title),
+        title: Text(widget.title ,style: TextStyle(fontFamily:'Windy-Wood-Demo'),),
       ),
       body: Center(
 
