@@ -1,7 +1,9 @@
 import 'package:cardgameapp/controllers/publicationcontroller.dart';
 import 'package:cardgameapp/entities/publication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PublicationView extends StatefulWidget {
   const PublicationView({Key? key}) : super(key: key);
@@ -10,12 +12,18 @@ class PublicationView extends StatefulWidget {
   _PublicationViewState createState() => _PublicationViewState();
 }
 class _PublicationViewState extends State<PublicationView> {
+  //late SharedPreferences prefs;
   late List<dynamic> _AllPubs=[];
   late Future<List> futurepubs;
+
+  late Future<String> futureUsername;
+  late String username= "";
+
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
-  final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
-  final String username="Anas (Dev)";
+  final String id=FirebaseAuth.instance.currentUser!.uid;
+
+
 
   CollectionReference publications = FirebaseFirestore.instance.collection('publications');
 
@@ -24,7 +32,7 @@ class _PublicationViewState extends State<PublicationView> {
     return FBPublicationList();
   }
   FutureBuilder<List> FBPublicationList() {
-    Publication pub = Publication.newPub("Bienvenue à esprit Méteo !", "VGvmMwarbvUJtsjAzfvHR9tvfd72", username);
+    Publication pub = Publication.newPub("Bienvenue à esprit Méteo !", id, username);
     return FutureBuilder(
       future: futurepubs,
       builder: (context, snapshot) {
@@ -83,6 +91,7 @@ class _PublicationViewState extends State<PublicationView> {
                       children:[
                         PublicationCard(_AllPubs[index]["id_user"], _AllPubs[index]["id"],_AllPubs[index]["content"], _AllPubs[index]["likes"], _AllPubs[index]["postedOn"], _AllPubs[index]["username"]),
                         if(_AllPubs[index]["id_user"] == id) ElevatedButton(
+
                             onPressed: ()async{
                               await deletePublication(_AllPubs[index]["id"]);
                               setState(() {
@@ -117,8 +126,38 @@ class _PublicationViewState extends State<PublicationView> {
   @override
   void initState(){
     futurepubs =  getAllPubs(_AllPubs);
+    futureUsername = getUsername(username);
+
     super.initState();
   }
+
+  Future<String> getUsername(String l) async{
+    QuerySnapshot querySnapshot;
+    try{
+    _fetch();
+      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
+      if(querySnapshot.docs.isNotEmpty)
+      {
+        for(var doc in querySnapshot.docs.toList())
+        {
+          if(doc.id == id)
+          {
+            l = doc["username"];
+            setState(() {
+              username = l;
+              //print(username);
+            });
+            return username;
+          }
+        }
+      }
+    }catch(e){
+      print(e);
+    }
+    return username;
+  }
+
+
   Future<List> getAllPubs(List<dynamic> l) async{
     QuerySnapshot querySnapshot;
     try{
@@ -146,5 +185,11 @@ class _PublicationViewState extends State<PublicationView> {
         .delete()
         .whenComplete(() => print('Note item deleted from the database'))
         .catchError((e) => print(e));
+  }
+  Future<void> _fetch() async
+  {
+    SharedPreferences prefs = await SharedPreferences.getInstance().then((value){return value;});
+    username = prefs.getString("username")!;
+    print("Username is : "+username);
   }
 }

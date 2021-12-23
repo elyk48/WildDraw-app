@@ -1,8 +1,9 @@
 import 'package:cardgameapp/controllers/bugreportcontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-String idRep ="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+String idRep =FirebaseAuth.instance.currentUser!.uid;
 bool isAdmin = false;
 
 class BugReportForm extends StatefulWidget {
@@ -163,7 +164,7 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                       crossAxisCount: 1,
                       crossAxisSpacing: 1,
                       mainAxisSpacing: 1,
-                      mainAxisExtent: 90
+                      mainAxisExtent: 120
                   ),
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: widget._AllReports.length,
@@ -175,12 +176,20 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                          direction: DismissDirection.endToStart,
                          key: Key(widget._AllReports[index]["id"]),
                          child: Container(
+
                            width: 400,
-                           color: Colors.white70,
+                           color: Colors.black26,
                            child: Column(
                              mainAxisAlignment: MainAxisAlignment.center,
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
+                               const Divider(
+                                 height: 10,
+                                 thickness: 3,
+                                 indent: 0,
+                                 endIndent: 0,
+                                 color: Colors.black,
+                               ),
                                Text(widget._AllReports[index]["title"], textScaleFactor: 1.65),
                                Text(widget._AllReports[index]["type"],textScaleFactor: 1.25),
                                if(widget._AllReports[index]["severity"]=="Medium")Text(widget._AllReports[index]["severity"],textScaleFactor: 1.25,
@@ -200,6 +209,14 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                                    color: Colors.orange,
                                  ),),
                                Text(widget._AllReports[index]["details"]),
+                               const Divider(
+
+                                 height: 10,
+                                 thickness: 3,
+                                 indent: 0,
+                                 endIndent: 0,
+                                 color: Colors.black,
+                               ),
                              ],
                            ),
                          ),
@@ -223,6 +240,7 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                          ),
                        )
                       ],
+
                     );
 
                   }

@@ -75,7 +75,7 @@ class CardView extends StatelessWidget {
       child: Center(
         child: Stack(
             children:[
-              Image.asset("assets/images/Print card.jpg"),
+              Image.asset("assets/Images/EmptyCard.png"),
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
                   child: const Center(

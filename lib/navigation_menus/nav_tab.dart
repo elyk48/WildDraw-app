@@ -3,7 +3,7 @@ import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 
-import '../authentication_service.dart';
+import '../controllers/authentication_service.dart';
 
 class NavigationTab extends StatelessWidget {
   static const String Appname ="Card Card App";
@@ -32,7 +32,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                    Navigator.pushNamed(context, "/profile");
                 },
               ),
               ListTile(
@@ -46,7 +46,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/friends");
                 },
               ),
               ListTile(
@@ -60,7 +60,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/DailyQuests");
                 },
               ),
               ListTile(
@@ -88,7 +88,7 @@ class NavigationTab extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
-
+                  Navigator.pushNamed(context, "/poll");
                 },
               ),
               ListTile(
@@ -117,6 +117,7 @@ class NavigationTab extends StatelessWidget {
                 ),
                 onTap: () {
                   context.read<AuthenticationService>().signOut();
+                  Navigator.pushReplacementNamed(context, "/singin");
                 },
               )
             ],
@@ -128,12 +129,11 @@ class NavigationTab extends StatelessWidget {
             tabs: [
               Tab(
                 icon: Icon(Icons.assignment_sharp),
-                text: "Actualités",
+                text: "News",
               ),
               Tab(
                 icon: Icon(Icons.wysiwyg),
-                text: "Publication",
-
+                text: "Publications",
               ),
               Tab(
                 icon: Icon(Icons.attach_money),
@@ -143,10 +143,9 @@ class NavigationTab extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
-        children: [
-          actualiteView(),PublicationView(),Center(child: Text("On Going...", textScaleFactor: 2))
-        ],
-      ),
+          children: [
+          actualiteView(),PublicationView(),Center(child: Text("On Going...",textScaleFactor: 2),)
+        ],)
       ),
     );
   }

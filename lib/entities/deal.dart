@@ -1,8 +1,9 @@
 import 'dart:ffi';
 import 'package:cardgameapp/entities/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+final String id=FirebaseAuth.instance.currentUser!.uid;
 final bool isAdmin = true;
 
 

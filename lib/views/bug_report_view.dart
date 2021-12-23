@@ -1,4 +1,5 @@
 import 'package:cardgameapp/entities/bug_report.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BugReportView extends StatefulWidget {
@@ -12,7 +13,7 @@ class BugReportView extends StatefulWidget {
 class _BugReportViewState extends State<BugReportView> {
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   late BugReport _bugReport= BugReport.Empty();
-  final String id="VGvmMwarbvUJtsjAzfvHR9tvfd72";
+  final String id=FirebaseAuth.instance.currentUser!.uid;
   final bool isAdmin = true;
 
   @override

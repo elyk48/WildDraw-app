@@ -17,29 +17,55 @@ class ActualiteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ActualiteDetails(_id, _idUser, _title, _content, _author, _postedOn);
-              }
-          ));
-        },
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_title, textScaleFactor: 2),
-                Text(_author),
-                const SizedBox(
-                  height: 5,
+    return Center(
+      child: Container(
+        height: 120,
+        width: 400,
+        child: Card(
+
+          child: InkWell(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ActualiteDetails(_id, _idUser, _title, _content, _author, _postedOn);
+                  }
+              ));
+            },
+            child: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/Images/Scroll.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ],
-            )
-          ],
+              child: Row(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(30,10, 10,0),
+                          child: Text(_title, textScaleFactor: 2,
+                            style: const TextStyle(
+                                fontFamily: 'Windy-Wood-Demo',
+                                color: Colors.black),
+                          )
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(40, 0, 0, 10),
+                          child: Text("By "+"'"+_author+"'",style: const TextStyle(
+                              fontFamily: 'Windy-Wood-Demo',
+                              color: Colors.black),)),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -61,14 +87,24 @@ class ActualiteDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-        Text(_title, textScaleFactor: 2),
-        Text(_content, textScaleFactor: 3),
-        Text("Written by "+_author, textScaleFactor: 1),
-          Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+            Text(_title, textScaleFactor: 3),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(_content, textScaleFactor: 2),
+              const SizedBox(
+                height: 20,
+              ),
+            Text("Written by "+_author, textScaleFactor: 1),
+              Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
     ],
     ),
+        ),
+      ),
     );
 
   }

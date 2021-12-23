@@ -15,29 +15,30 @@ class PublicationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+
       child: InkWell(
         onTap: () {
 
         },
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_username),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(_content, textScaleFactor: 2),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
-              ],
+            child: Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              width: 400,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(_username),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(_content, textScaleFactor: 2),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
+                ],
+              ),
             )
-          ],
-        ),
       ),
     );
   }
