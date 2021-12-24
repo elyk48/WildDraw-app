@@ -23,8 +23,6 @@ class _PublicationViewState extends State<PublicationView> {
 
   final String id=FirebaseAuth.instance.currentUser!.uid;
 
-
-
   CollectionReference publications = FirebaseFirestore.instance.collection('publications');
 
   @override
@@ -37,81 +35,145 @@ class _PublicationViewState extends State<PublicationView> {
       future: futurepubs,
       builder: (context, snapshot) {
         if(snapshot.hasData) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                Form(
-                  key: _keyForm,
-                 child: Column(
-                   children: [
-                     TextFormField(
-                       maxLength: 200,
-                       enableInteractiveSelection: true,
-                       keyboardType: TextInputType.multiline,
-                       maxLines: null,
-                       decoration: const InputDecoration(
-                         labelText: "Tell us what you think !",
+          return Container(
+            padding: const EdgeInsets.fromLTRB(20, 25,15,15),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/Images/publication_board.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: ShaderMask(
+              shaderCallback: (Rect rect) {
+                return const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.purple, Colors.transparent, Colors.transparent, Colors.purple],
+                  stops: [0.0001, 0.1, 0.9, 1.0], // 10% purple, 80% transparent, 10% purple
+                ).createShader(rect);
+              },
+              blendMode: BlendMode.dstOut,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/Images/publication_form.png"),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: Form(
+                        key: _keyForm,
+                       child: Column(
+                         children: [
+                           Container(
+                             padding: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+                             child: TextFormField(
+                               style: const TextStyle(
+                                   color: Colors.black,
+                                   fontFamily: 'Windy-Wood-Demo',
+                                   fontSize: 30,
+                                   decorationColor: Colors.black
+                               ),
+                               cursorColor: Colors.black54,
+                               maxLength: 200,
+                               enableInteractiveSelection: true,
+                               keyboardType: TextInputType.multiline,
+                               maxLines: null,
+                               decoration: const InputDecoration(
+                                 counterStyle: TextStyle(
+                                     fontWeight: FontWeight.w600,
+                                     fontSize: 20,
+                                     fontFamily: 'Windy-Wood-Demo',
+                                     color: Colors.black),
+                                 enabledBorder: UnderlineInputBorder(
+                                   borderSide: BorderSide(color: Colors.black),
+                                 ),
+                                 focusedBorder: UnderlineInputBorder(
+                                   borderSide: BorderSide(color: Colors.black),
+                                 ),
+                                 labelStyle: TextStyle(
+                                   color: Colors.black54,
+                                   fontFamily: 'Windy-Wood-Demo',
+                                 ),
+                                 labelText: "Tell us what you think !",
+                               ),
+                               onSaved: (String? value) {
+                                 pub.content = value!;
+                                 print(pub.content);
+                               },
+                             ),
+                           ),
+                           SizedBox(
+                             width: 380,
+                             child: Container(
+                               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                               child: ElevatedButton(
+                                 onPressed: () async{
+                                   if (_keyForm.currentState!.validate()) {
+                                     _keyForm.currentState!.save();
+                                     if(pub.content != "" && pub.content!=null) {
+                                       publicationController PC = await publicationController();
+                                       PC.addPublication(pub);
+                                       setState((){
+                                         _AllPubs = <dynamic>[];
+                                         futurepubs = getAllPubs(_AllPubs);
+                                       });
+                                     }
+                                   }
+                                 },
+                                 child: const Text("Post"),
+                               ),
+                             ),
+                           ),
+                         ],
                        ),
-                       onSaved: (String? value) {
-                         pub.content = value!;
-                         print(pub.content);
-                       },
-                     ),
-                     SizedBox(
-                       width: 380,
-                       child: ElevatedButton(
-                         onPressed: () async{
-                           if (_keyForm.currentState!.validate()) {
-                             _keyForm.currentState!.save();
-                             if(pub.content != "" && pub.content!=null) {
-                               publicationController PC = await publicationController();
-                               PC.addPublication(pub);
-                               setState((){
-                                 _AllPubs = <dynamic>[];
-                                 futurepubs = getAllPubs(_AllPubs);
-                               });
-                             }
-                         }
-                         },
-                         child: const Text("Post"),
-
-                       ),
-                     ),
-                   ],
-                 ),
-
-                ),
-
-                if(!_AllPubs.isEmpty)GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _AllPubs.length,
-                  shrinkWrap: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Wrap(
-                      children:[
-                        PublicationCard(_AllPubs[index]["id_user"], _AllPubs[index]["id"],_AllPubs[index]["content"], _AllPubs[index]["likes"], _AllPubs[index]["postedOn"], _AllPubs[index]["username"]),
-                        if(_AllPubs[index]["id_user"] == id) ElevatedButton(
-
-                            onPressed: ()async{
-                              await deletePublication(_AllPubs[index]["id"]);
-                              setState(() {
-                                _AllPubs = <dynamic>[];
-                                futurepubs =getAllPubs(_AllPubs);
-                              });
-                                         },
-                        child: const Text("Delete"),
+                      ),
                     ),
-                      ],
-                    );
-                  },
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      crossAxisSpacing: 1,
-                      mainAxisSpacing: 1,
-                      mainAxisExtent: 160
-                  ),
-                ),if(_AllPubs.isEmpty)CircularProgressIndicator(),
-              ],
+                    if(!_AllPubs.isEmpty)GridView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _AllPubs.length,
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Wrap(
+                          children:[
+                            PublicationCard(_AllPubs[index]["id_user"], _AllPubs[index]["id"],_AllPubs[index]["content"], _AllPubs[index]["likes"], _AllPubs[index]["postedOn"], _AllPubs[index]["username"]),
+                            if(_AllPubs[index]["id_user"] == id) Column(
+                              children: [
+                                Container(
+                                  width: 400,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red
+                                    ),
+                                      onPressed: ()async{
+                                        await deletePublication(_AllPubs[index]["id"]);
+                                        setState(() {
+                                          _AllPubs = <dynamic>[];
+                                          futurepubs =getAllPubs(_AllPubs);
+                                        });
+                                                   },
+                                  child: const Text("Delete"),
+                                  ),
+                                ),
+                                const SizedBox(height: 100),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          crossAxisSpacing: 1,
+                          mainAxisSpacing: 1,
+                          mainAxisExtent: 220
+                      ),
+                    ),if(_AllPubs.isEmpty)CircularProgressIndicator(),
+                  ],
+                ),
+              ),
             ),
           );
         }
@@ -127,7 +189,6 @@ class _PublicationViewState extends State<PublicationView> {
   void initState(){
     futurepubs =  getAllPubs(_AllPubs);
     futureUsername = getUsername(username);
-
     super.initState();
   }
 
@@ -156,7 +217,6 @@ class _PublicationViewState extends State<PublicationView> {
     }
     return username;
   }
-
 
   Future<List> getAllPubs(List<dynamic> l) async{
     QuerySnapshot querySnapshot;

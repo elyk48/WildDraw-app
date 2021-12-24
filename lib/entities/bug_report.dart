@@ -91,28 +91,32 @@ class _BugReportFormState extends State<BugReportForm> {
                 const SizedBox(
                   width: 10,
                 ),
-                DropdownButton(
-                  value: bug_severity,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.blue),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.blue,
+                Container(
+                  child: DropdownButton(
+                    value: bug_severity,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(
+
+                        color: Colors.blue),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.blue,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        bug_severity = newValue!;
+                      });
+                    },
+                    items: <String>["Low","Medium","Major","Critical"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      bug_severity = newValue!;
-                    });
-                  },
-                  items: <String>["Low","Medium","Major","Critical"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
                 ),
               ],
             ),
