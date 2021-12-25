@@ -16,7 +16,7 @@ class BugReportController {
         }
     );
     bugReport.id = docRef.id;
-    print(bugReport.id);
+
     return bugReport;
   }
   static Future<List> getAllReports(List<dynamic> l) async{
@@ -31,7 +31,6 @@ class BugReportController {
           Map a = {"id": doc.id,"details":doc["details"],"reporterId":doc["id_user"],"postedOn":doc["postedOn"],"severity":doc["severity"],"type":doc["type"],"title":doc["title"]};
           l.add(a);
         }
-        print(l);
         return l;
       }
     }catch(e){

@@ -55,7 +55,7 @@ class ActualiteCard extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(40, 0, 0, 10),
-                          child: Text("By "+"'"+_author+"'",textScaleFactor: 1.5,style: const TextStyle(
+                          child: Text("'"+_author+"'",textScaleFactor: 1.5,style: const TextStyle(
                               fontFamily: 'Windy-Wood-Demo',
                               fontWeight: FontWeight.w600,
                               color: Color.fromRGBO(65, 2, 11, 1)),

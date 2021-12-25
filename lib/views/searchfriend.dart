@@ -1,3 +1,4 @@
+import 'package:cardgameapp/controllers/usercontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,25 +11,29 @@ class SearchFriend extends StatefulWidget {
 }
 
 class _SearchFriendState extends State<SearchFriend> {
-bool isLoading =false;
-late Map<String,dynamic> userMap ;
-final TextEditingController _search=TextEditingController();
-void onSearch() async{
+  bool isLoading =false;
+  userController userC= userController();
+  late Map<String,dynamic> userMap = {
 
-  setState(() {
-    isLoading=true;
-  });
-FirebaseFirestore _firestore = FirebaseFirestore.instance;
-await _firestore.collection("users").where("username" ,isEqualTo: _search.text).get().then((value) {
 
- setState(() {
-   userMap= value.docs[0].data();
-isLoading=false;
- });
- print(userMap);
-});
+  } ;
+  final TextEditingController _search=TextEditingController();
+  void onSearch() async{
 
-}
+    setState(() {
+      isLoading=true;
+    });
+    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    await _firestore.collection("users").where("username" ,isEqualTo: _search.text).get().then((value) {
+
+      setState(() {
+        userMap= value.docs[0].data();
+        isLoading=false;
+      });
+      print(userMap);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,64 +50,95 @@ isLoading=false;
 
       body:isLoading?Center(
         child: Container(
-        height: size.height/20,
+          height: size.height/20,
           width: size.height/20,
           child: CircularProgressIndicator(),
 
         ),
 
       ) : Column(
-children: [
-   SizedBox(
-         height:  size.height/20,
+        children: [
+          SizedBox(
+            height:  size.height/20,
 
-        ),
-  Container(
-  height: size.height/14,
-    width: size.width,
-alignment: Alignment.center,
-child: Container(
-height:size.height/14 ,
-width:size.width/1.2 ,
-  child: TextField(
-    controller: _search,
-    decoration: InputDecoration(
-      hintText: "Search friend",
-      border: OutlineInputBorder(
+          ),
+          Container(
+            height: size.height/14,
+            width: size.width,
+            alignment: Alignment.center,
+            child: Container(
+              height:size.height/14 ,
+              width:size.width/1.2 ,
+              child: TextField(
+                controller: _search,
+                decoration: InputDecoration(
+                  hintText: "Search friend",
+                  border: OutlineInputBorder(
 
-borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10),
 
-      ),
+                  ),
 
-    ),
+                ),
 
-  ),
-),
-  ),
+              ),
+            ),
+          ),
 
-  SizedBox(
-    height:  size.height/50,
+          SizedBox(
+            height:  size.height/50,
 
-  ),
-  ElevatedButton(onPressed: onSearch, child: Text("Search"),
-    
-  ),
-  if (userMap.isNotEmpty) ListTile(
+          ),
+          ElevatedButton(onPressed: onSearch, child: Text("Search"),
 
-    title: Text(userMap["username"]),
-    subtitle: Text(userMap["Rank"]),
+          ),
+          userMap.isNotEmpty? Row(
+            children: [
 
-  ) else if(userMap.isEmpty) Container(
+              ///reroll button
+              IconButton(
+                icon: Image.asset('assets/Images/Default.png'),
+                iconSize: 50,
 
-    child: Text("no match"),
-  )
+                onPressed: () async {
 
-],
+                  userC.AddFriend(userMap["username"],userMap["Rank"],userMap["email"], userMap["level"],userMap["Id"]);
+                  _showAlert(context);
+                  await Future.delayed(Duration(seconds:2));
+                },
+              ),
+              /// quest data view
+              Column(
+                children: [
+                  Text(userMap["username"]),
+                  Text(userMap["Rank"]),
+                ],
+              )
+
+
+
+            ],
+
+
+          ) : Container(
+
+            child: Text("no match"),
+          )
+
+        ],
 
       ),
 
     );
   }
 
-
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Friend Added"),
+          content: Text("Friend Added to your list !!"),
+        )
+    );
+  }
 }

@@ -48,13 +48,8 @@ class _EditProfile extends State<EditProfile> {
   userController userC= userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-
-
-
   @override
   Widget build(BuildContext context) {
-
-
 //////////////Validate Button//////////
     final Validatebtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -65,14 +60,10 @@ class _EditProfile extends State<EditProfile> {
         onPressed: () async{
           if (_keyForm.currentState!.validate()) {
             _keyForm.currentState!.save();
-
-
             user.image=_imageLink;
             await updateUser(user);
-
             _showAlert(context);
             await Future.delayed(Duration(seconds:4));
-
             _keyForm.currentState!.reset();
             Navigator.pushReplacementNamed(context, "/singin");
           }
@@ -82,8 +73,6 @@ class _EditProfile extends State<EditProfile> {
         child: Text('Validate', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
       ),
     );
-
-
     /***************Cancel Button***************/
     final Cancelbtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -92,10 +81,8 @@ class _EditProfile extends State<EditProfile> {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async{
-
           _keyForm.currentState!.reset();
           Navigator.pushReplacementNamed(context, "/profile");
-
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
@@ -111,7 +98,6 @@ class _EditProfile extends State<EditProfile> {
         foregroundColor: Colors.amberAccent,
       ),
       body: Form(
-
         key: _keyForm,
         child:FutureBuilder(
             future:  _fetch(),
@@ -119,22 +105,14 @@ class _EditProfile extends State<EditProfile> {
               if (snapshot.connectionState != ConnectionState.done)
                 return Text("Loading data...Please wait");
               return ListView(
-
                 children: [
-
-
-
                   Container(
                     alignment: Alignment.center,
                     margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
 
                     child: CircleAvatar(
-                      child: ClipOval(
-                        child:Image.network(myImage),
-
-                      ),
+                        backgroundImage:NetworkImage(myImage),
                       radius: 100,
-
                     ),
                   ),
 
@@ -146,22 +124,20 @@ class _EditProfile extends State<EditProfile> {
                     child: FloatingActionButton(
                       tooltip: 'Image',
                       onPressed: () async {
-                        var rng = new Random();
+
                         var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
                         FirebaseStorage fs =FirebaseStorage.instance;
                         Reference rootref =fs.ref();
-                        Reference picFolderRef  =rootref.child("profilePics").child(rng.nextInt(1000).toString());
+                        Reference picFolderRef  =rootref.child("profilePics").child("image");
                         File file =File(_image!.path);
                         picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
                           String Link = await storageTask.ref.getDownloadURL();
                           print("Image Uploaded");
                           setState(() {
                             _imageLink= Link;
-                            myImage=_imageLink;
+
                           });
-
                         });
-
                       },
                       child: Icon(Icons.camera_alt,color: Colors.black,),
 
@@ -365,7 +341,7 @@ class _EditProfile extends State<EditProfile> {
 
   _fetch() async {
     final firebaseUser = await FirebaseAuth.instance.currentUser;
-    if (firebaseUser != null)
+    if (firebaseUser != null) {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(firebaseUser.uid)
@@ -386,6 +362,7 @@ class _EditProfile extends State<EditProfile> {
       }).catchError((e) {
         print(e);
       });
+    }
   }
   updateUser(UserE user){
     var id=  FirebaseAuth.instance.currentUser!.uid;

@@ -24,10 +24,6 @@ class Profile extends StatefulWidget {
 
 
 class _ProfileState extends State<Profile> {
-
-
-
-
   var myId;
   var myEmail;
 
@@ -40,44 +36,23 @@ class _ProfileState extends State<Profile> {
   var myBirthdate;
   var myImage;
 
-
   @override
   void initState() {
     super.initState();
   }
-
-
   @override
   Widget build(BuildContext context) {
-    final alucard = Hero(
 
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: CircleAvatar(
-
-          radius: 85,
-          backgroundColor: Colors.black,
-
-          //backgroundImage: NetworkImage(myImage) ,
-
-        ),
-      ),
-    );
-
-
-    final lorem = Padding(
+    const lorem = Padding(
       padding: EdgeInsets.all(8.0),
-
     );
-
     final body = Container(
       width: MediaQuery
           .of(context)
           .size
           .width,
       padding: EdgeInsets.all(28.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
 
           Colors.black54,
@@ -87,22 +62,28 @@ class _ProfileState extends State<Profile> {
         ]),
       ),
       child: Column(
-        children: <Widget>[alucard, lorem,
+        children: <Widget>[lorem,
           Container(
             child: FutureBuilder(
-              future: _fetch(),
-              builder: (context, snapshot) {
+              future: _fetchUser(),
+              builder: (context,AsyncSnapshot snapshot){
                 if (snapshot.connectionState != ConnectionState.done)
                   return Text("Loading data...Please wait");
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                if(snapshot.data.image == null ||snapshot.data.image =="")
+                  {
+                    return const CircularProgressIndicator();
+                  }
+                else if(snapshot.hasData) {
+                  return ListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
                   children: [
-                    Row(
-
-                      children: [
-
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(snapshot.data.image,scale: 1),
+                      radius: 100,
+                    ),
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(40.0),
                                 bottomRight: Radius.circular(40.0),
@@ -111,36 +92,28 @@ class _ProfileState extends State<Profile> {
                             color: Colors.white,
                           ),
                           padding: const EdgeInsets.all(5),
-
                           alignment: Alignment.topLeft,
-                          child: Text("UserName :",
+                          child: const Text("UserName :",
                             textScaleFactor: 1.2,style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold
                             ),
                           ),
-
                         ), Container(
-
                           padding: const EdgeInsets.all(5),
                           color: Colors.white60,
                           alignment: Alignment.topLeft,
-                          child: Text("$myUsername",
-                            textScaleFactor: 1.2,style: TextStyle(
+                          child: Text(snapshot.data.username,
+                            textScaleFactor: 1.2,style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
-                        ),
-                        SizedBox(
-                          width:10 ,
-
                         ),
                         Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(20),
                                 bottomRight: Radius.circular(20),
@@ -149,99 +122,55 @@ class _ProfileState extends State<Profile> {
                             color: Colors.white,
                           ),
                           padding: const EdgeInsets.all(5),
-
                           alignment: Alignment.topLeft,
-                          child: Text("Level:",
+                          child: const Text("Level:",
                             textScaleFactor: 1.2,style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold
                             ),
                           ),
-
                         ), Container(
-
                           padding: const EdgeInsets.all(5),
                           color: Colors.white60,
                           alignment: Alignment.topLeft,
-                          child: Text("$mylevel",
-                            textScaleFactor: 1.2,style: TextStyle(
+                          child: Text(snapshot.data.level,
+                            textScaleFactor: 1.2,style: const TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                             ),
                           ),
-
                         ),
-
-                      ],
-
-                    ),
-
-                    SizedBox(
-                      height: 30 ,
-
-                    ),
                     Column(
-
                       children: [
-
                         Container(
                           padding: const EdgeInsets.all(5),
-
-
-                          child: Text("Rank : $myRank",
-
-                            textScaleFactor: 1.2,style: TextStyle(
+                          child: Text("Rank : "+snapshot.data.Rank,
+                            textScaleFactor: 1.2,style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),),
-
                         ),
-                        SizedBox(
-                          height: 30 ,
-
-                        ),
-                        Container(
-                          child: Text("BirthYear : $myBirthdate",
-
-                            textScaleFactor: 1.2,style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),),
-
-                        ),
-                        SizedBox(
-                          height: 30 ,
-
-                        ),
-
-                        Container(
-                          child: Text("Addess : $myaddress",
-                            textScaleFactor: 1.2,style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-
-                            ),),
-
-                        ),
-
-
-                        SizedBox(
-                          height: 100,
-
-                        ),
+                        Text("BirthYear : "+snapshot.data.birth,
+                          textScaleFactor: 1.2,style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),),
+                        Text("Address : "+snapshot.data.address,
+                          textScaleFactor: 1.2,style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           verticalDirection : VerticalDirection.down,
                           crossAxisAlignment: CrossAxisAlignment.center,
-
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
-                            ElevatedButton( child: Text('Delete Account'),
+                            ElevatedButton( child: const Text('Delete Account'),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.redAccent,
                                 onPrimary: Colors.white,
@@ -252,10 +181,6 @@ class _ProfileState extends State<Profile> {
                                 deleteUser(myId);
                                 Navigator.pushReplacementNamed(context,'/singin');
                               },),
-                            SizedBox(
-                              width: 20,
-
-                            ),
                             ElevatedButton( child: Text('Edit Profile'),
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.black,
@@ -264,27 +189,19 @@ class _ProfileState extends State<Profile> {
                                 elevation: 6,
                               ),
                               onPressed: () {
-                                Navigator.pushReplacementNamed(context, "/editProfile");
+                                Navigator.pushNamed(context, "/editProfile");
                               }
                               ,),
-
-
-
                           ],
-
-
                         ),
-
                       ],
-
-
                     )
-
-
                   ],
-
-
                 );
+                }
+                else {
+                  return const CircularProgressIndicator();
+                }
               },
 
             ),
@@ -310,32 +227,30 @@ class _ProfileState extends State<Profile> {
 
     );
   }
-
-
-
-
-
-  _fetch() async {
+  Future<UserE> _fetchUser() async {
+    UserE user = UserE.NewUser("email", "password", "username", "birthdate", "address", "image", false);
     final firebaseUser = await FirebaseAuth.instance.currentUser;
-    if (firebaseUser != null)
+    if (firebaseUser != null) {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(firebaseUser.uid)
           .get()
           .then((ds) {
-        myId=ds.data()!["Id"];
-        myUsername=ds.data()!['username'];
-        myEmail = ds.data()!['email'];
-        myRank = ds.data()!['Rank'];
-        mylevel = ds.data()!['level'];
-        myaddress = ds.data()!['address'];
-        myBirthdate = ds.data()!['birthdate'];
-        myImage=ds.data()!["image"];
-
-        print(myEmail);
+        user.id=ds.data()!["Id"];
+        user.image=ds.data()!['image'];
+        user.username=ds.data()!['username'];
+        user.email = ds.data()!['email'];
+        user.Rank = ds.data()!['Rank'];
+        user.level = ds.data()!['level'];
+        user.address = ds.data()!['address'];
+        user.birth = ds.data()!['birthdate'];
+        print(user.email);
+        print(user.image);
       }).catchError((e) {
         print(e);
       });
+    }
+    return user;
   }
   updateUser(UserE user){
     var id=  FirebaseAuth.instance.currentUser!.uid;
@@ -350,14 +265,9 @@ class _ProfileState extends State<Profile> {
       "id_Col": user.id_Col,
       "Id": id,
       "image":user.image,
-
-
     }).catchError((error) => print("Failed to update User  : $error"));
-
     FirebaseAuth.instance.currentUser!.updateEmail(user.email).catchError((error) => print("Failed to Update User Email  : $error"));
     FirebaseAuth.instance.currentUser!.updatePassword(user.password).catchError((error) => print("Failed to Update User password  : $error"));
-
-
   }
 
   deleteUser(docId){

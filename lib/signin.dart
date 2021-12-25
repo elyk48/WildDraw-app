@@ -1,4 +1,6 @@
+
 import 'package:cardgameapp/entities/user.dart';
+import 'package:cardgameapp/views/reset_pass.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/authentication_service.dart';
+
+
+
 
 class SignInPage extends StatefulWidget {
 
@@ -61,7 +66,7 @@ class _SignInPageState extends State<SignInPage> {
 
           if (_keyForm.currentState!.validate()) {
             _keyForm.currentState!.save();
-            ;
+
 
             await context.read<AuthenticationService>().signIn(
               email:_email.toString(),
@@ -70,18 +75,11 @@ class _SignInPageState extends State<SignInPage> {
             );
 
             final user =await context.read<AuthenticationService>().getUser();
-
-            SharedPreferences.setMockInitialValues({});
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setString("userId",user!.uid.toString());
-            print(user.uid);
-
-
-
 
             await FirebaseFirestore.instance
                 .collection('users')
-                .doc(user.uid)
+                .doc(user!.uid)
                 .get()
                 .then((ds) {
               myId=ds.data()!["Id"];
@@ -97,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
             }).catchError((e) {
               print(e);
             });
-
+            prefs.setString("id",myId);
             prefs.setString("email",myEmail);
             prefs.setBool("isAdmin",isAdmin);
             prefs.setString("username", myUsername);
@@ -129,7 +127,7 @@ class _SignInPageState extends State<SignInPage> {
         onPressed: () async{
 
 
-          Navigator.pushReplacementNamed(context, "/signup");
+          Navigator.pushNamed(context, "/signup");
 
         },
         padding: EdgeInsets.all(10),
@@ -139,24 +137,21 @@ class _SignInPageState extends State<SignInPage> {
     );
 
     final forgotLabel = FlatButton(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(color: Colors.amberAccent),
-      ),
-      onPressed: () {},
+        child: Text(
+          'Forgot password?',
+          style: TextStyle(color: Colors.amberAccent),
+        ),
+        onPressed: () =>Navigator.of(context).push(MaterialPageRoute(builder: (context)=> Reset()))
     );
 
     return Scaffold(
 
 
 
-      backgroundColor: Colors.amberAccent.withGreen(13).withBlue(29).withRed(212),
+      backgroundColor: Colors.brown.shade100,
 
       body: Container(
 
-        decoration: const BoxDecoration(
-         color: Colors.amber
-        ),
 
         child: Form(
 

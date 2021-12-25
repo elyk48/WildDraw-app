@@ -135,10 +135,7 @@ class _SignupState extends State<Signup> {
               margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
 
               child: CircleAvatar(
-                child: ClipOval(
-                  child:Image.network(_imageLink),
-
-                ),
+                  backgroundImage:NetworkImage(_imageLink),
                 radius: 100,
 
               ),

@@ -4,7 +4,6 @@ import 'package:cardgameapp/views/bug_report_view.dart';
 import 'package:cardgameapp/views/collection_view.dart';
 import 'package:cardgameapp/views/edit_profile.dart';
 import 'package:cardgameapp/views/friendsList.dart';
-import 'package:cardgameapp/home.dart';
 import 'package:cardgameapp/views/poll_view.dart';
 import 'package:cardgameapp/views/profile.dart';
 import 'package:cardgameapp/views/searchfriend.dart';
@@ -39,70 +38,71 @@ class MyApp extends StatelessWidget {
           create: (_)=>AuthenticationService(FirebaseAuth.instance),
         ),
         StreamProvider(
-            create: (context) => context.read<AuthenticationService>().authStateChanges,
+          create: (context) => context.read<AuthenticationService>().authStateChanges,
           initialData: null,
-           )
+        )
       ],
       child:MaterialApp(
-      title: Appname,
-      routes: // <- Routes
-      {
+        title: Appname,
 
-        "/singin":(BuildContext context){
-          return SignInPage();
-        },
-        "/signup":(BuildContext context){
-          return Signup();
-        },
-        "/profile":(BuildContext context){
-          return Profile();
-        },
-        "/home":(BuildContext context){
-          return NavigationTab();
-        },
-        "/editProfile":(BuildContext context){
-          return EditProfile();
-        },
-        "/friends":(BuildContext context){
-          return FriendsList();
-        },
-        "/searchfriends":(BuildContext context){
-          return SearchFriend();
-        },
-        "/poll":(BuildContext context){
-          return MyPollDisplay();
-        },
- "/createpoll":(BuildContext context){
-          return MyPollCreate2();
-        },
-        "/createQuest":(BuildContext context){
-          return CreateQuest();
-        },
+        routes: // <- Routes
+        {
 
-      "/DailyQuests":(BuildContext context){
-          return DailyQuests();
-        },
-        "/bugReport":(BuildContext context){
-          return BugReportView();
-        },
-        "/navTab":(BuildContext context){
-          return NavigationTab();
-        },
-        "/collection":(BuildContext context){
-          return CollectionView();
-        },
+          "/singin":(BuildContext context){
+            return SignInPage();
+          },
+          "/signup":(BuildContext context){
+            return Signup();
+          },
+          "/profile":(BuildContext context){
+            return Profile();
+          },
+          "/home":(BuildContext context){
+            return NavigationTab();
+          },
+          "/editProfile":(BuildContext context){
+            return EditProfile();
+          },
+          "/friends":(BuildContext context){
+            return FriendsList();
+          },
+          "/searchfriends":(BuildContext context){
+            return SearchFriend();
+          },
+          "/poll":(BuildContext context){
+            return MyPollDisplay();
+          },
+          "/createpoll":(BuildContext context){
+            return MyPollCreate2();
+          },
+          "/createQuest":(BuildContext context){
+            return CreateQuest();
+          },
+
+          "/DailyQuests":(BuildContext context){
+            return DailyQuests();
+          },
+          "/bugReport":(BuildContext context){
+            return BugReportView();
+          },
+          "/navTab":(BuildContext context){
+            return NavigationTab();
+          },
+          "/collection":(BuildContext context){
+            return CollectionView();
+          },
 
 
-      },
-      theme: CustomDataTheme(),
-      home: const AuthenticationWrapper(key: null),
-    ),);
+        },
+        theme: CustomDataTheme(),
+        home: const AuthenticationWrapper(key: null),
+      ),);
   }
 }
 class AuthenticationWrapper extends StatelessWidget{
   const AuthenticationWrapper({
     Key? key,
-}): super(key:key);
+  }): super(key:key);
 
   @override
   Widget build(BuildContext context){
