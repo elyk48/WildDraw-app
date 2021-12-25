@@ -1,3 +1,4 @@
+import 'package:cardgameapp/controllers/usercontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,11 @@ class SearchFriend extends StatefulWidget {
 
 class _SearchFriendState extends State<SearchFriend> {
 bool isLoading =false;
-late Map<String,dynamic> userMap ;
+userController userC= userController();
+late Map<String,dynamic> userMap = {
+
+
+} ;
 final TextEditingController _search=TextEditingController();
 void onSearch() async{
 
@@ -23,7 +28,7 @@ await _firestore.collection("users").where("username" ,isEqualTo: _search.text).
 
  setState(() {
    userMap= value.docs[0].data();
-isLoading=false;
+   isLoading=false;
  });
  print(userMap);
 });
@@ -87,12 +92,35 @@ borderRadius: BorderRadius.circular(10),
   ElevatedButton(onPressed: onSearch, child: Text("Search"),
     
   ),
-  if (userMap.isNotEmpty) ListTile(
+  userMap.isNotEmpty? Row(
+  children: [
 
-    title: Text(userMap["username"]),
-    subtitle: Text(userMap["Rank"]),
+    ///reroll button
+    IconButton(
+      icon: Image.asset('assets/Images/Default.png'),
+      iconSize: 50,
 
-  ) else if(userMap.isEmpty) Container(
+      onPressed: () async {
+     
+ userC.AddFriend(userMap["username"],userMap["Rank"],userMap["email"], userMap["level"],userMap["Id"]);
+ _showAlert(context);
+ await Future.delayed(Duration(seconds:2));
+      },
+    ),
+    /// quest data view
+    Column(
+      children: [
+        Text(userMap["username"]),
+        Text(userMap["Rank"]),
+      ],
+    )
+
+ 
+    
+  ],
+    
+
+  ) : Container(
 
     child: Text("no match"),
   )
@@ -104,5 +132,13 @@ borderRadius: BorderRadius.circular(10),
     );
   }
 
-
+void _showAlert(BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Friend Added"),
+        content: Text("Friend Added to your list !!"),
+      )
+  );
+}
 }

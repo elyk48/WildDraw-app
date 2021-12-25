@@ -19,7 +19,7 @@ class MyPollForm{
 ///getting the current user Uid.
     uid =FirebaseAuth.instance.currentUser!.uid;
 ///getting the current user name.
-      name=FirebaseAuth.instance.currentUser!.displayName!;
+      name="admin";
       ///getting document ref of the quetions form the firestore database
       DocumentReference ds=FirebaseFirestore.instance.collection('poll').doc(question);
       ///creating a map to use it for sending data to the firestore

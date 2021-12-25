@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 /// main class for displaying polls for users to vote
 class MyPollDisplay extends StatefulWidget {
   @override
@@ -9,9 +10,13 @@ class MyPollDisplay extends StatefulWidget {
 
 class _MyPollDisplayState extends State<MyPollDisplay> {
   @override
+   late SharedPreferences sharedPrefs;
+
+  late bool isAdmin = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.black38,
       appBar: AppBar(
         title: Text("Polls"),
@@ -30,18 +35,7 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                 ),
               )
           ),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
 
-                  Navigator.pushReplacementNamed(context, "/createpoll");
-                },
-                child: Icon(
-                    Icons.add,
-                ),
-              )
-          ),
         ],
       ),
       ///stream builder used for the stream of data
@@ -173,15 +167,28 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
           }
       ),
 
-            /// a button that takes the admin where he can add a new poll....
-      floatingActionButton: FloatingActionButton(
+            /// a button that takes the admin where he can add a new poll..
+
+          floatingActionButton: Container(
+            child: isAdmin==true ? FloatingActionButton(
         backgroundColor: Colors.brown[100],
-          child: Icon(Icons.add,color: Colors.black),
-          onPressed:(){
-            ///using the navigator to point the context to create poll route
-            Navigator.pushNamed(context,'/createpoll');
-          }
-      ),
+            child: Icon(Icons.add,color: Colors.black),
+            onPressed:(){
+              ///using the navigator to point the context to create poll route
+              if(isAdmin==true)
+              Navigator.pushNamed(context,'/createpoll');
+            }
+      ):null,
+          ),
     );
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() => isAdmin = prefs.getBool("isAdmin")!);
+    });
   }
 }

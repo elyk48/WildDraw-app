@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class  QuestController {
-  late String _idGenerated;
-  FirebaseFirestore? _instance;
+
 
 
   late String usercurrentId;

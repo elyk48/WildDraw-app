@@ -44,7 +44,7 @@ class _EditProfile extends State<EditProfile> {
   var isAdmin=false;
 
 
-  late final UserE user = UserE("1", "wak","wwwwwwwwwa","ffffff","1998","ffffff", "1", "4444", "2","44444444",false);
+  late final UserE user = UserE("1", "wak","wwwwwwwwwa","ffffff","1998","ffffff", "1", "4444", "2","44444444",isAdmin);
   userController userC= userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
