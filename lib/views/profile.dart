@@ -91,9 +91,10 @@ class _ProfileState extends State<Profile> {
           Container(
             child: FutureBuilder(
               future: _fetch(),
-              builder: (context, snapshot) {
+              builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState != ConnectionState.done)
                   return Text("Loading data...Please wait");
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

@@ -116,6 +116,10 @@ import 'package:shared_preferences/shared_preferences.dart';
      }
 
    Future<void> Reroll(String docId)async {
+     int timestamp = DateTime.now().millisecondsSinceEpoch;
+     final prefs = await SharedPreferences.getInstance();
+     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+     prefs.setInt('myTimestampKey', timestamp);
      usercurrentId = FirebaseAuth.instance.currentUser!.uid;
      Quest q1 = Quest("0", "0", "0", "0");
      var rng = new Random();
@@ -146,6 +150,11 @@ import 'package:shared_preferences/shared_preferences.dart';
        'levelRange': q1.levelrange,
        'Qdescription': q1.Qdescription,
 
+
+     });
+     users.doc(usercurrentId).collection("rerolled").doc(usercurrentId).set({
+       "rerolled":true,
+       "LastRerolled":dateTime,
 
      });
 
