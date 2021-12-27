@@ -2,8 +2,10 @@ import 'package:cardgameapp/views/actualite_view.dart';
 import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/authentication_service.dart';
+import '../session.dart';
 
 class NavigationTab extends StatelessWidget {
   static const String Appname ="Card Card App";
@@ -117,6 +119,7 @@ class NavigationTab extends StatelessWidget {
                 ),
                 onTap: () {
                   context.read<AuthenticationService>().signOut();
+                  Session.clearSession();
                   Navigator.pushReplacementNamed(context, "/singin");
                 },
               )
@@ -142,7 +145,8 @@ class NavigationTab extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(children: [
+        body: const TabBarView(
+          children: [
           actualiteView(),PublicationView(),Center(child: Text("On Going...",textScaleFactor: 2),)
         ],)
       ),

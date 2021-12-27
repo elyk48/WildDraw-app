@@ -16,31 +16,31 @@ class MyPollForm{
     int _number=optionsData.length;
     String uid;
     String name;
-///getting the current user Uid.
+    ///getting the current user Uid.
     uid =FirebaseAuth.instance.currentUser!.uid;
-///getting the current user name.
-      name=FirebaseAuth.instance.currentUser!.displayName!;
-      ///getting document ref of the quetions form the firestore database
-      DocumentReference ds=FirebaseFirestore.instance.collection('poll').doc(question);
-      ///creating a map to use it for sending data to the firestore
-      Map<String,dynamic> polls ={
-        "question":this.question,
-        "uid":uid,
-        "name":name,
-        "length":_number,
-      };
-      ///setting data to the document
-      ds.set(polls).whenComplete((){
-        print("Task completed");
-      });
-      ///creating a collection  for each option to a certain question and setting the value of its votes to 0
-      for(int i=0;i<_number;i++){
+    ///getting the current user name.
+    name="admin";
+    ///getting document ref of the quetions form the firestore database
+    DocumentReference ds=FirebaseFirestore.instance.collection('poll').doc(question);
+    ///creating a map to use it for sending data to the firestore
+    Map<String,dynamic> polls ={
+      "question":this.question,
+      "uid":uid,
+      "name":name,
+      "length":_number,
+    };
+    ///setting data to the document
+    ds.set(polls).whenComplete((){
+      print("Task completed");
+    });
+    ///creating a collection  for each option to a certain question and setting the value of its votes to 0
+    for(int i=0;i<_number;i++){
 
-        FirebaseFirestore.instance.collection('poll').doc(question).collection('options').doc().set({
-          "name":optionsData[i],
-          "votes":0,
-        });
-      }
+      FirebaseFirestore.instance.collection('poll').doc(question).collection('options').doc().set({
+        "name":optionsData[i],
+        "votes":0,
+      });
+    }
 
 
 
@@ -67,7 +67,7 @@ class _MyPollCreate2State extends State<MyPollCreate2> {
     super.initState();
     ///a stores how much options in the form
     int a=user.optionsData.length;
-///the remove range set to remove options
+    ///the remove range set to remove options
     user.optionsData.removeRange(0, a);
 
   }
@@ -208,7 +208,7 @@ class _InputWidgetState extends State<InputWidget> {
             return null;
           },
           onSaved: (value){
-///add  the text value when the form is saved !!
+            ///add  the text value when the form is saved !!
             user.optionsData.add(value!);
 
           }

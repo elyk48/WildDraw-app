@@ -100,8 +100,8 @@ class UserE extends StatelessWidget {
  _username=username;
  _birth=birthdate;
  _address=address;
-_level="1000";
-_Rank="0";
+_level="1";
+_Rank="1";
 _id_Col="1";
 _image=image;
 _isAdmin=isAdmin;

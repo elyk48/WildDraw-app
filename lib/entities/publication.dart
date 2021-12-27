@@ -15,27 +15,43 @@ class PublicationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: InkWell(
-        onTap: () {
-
-        },
-        child: Row(
+      shadowColor: Colors.black,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(_username),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(_content, textScaleFactor: 2),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1),
-              ],
-            )
+            Text(_username,
+                style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Windy-Wood-Demo',
+                fontSize: 25,
+                decorationColor: Colors.black
+            ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(_content, textScaleFactor: 2,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Windy-Wood-Demo',
+                  fontSize: 20,
+                  decorationColor: Colors.black
+              ),),
+            const SizedBox(
+              height: 10,
+            ),
+            Text("On the "+_postedOn.toDate().toString(), textScaleFactor: 1,
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Windy-Wood-Demo',
+                  fontSize: 15,
+                  decorationColor: Colors.black
+              ),
+            ),
           ],
         ),
       ),
@@ -65,9 +81,7 @@ class Publicationform extends StatelessWidget {
               }
           ));
         },
-        child: Row(
-          children: [
-            Column(
+        child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -79,8 +93,6 @@ class Publicationform extends StatelessWidget {
 
               ],
             )
-          ],
-        ),
       ),
     );
   }

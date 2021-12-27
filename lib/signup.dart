@@ -1,15 +1,8 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'controllers/authentication_service.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'entities/user.dart';
 import 'controllers/usercontroller.dart';
 
@@ -36,14 +29,11 @@ class _SignupState extends State<Signup> {
   Future getImage()  async {
 
     final   image= await ImagePicker().pickImage(source: ImageSource.gallery);
-setState(() {
-  //_image= image as FileImage;
-});
-
+    setState(() {
+      //_image= image as FileImage;
+    });
   }
-
-
-   late final UserE user = new UserE.NewUser("email" ,"password","username","birthdate","address","image",false);
+  late final UserE user = new UserE.NewUser("email" ,"password","username","birthdate","address","image",false);
   userController userC= userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
@@ -52,8 +42,6 @@ setState(() {
 
   @override
   Widget build(BuildContext context) {
-
-
 //////////////Validate Button//////////
     final Validatebtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -62,23 +50,23 @@ setState(() {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () async{
-    if (_keyForm.currentState!.validate()) {
-      _keyForm.currentState!.save();
+          if (_keyForm.currentState!.validate()) {
+            _keyForm.currentState!.save();
 
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: user.email,
-          password: user.password.toString());
-      user.id =await FirebaseAuth.instance.currentUser!.uid;
-      Map<String, dynamic> userData = {
-        "username": user.username,
-        "uid" :user.id
-      };
- user.image=_imageLink;
-      await userC.addUser(user.email, user.password, user.username,user.birth,user.address,user.image);
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                email: user.email,
+                password: user.password.toString());
+            user.id =await FirebaseAuth.instance.currentUser!.uid;
+            Map<String, dynamic> userData = {
+              "username": user.username,
+              "uid" :user.id
+            };
+            user.image=_imageLink;
+            await userC.addUser(user.email, user.password, user.username,user.birth,user.address,user.image);
 
-      _keyForm.currentState!.reset();
-      Navigator.pushReplacementNamed(context, "/singin");
-    }
+            _keyForm.currentState!.reset();
+            Navigator.pushReplacementNamed(context, "/singin");
+          }
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
@@ -107,7 +95,7 @@ setState(() {
     );
 
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.brown[100],
       appBar: AppBar(
         title: const Text("Register"),
         backgroundColor: Colors.black54,
@@ -120,21 +108,22 @@ setState(() {
 
           children: [
 
-            Container(
-             alignment: Alignment.center,
-              margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-              child: Text("Welcome to BodyCard !!!",textScaleFactor: 2),
+            SizedBox(
+
+              child: Container(
+
+                alignment: Alignment.topCenter,
+                margin: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                child: Text("WildDraw",textScaleFactor: 3,style:TextStyle(fontFamily:'Windy-Wood-Demo',color: Colors.black,) ),
+              ),
             ),
 
-             Container(
+            Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
 
               child: CircleAvatar(
-                child: ClipOval(
-                  child:Image.network(_imageLink),
-
-                ),
+                  backgroundImage:NetworkImage(_imageLink),
                 radius: 100,
 
               ),
@@ -142,30 +131,33 @@ setState(() {
 
 
             Container(
-             alignment: Alignment.center,
+              height: 70,
+              width: 50,
+              alignment: Alignment.center,
 
-              margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: FloatingActionButton(
+                backgroundColor:  Colors.brown.shade200,
                 tooltip: 'Image',
                 onPressed: () async {
 
-                var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
-                FirebaseStorage fs =FirebaseStorage.instance;
-                Reference rootref =fs.ref();
-                Reference picFolderRef  =rootref.child("profilePics").child("image");
-                File file =File(_image!.path);
-                picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
-         String Link = await storageTask.ref.getDownloadURL();
-         print("Image Uploaded");
-         setState(() {
-            _imageLink= Link;
+                  var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
+                  FirebaseStorage fs =FirebaseStorage.instance;
+                  Reference rootref =fs.ref();
+                  Reference picFolderRef  =rootref.child("profilePics").child("image");
+                  File file =File(_image!.path);
+                  picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
+                    String Link = await storageTask.ref.getDownloadURL();
+                    print("Image Uploaded");
+                    setState(() {
+                      _imageLink= Link;
 
-         });
+                    });
 
-                });
+                  });
 
-            },
-                child: Icon(Icons.camera_alt,color: Colors.black,),
+                },
+                child: Icon(Icons.camera_alt,color: Colors.black),
 
               ),
 
@@ -224,7 +216,7 @@ setState(() {
                   labelStyle: new TextStyle(color: Colors.black),
                 ),
                 onSaved: (String? value) {
-                 user.email = value!;
+                  user.email = value!;
                 },
                 validator: (String? value) {
                   String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
@@ -260,7 +252,7 @@ setState(() {
                   labelStyle: new TextStyle(color: Colors.black),
                 ),
                 onSaved: (String? value) {
-                 user.password = value!;
+                  user.password = value!;
                 },
                 validator: (value) {
                   if(value == null || value.isEmpty) {
@@ -352,7 +344,7 @@ setState(() {
                 const SizedBox(
                   width: 20,
                 ),
-              Cancelbtn,
+                Cancelbtn,
               ],
             )
           ],
