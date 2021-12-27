@@ -37,7 +37,12 @@ class _actualiteViewState extends State<actualiteView> {
 
   @override
   Widget build(BuildContext context) {
-    return FBActualieList();
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder:(context, AsyncSnapshot<SharedPreferences> snapshot) {
+        return FBActualieList();
+        } ,
+    );
   }
 
   Future<List> getAllActs(List<dynamic> l) async {
@@ -66,10 +71,10 @@ class _actualiteViewState extends State<actualiteView> {
   }
   @override
   void initState() {
+    Session.setUser(user);
     futureActs = getAllActs(_AllActs);
     myFocusNode = FocusNode();
     super.initState();
-    Session.setUser(user);
   }
 
   static Future<void> deleteActualite(String docId) async {

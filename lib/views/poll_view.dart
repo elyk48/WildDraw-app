@@ -67,7 +67,10 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                         //Polls start from here
                         Card(
                           color: Colors.pink,
-                          child: Text(snapshot.data.docs[i]["question"],textScaleFactor: 2,),
+                          child: Text(
+                            snapshot.data.docs[i]["question"],
+                            textScaleFactor: 2,
+                          ),
                         ),
                         //Text(snapshot.data.docs[i]["question"]),
                         StreamBuilder(
@@ -78,7 +81,8 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot snapshot2) {
-                              return Column(
+                              if(snapshot2.data != null) {
+                                return Column(
                                 children: [
                                   for (int j = 0;
                                       j < snapshot2.data.docs.length;
@@ -88,35 +92,70 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                       child: Card(
                                         color: Colors.blue,
                                         child: Text(
-                                            snapshot2.data.docs[j]["name"]+ " Votes: "+snapshot2.data.docs[j]["votes"].toString(),textScaleFactor: 2),
+                                            snapshot2.data.docs[j]["name"] +
+                                                " Votes: " +
+                                                snapshot2.data.docs[j]["votes"]
+                                                    .toString(),
+                                            textScaleFactor: 2),
                                       ),
                                       onTap: () async {
                                         if (!wait) {
                                           wait = true;
                                           //print(wait);
-                                          var doc = FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('users').doc(user.id);
-                                         await doc.get().then((
-                                              value) async {
-                                           if(!value.exists)
-                                           {
-                                             var doc2 = FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('options').doc(snapshot2.data.docs[j].id);
-                                             await doc2.update({
-                                               'votes': 1 +snapshot2.data.docs[j]["votes"]
-                                             });
-                                             await FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('users').doc(user.id).set({
-                                               "vote": snapshot2.data.docs[j].id,
-                                             });
-                                           }
-                                           else if(snapshot2.data.docs[j].id == value.data()!["vote"].toString())
-                                           {
-                                             print("Same vote !");
-                                             var doc2 = FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('options').doc(snapshot2.data.docs[j].id);
-                                             await doc2.update({
-                                               'votes': snapshot2.data.docs[j]["votes"] -1
-                                             });
-                                             await FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('users').doc(user.id).delete();
-                                           }
-                                           /*else
+                                          var doc = FirebaseFirestore.instance
+                                              .collection('poll')
+                                              .doc(snapshot.data.docs[i].id)
+                                              .collection('users')
+                                              .doc(user.id);
+                                          await doc.get().then((value) async {
+                                            if (!value.exists) {
+                                              var doc2 = FirebaseFirestore
+                                                  .instance
+                                                  .collection('poll')
+                                                  .doc(snapshot.data.docs[i].id)
+                                                  .collection('options')
+                                                  .doc(snapshot2
+                                                      .data.docs[j].id);
+                                              await doc2.update({
+                                                'votes': 1 +
+                                                    snapshot2.data.docs[j]
+                                                        ["votes"]
+                                              });
+                                              await FirebaseFirestore.instance
+                                                  .collection('poll')
+                                                  .doc(snapshot.data.docs[i].id)
+                                                  .collection('users')
+                                                  .doc(user.id)
+                                                  .set({
+                                                "vote":
+                                                    snapshot2.data.docs[j].id,
+                                              });
+                                            } else if (snapshot2
+                                                    .data.docs[j].id ==
+                                                value
+                                                    .data()!["vote"]
+                                                    .toString()) {
+                                              print("Same vote !");
+                                              var doc2 = FirebaseFirestore
+                                                  .instance
+                                                  .collection('poll')
+                                                  .doc(snapshot.data.docs[i].id)
+                                                  .collection('options')
+                                                  .doc(snapshot2
+                                                      .data.docs[j].id);
+                                              await doc2.update({
+                                                'votes': snapshot2.data.docs[j]
+                                                        ["votes"] -
+                                                    1
+                                              });
+                                              await FirebaseFirestore.instance
+                                                  .collection('poll')
+                                                  .doc(snapshot.data.docs[i].id)
+                                                  .collection('users')
+                                                  .doc(user.id)
+                                                  .delete();
+                                            }
+                                            /*else
                                            {
                                              var doc2 = FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('options').doc(snapshot2.data.docs[j].id);
                                              await doc2.update({
@@ -126,11 +165,10 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                "vote": snapshot2.data.docs[j].id,
                                              });
                                            }*/
-                                           wait=false;
-                                           //print(wait);
-                                           //print(value.data()!["vote"].toString() + "//"+ snapshot2.data.docs[j].id.toString());
-                                         }
-                                          );
+                                            wait = false;
+                                            //print(wait);
+                                            //print(value.data()!["vote"].toString() + "//"+ snapshot2.data.docs[j].id.toString());
+                                          });
 
                                           print("Option Chosen: " +
                                               snapshot2.data.docs[j]["name"]);
@@ -139,6 +177,8 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                     )
                                 ],
                               );
+                              }
+                              return const CircularProgressIndicator();
                             }),
                       ],
                     )

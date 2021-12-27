@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/authentication_service.dart';
+import 'entities/user.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -36,24 +37,45 @@ class _SignInPageState extends State<SignInPage> {
   late var isAdmin;
   late var DateR;
   late var rerolled = true;
+  late var pressed = false;
+
+  UserE userConnected = UserE.NewUser("dummy@dumb.du", "dumb123", "Dummy", "1969", "Dumb,Dumb,Dumb,Dumb,dumb", "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9",false);
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((value){
+      if(value.getString("id")==null)
+      {
+        value.setString("id", "");
+        value.setString("email", "");
+        value.setString("rank", "");
+        value.setString("address", "");
+        value.setString("birth", "");
+        value.setBool("isAdmin", false);
+        value.setString("username", "");
+        value.setString("rerolledDate", "");
+        value.setString("password", "");
+        value.setBool("rerolled", false);
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     showAlertDialog(BuildContext context,String Message) {
       // Create button
       Widget NoButton = ElevatedButton(
-        child: const Text("ok"),
+        child: const Text("Ok"),
         onPressed: () {
           Navigator.of(context, rootNavigator: true).pop('dialog');
         },
       );
       // Create AlertDialog
       AlertDialog alert = AlertDialog(
-        title: const Text("Authentication"),
-        content:  Text(Message),
-        actions: [NoButton],
+        title: const Text("Authentication",textAlign: TextAlign.center,),
+        content:  Text(Message,textAlign: TextAlign.center),
+        actions: [Center(child: NoButton)],
       );
 
       // show the dialog
@@ -67,9 +89,9 @@ class _SignInPageState extends State<SignInPage> {
     showWaiting(BuildContext context) {
       // Create AlertDialog
       AlertDialog alert = const AlertDialog(
-        actionsPadding: EdgeInsets.fromLTRB(0,0,0, 20),
-        title: Text("Authentication"),
-        content:  Text("Connection, please give us a second..."),
+        actionsPadding: EdgeInsets.fromLTRB(0,0,0,10),
+        title: Text("Authentication",textAlign: TextAlign.center,),
+        content:  Text("Connection, please give us a second...\nClick away if you'd like",textAlign: TextAlign.center,),
         actions: [Center(child: CircularProgressIndicator(color: Colors.pink,))],
       );
 
@@ -99,20 +121,20 @@ class _SignInPageState extends State<SignInPage> {
         ),
         onPressed: () async {
           try {
-            showWaiting(context);
+            if(!pressed){showWaiting(context);
             if (_keyForm.currentState!.validate()) {
               _keyForm.currentState!.save();
 
               await context.read<AuthenticationService>().signIn(
-                    email: _email.toString(),
-                    password: _password.toString(),
-                  );
+                email: _email.toString(),
+                password: _password.toString(),
+              );
 
               CollectionReference users =
-                  FirebaseFirestore.instance.collection('users');
+              FirebaseFirestore.instance.collection('users');
 
               final user =
-                  await context.read<AuthenticationService>().getUser();
+              await context.read<AuthenticationService>().getUser();
               SharedPreferences prefs = await SharedPreferences.getInstance();
 
               await FirebaseFirestore.instance
@@ -159,7 +181,6 @@ class _SignInPageState extends State<SignInPage> {
                   });
                 }
               }
-
               prefs.setString("id", myId);
               prefs.setString("email", myEmail);
               prefs.setString("rank", myRank);
@@ -172,12 +193,13 @@ class _SignInPageState extends State<SignInPage> {
               prefs.setString("username", myUsername);
               prefs.setString("rerolledDate", DateR.toString());
               prefs.setBool("rerolled", rerolled);
-
+              Navigator.of(context, rootNavigator: true).pop('dialog');
               Navigator.pushReplacementNamed(context, "/home");
-            }
+            }}
           } catch (e) {
             if(e.toString()=="Null check operator used on a null value")
               {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
                 showAlertDialog(context,"Wrong Email and/or Password, please try again");
               }
             else
