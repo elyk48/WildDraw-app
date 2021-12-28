@@ -173,4 +173,11 @@ class userController {
       print("friend deleted");
     });
   }
+  static Future<String> getUserimage(String id)async{
+    String image = await FirebaseFirestore.instance.collection('users').doc(id).get().then((value) {
+      print(value["image"].toString());
+      return value["image"];
+    });
+    return"";
+  }
 }

@@ -209,7 +209,6 @@ class _SignInPageState extends State<SignInPage> {
           }
 
         },
-        padding: const EdgeInsets.all(12),
         color: Colors.black54,
         child: const Text('Log In',
             style: TextStyle(color: Colors.amberAccent, fontSize: 15)),
@@ -225,7 +224,6 @@ class _SignInPageState extends State<SignInPage> {
         onPressed: () async {
           Navigator.pushNamed(context, "/signup");
         },
-        padding: const EdgeInsets.all(10),
         color: Colors.black54,
         child: const Text('Register',
             style: TextStyle(color: Colors.amberAccent, fontSize: 15)),
@@ -241,103 +239,86 @@ class _SignInPageState extends State<SignInPage> {
             .push(MaterialPageRoute(builder: (context) => Reset())));
 
     return Scaffold(
-      backgroundColor: Colors.brown.shade100,
-      body: Container(
-        child: Form(
-          key: _keyForm,
-          child: ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            children: [
-              const SizedBox(height: 70),
-              Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: const Text(
-                  "WildDraw",
-                  textScaleFactor: 4,
-                  style: TextStyle(
-                      fontFamily: 'Windy-Wood-Demo', color: Colors.black),
+      resizeToAvoidBottomInset: false,
+      body: Form(
+        key: _keyForm,
+        child: Stack(
+          children:[ Container( decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/Images/Login page.png"),
+              fit: BoxFit.cover,
+            ),
+          ),),
+            Column(
+              children: [
+                const SizedBox(height: 366),
+                //email
+                Container(
+                  padding: const EdgeInsets.fromLTRB(70, 0, 50, 0),
+                  child: TextFormField(
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        decorationColor: Colors.black),
+                    cursorColor: Colors.black54,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Email",
+                      labelStyle: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w600),
+                    ),
+                    onSaved: (String? value) {
+                      _email = value;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return "Le username ne doit pas etre vide";
+                      } else if (value.length < 5) {
+                        return "Le username doit avoir au moins 5 caractères";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
-              ),
-
-              logo,
-              const SizedBox(height: 48.0),
-              //email
-              TextFormField(
-                cursorColor: Colors.black54,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  hintText: 'Email',
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: 4),
+                const SizedBox(height: 5.0),
+                TextFormField(
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Windy-Wood-Demo',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      decorationColor: Colors.black),
+                  autofocus: false,
+                  cursorColor: Colors.black,
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding:
+                    EdgeInsets.fromLTRB(70, 0, 50, 0),
+                    labelStyle: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w600),
+                    labelText: "Password",
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: 4),
-                  ),
-                  labelStyle: const TextStyle(color: Colors.black),
+                  onSaved: (String? value) {
+                    _password = value;
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Le username ne doit pas etre vide";
+                    } else if (value.length < 5) {
+                      return "Le username doit avoir au moins 5 caractères";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
-                onSaved: (String? value) {
-                  _email = value;
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Le username ne doit pas etre vide";
-                  } else if (value.length < 5) {
-                    return "Le username doit avoir au moins 5 caractères";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 10.0),
-              TextFormField(
-                autofocus: false,
-                cursorColor: Colors.amber,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: 'Password',
-                  contentPadding:
-                      const EdgeInsets.fromLTRB(20.0, 20, 20.0, 10.0),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: 4),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                    borderSide:
-                        const BorderSide(color: Colors.black54, width: 4),
-                  ),
-                  labelStyle: const TextStyle(color: Colors.black),
-                  labelText: "Password",
-                ),
-                onSaved: (String? value) {
-                  _password = value;
-                },
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Le username ne doit pas etre vide";
-                  } else if (value.length < 5) {
-                    return "Le username doit avoir au moins 5 caractères";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              const SizedBox(height: 24.0),
-              loginButton,
-              RegisterButton,
-              forgotLabel,
-            ],
-          ),
+                loginButton,
+                RegisterButton,
+                forgotLabel,
+              ],
+            ),]
         ),
       ),
     );

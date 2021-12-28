@@ -5,6 +5,87 @@ import 'package:cardgameapp/session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+
+class MoreInfo extends StatelessWidget {
+  const MoreInfo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 25, 15, 0),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/Images/News.png"),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: ShaderMask(
+        shaderCallback: (Rect rect) {
+          return const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.purple,
+              Colors.transparent,
+              Colors.transparent,
+              Colors.purple
+            ],
+            stops: [
+              0.055,
+              0.1,
+              0.95,
+              1.0
+            ], // 10% purple, 80% transparent, 10% purple
+          ).createShader(rect);
+        },
+        blendMode: BlendMode.dstOut,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image:
+                    AssetImage("assets/Images/publication_form.png"),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 80, 20,20),
+                child: const Text("Hello there !\nYou're probably wondering what is this app all about,"
+                    " we're 2 students from university trying to make an app to promote our next university project, which will be a digital card game like no other !\n\n"
+                    "What is so special about our game ?\n\n"
+                    "1 - We're planning on implementing an MMO Aspect into the game, as a player you will get to visit a fantasy world and Live on as a powerful duelist.\n\n"
+                    "2 - As a player you can have ownership over your cards and trade them with other players, with a little help from Blockchain technology,"
+                    " you can also choose to sell your own cards for in-game coins to cryptocurrencies.\n\n"
+                    "3 - The game is Free-to-Play, you can only spent money for in-game cosmetics.\n\n"
+                    "What is the game about ?\n\n"
+                    "It's a 3D Card game with a fantasy theme, mixed with MMO-RPG elements mainly the world exploration side. Its story revolves around a world of wizards ruled by one powerful Wizard named 'Vitruvius', he himself created the game and its rules in order to make a tournament in which the top 3 wizards will be promoted as his body guards.\n\n"
+                    "To See more info about the card game and its rules, check out the 'Rules and Cards' section up in the left corner !\n\n"
+                    "We hope to see you more in the future and we can't wait to start working on the project, meanwhile stay tuned for updates and news, and let us know if you have any question or suggestions, there are many features for this app that have been cut out due to time constraints, nevertheless, stay safe !",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Windy-Wood-Demo',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    decorationColor: Colors.black
+                ),),
+              )
+            ],
+
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
 class PublicationView extends StatefulWidget {
   const PublicationView({Key? key}) : super(key: key);
 

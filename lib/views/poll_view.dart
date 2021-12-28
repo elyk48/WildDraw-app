@@ -155,19 +155,7 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                   .doc(user.id)
                                                   .delete();
                                             }
-                                            /*else
-                                           {
-                                             var doc2 = FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('options').doc(snapshot2.data.docs[j].id);
-                                             await doc2.update({
-                                               'votes': value["votes"] -1
-                                             });
-                                             await FirebaseFirestore.instance.collection('poll').doc(snapshot.data.docs[i].id).collection('users').doc(user.id).set({
-                                               "vote": snapshot2.data.docs[j].id,
-                                             });
-                                           }*/
                                             wait = false;
-                                            //print(wait);
-                                            //print(value.data()!["vote"].toString() + "//"+ snapshot2.data.docs[j].id.toString());
                                           });
 
                                           print("Option Chosen: " +

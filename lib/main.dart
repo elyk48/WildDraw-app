@@ -28,7 +28,7 @@ Future<void> main() async{
 class MyApp extends StatelessWidget {
 
   const MyApp({Key? key}) : super(key: key);
-  static const String Appname ="Card Card App";
+  static const String Appname ="WildDraw";
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

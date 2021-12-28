@@ -15,7 +15,7 @@ class _CollectionViewState extends State<CollectionView> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
-        title: const Text("Your Collection"),
+        title: const Text("Rules and Cards",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600)),
       ),
         body: Collection()
     );

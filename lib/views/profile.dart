@@ -50,9 +50,9 @@ class _ProfileState extends State<Profile> {
 
       // Create AlertDialog
       AlertDialog alert = AlertDialog(
-        title: const Text("News"),
+        title: const Text("Account managment"),
         content: const Text("Are you sure you want to delete your account ?"),
-        actions: [okButton, NoButton],
+        actions: [Center(child: okButton), Center(child: NoButton)],
       );
 
       // show the dialog
@@ -209,9 +209,6 @@ class _ProfileState extends State<Profile> {
                                     elevation: 6,
                                   ),
                                   onPressed: () {
-                                   /* deleteUser(user.id);
-                                    Navigator.pushReplacementNamed(
-                                        context, '/singin');*/
                                     showAlertDialog(context, user.id);
                                   },
                                 ),

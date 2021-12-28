@@ -28,8 +28,8 @@ class _EditProfile extends State<EditProfile> {
   late String? _Rank;
   late String? _id_Col;
   late File _image;
-  late String _imageLink="https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
-
+  late String _imageLink =
+      "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
 
   var myId;
   var myEmail;
@@ -38,19 +38,78 @@ class _EditProfile extends State<EditProfile> {
 
   var myRank;
   var myPassword;
-  var mylevel ;
+  var mylevel;
+
   var myaddress;
   var myBirthdate;
   var myImage;
-  var isAdmin=false;
+  var isAdmin = false;
 
-
-  late final UserE user = UserE.NewUser("email", "password", "username", "birthdate", "address", "image", false);
-  userController userC= userController();
+  late final UserE user = UserE.NewUser(
+      "email", "password", "username", "birthdate", "address", "image", false);
+  userController userC = userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    showWaiting(BuildContext context) {
+      // Create AlertDialog
+      AlertDialog alert = const AlertDialog(
+        actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        title: Text(
+          "Uploading picture",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          "Give us a second while we're uploading the picture...",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Center(
+              child: CircularProgressIndicator(
+            color: Colors.pink,
+          ))
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
+    showQuickResult(BuildContext context) {
+      // Create AlertDialog
+      AlertDialog alert = const AlertDialog(
+        actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        title: Text(
+          "Notice",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          "Upload picture complete\nPlease press validate to confirm your changes",
+          textAlign: TextAlign.center,
+        ),
+        actions: [Center(
+            child: Icon(
+            Icons.check_circle,
+              size: 50,
+              color: Colors.green,
+            ))],
+      );
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+
 //////////////Validate Button//////////
     final Validatebtn = Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -58,20 +117,21 @@ class _EditProfile extends State<EditProfile> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () async{
+        onPressed: () async {
           if (_keyForm.currentState!.validate()) {
             _keyForm.currentState!.save();
-            user.image=_imageLink;
+            user.image = _imageLink;
             await updateUser(user);
             _showAlert(context);
-            await Future.delayed(Duration(seconds:4));
+            await Future.delayed(Duration(seconds: 4));
             _keyForm.currentState!.reset();
             Navigator.pushReplacementNamed(context, "/singin");
           }
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
-        child: Text('Validate', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
+        child: Text('Validate',
+            style: TextStyle(color: Colors.amberAccent, fontSize: 15)),
       ),
     );
     /***************Cancel Button***************/
@@ -81,13 +141,14 @@ class _EditProfile extends State<EditProfile> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        onPressed: () async{
+        onPressed: () async {
           _keyForm.currentState!.reset();
           Navigator.pushReplacementNamed(context, "/profile");
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
-        child: Text('Cancel', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
+        child: Text('Cancel',
+            style: TextStyle(color: Colors.amberAccent, fontSize: 15)),
       ),
     );
 
@@ -100,8 +161,8 @@ class _EditProfile extends State<EditProfile> {
       ),
       body: Form(
         key: _keyForm,
-        child:FutureBuilder(
-            future:  Session.setUser(user),
+        child: FutureBuilder(
+            future: Session.setUser(user),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done)
                 return Text("Loading data...Please wait");
@@ -110,58 +171,70 @@ class _EditProfile extends State<EditProfile> {
                   Container(
                     alignment: Alignment.center,
                     margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-
                     child: CircleAvatar(
-                        backgroundImage:NetworkImage(user.image),
+                      backgroundImage: NetworkImage(user.image),
                       radius: 100,
                     ),
                   ),
-
-
                   Container(
                     alignment: Alignment.center,
-
                     margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                     child: FloatingActionButton(
                       tooltip: 'Image',
                       onPressed: () async {
-
-                        var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
-                        FirebaseStorage fs =FirebaseStorage.instance;
-                        Reference rootref =fs.ref();
-                        Reference picFolderRef  =rootref.child("profilePics").child("image");
-                        File file =File(_image!.path);
-                        picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
-                          String Link = await storageTask.ref.getDownloadURL();
+                        var _image = await ImagePicker().pickImage(
+                            source: ImageSource
+                                .gallery) /*.then((value) => showWaiting(context)))*/;
+                        FirebaseStorage fs = FirebaseStorage.instance;
+                        Reference rootref = fs.ref();
+                        Reference picFolderRef =
+                            rootref.child("profilePics").child("image");
+                        File file = File(_image!.path);
+                        showWaiting(context);
+                        picFolderRef
+                            .putFile(file)
+                            .whenComplete(() => null)
+                            .then((storageTask) async {
+                          String Link = await storageTask.ref
+                              .getDownloadURL()
+                              .then((value) {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                            return value;
+                          });
                           print("Image Uploaded");
                           setState(() {
-                            _imageLink= Link;
-
+                            showQuickResult(context);
+                            user.image = Link;
                           });
                         });
                       },
-                      child: Icon(Icons.camera_alt,color: Colors.black,),
-
+                      child: Icon(
+                        Icons.camera_alt,
+                        color: Colors.black,
+                      ),
                     ),
-
                   ),
-
                   Container(
                     margin: const EdgeInsets.fromLTRB(10, 30, 10, 10),
                     child: TextFormField(
                       cursorColor: Colors.amber,
                       initialValue: user.username,
                       keyboardType: TextInputType.text,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Username",
                         hintText: 'username',
-
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
-                        focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
                         labelStyle: new TextStyle(color: Colors.black),
                       ),
@@ -169,13 +242,11 @@ class _EditProfile extends State<EditProfile> {
                         user.username = value!;
                       },
                       validator: (String? value) {
-                        if(value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "Le username ne doit pas etre vide";
-                        }
-                        else if(value.length < 5) {
+                        } else if (value.length < 5) {
                           return "Le username doit avoir au moins 5 caractères";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -187,15 +258,20 @@ class _EditProfile extends State<EditProfile> {
                       cursorColor: Colors.amber,
                       initialValue: user.email,
                       keyboardType: TextInputType.emailAddress,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Email",
                         hintText: 'Email',
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
-                        focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
                         labelStyle: new TextStyle(color: Colors.black),
                       ),
@@ -203,14 +279,13 @@ class _EditProfile extends State<EditProfile> {
                         user.email = value!;
                       },
                       validator: (String? value) {
-                        String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                        if(value == null || value.isEmpty) {
+                        String pattern =
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                        if (value == null || value.isEmpty) {
                           return "L'adresse email ne doit pas etre vide";
-                        }
-                        else if(!RegExp(pattern).hasMatch(value)) {
+                        } else if (!RegExp(pattern).hasMatch(value)) {
                           return "L'adresse email est incorrecte";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -223,14 +298,19 @@ class _EditProfile extends State<EditProfile> {
                       cursorColor: Colors.amber,
                       keyboardType: TextInputType.emailAddress,
                       initialValue: user.password,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Password",
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
-                        focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
                         labelStyle: new TextStyle(color: Colors.black),
                       ),
@@ -238,13 +318,11 @@ class _EditProfile extends State<EditProfile> {
                         user.password = value!;
                       },
                       validator: (value) {
-                        if(value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "Le mot de passe ne doit pas etre vide";
-                        }
-                        else if(value.length < 5) {
+                        } else if (value.length < 5) {
                           return "Le mot de passe doit avoir au moins 5 caractères";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -256,16 +334,20 @@ class _EditProfile extends State<EditProfile> {
                       keyboardType: TextInputType.datetime,
                       cursorColor: Colors.amber,
                       initialValue: user.birth,
-
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Birth date",
                         hintText: 'Birth date',
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
-                        focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
                         labelStyle: new TextStyle(color: Colors.black),
                       ),
@@ -273,13 +355,11 @@ class _EditProfile extends State<EditProfile> {
                         user.birth = value!;
                       },
                       validator: (value) {
-                        if(value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "L'année de naissance ne doit pas etre vide";
-                        }
-                        else if(int.parse(value.toString()) > 2021) {
+                        } else if (int.parse(value.toString()) > 2021) {
                           return "L'année de naissance est incorrecte";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -292,15 +372,20 @@ class _EditProfile extends State<EditProfile> {
                       cursorColor: Colors.amber,
                       initialValue: user.address,
                       keyboardType: TextInputType.text,
-                      decoration:  InputDecoration(
+                      decoration: InputDecoration(
                         labelText: "Address",
                         hintText: 'Address',
-                        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
-                        focusedBorder:OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),
-                          borderSide: const BorderSide(color: Colors.black54 ,width: 2.5),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: const BorderSide(
+                              color: Colors.black54, width: 2.5),
                         ),
                         labelStyle: new TextStyle(color: Colors.black),
                       ),
@@ -308,13 +393,11 @@ class _EditProfile extends State<EditProfile> {
                         user.address = value!;
                       },
                       validator: (value) {
-                        if(value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return "L'adresse email ne doit pas etre vide";
-                        }
-                        else if(value.length < 20) {
+                        } else if (value.length < 20) {
                           return "Le mot de passe doit avoir au moins 10 caractères";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -332,13 +415,10 @@ class _EditProfile extends State<EditProfile> {
                   )
                 ],
               );
-            }
-        ),
+            }),
       ),
     );
-    initState(){
-
-    }
+    initState() {}
   }
 
   @override
@@ -346,8 +426,9 @@ class _EditProfile extends State<EditProfile> {
     super.initState();
     Session.setUser(user);
   }
-  updateUser(UserE user){
-    var id=  FirebaseAuth.instance.currentUser!.uid;
+
+  updateUser(UserE user) {
+    var id = FirebaseAuth.instance.currentUser!.uid;
     FirebaseFirestore.instance.collection("users").doc(id).set({
       "email": user.email,
       'password': user.password,
@@ -358,26 +439,24 @@ class _EditProfile extends State<EditProfile> {
       "level": user.level,
       "id_Col": user.id_Col,
       "Id": id,
-      "image":user.image,
-      'isAdmin':user.isAdmin,
-
-
+      "image": user.image,
+      'isAdmin': user.isAdmin,
     }).catchError((error) => print("Failed to update User  : $error"));
 
-    FirebaseAuth.instance.currentUser!.updateEmail(user.email).catchError((error) => print("Failed to Update User Email  : $error"));
-    FirebaseAuth.instance.currentUser!.updatePassword(user.password).catchError((error) => print("Failed to Update User password  : $error"));
-
-
+    FirebaseAuth.instance.currentUser!
+        .updateEmail(user.email)
+        .catchError((error) => print("Failed to Update User Email  : $error"));
+    FirebaseAuth.instance.currentUser!.updatePassword(user.password).catchError(
+        (error) => print("Failed to Update User password  : $error"));
   }
-
 
   void _showAlert(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Confirm your identity"),
-          content: Text("Please confirm your idendity by loging in again and we will update your profile"),
-        )
-    );
+              title: Text("Confirm your identity"),
+              content: Text(
+                  "Please confirm your idendity by loging in again and we will update your profile"),
+            ));
   }
 }

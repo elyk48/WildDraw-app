@@ -4,6 +4,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class BugReportController {
   static CollectionReference bugReports = FirebaseFirestore.instance.collection('bugreport');
 
+  static Future<void> deleteBugReport(String docId) async {
+    CollectionReference BugReport =
+    FirebaseFirestore.instance.collection('bugreport');
+    DocumentReference documentReferencer = BugReport.doc(docId);
+
+    await documentReferencer
+        .delete()
+        .whenComplete(() => print('Note item deleted from the database'))
+        .catchError((e) => print(e));
+  }
+
+
+
   static Future<BugReport> addBugReport(BugReport bugReport) async{
     DocumentReference docRef = await bugReports.add(
         {

@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../session.dart';
+
 class BugReportForm extends StatefulWidget {
   late final GlobalKey<FormState> _keyForm;
   late BugReport _bugReport;
@@ -19,6 +21,13 @@ class _BugReportFormState extends State<BugReportForm> {
       "email", "password", "username", "birthdate", "address", "image", false);
   String bug_type = "Functional error";
   String bug_severity = "Low";
+
+  @override
+  void initState() {
+    Session.setUser(user);
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +158,8 @@ class _BugReportFormState extends State<BugReportForm> {
 }
 
 class reportBugsGrid extends StatefulWidget {
+  UserE user = UserE.NewUser(
+      "email", "password", "username", "birthdate", "address", "image", false);
   late List<dynamic> _AllReports = [];
   late Future<List> _futureReports;
 
@@ -157,18 +168,59 @@ class reportBugsGrid extends StatefulWidget {
 }
 
 class _reportBugsGridState extends State<reportBugsGrid> {
+
+  Future<void> showAlertDialogDelete(BuildContext context, String id, int index) async{
+    // Create button
+    Widget okButton = ElevatedButton(
+      child: const Text("Yes I wanna Close it"),
+      onPressed: () {
+        if(index>1)
+          widget._AllReports.removeAt(index+1);
+        else if(index==1)
+          widget._AllReports.removeAt(0);
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        setState(() {
+          BugReportController.deleteBugReport(widget._AllReports[index]["id"]);
+          widget._AllReports = <dynamic>[];
+          widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+        });
+      },
+    );
+    Widget NoButton = ElevatedButton(
+      child: Text("Nope"),
+      onPressed: (){
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        setState(() {
+          widget._AllReports = <dynamic>[];
+          widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+        });
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Report"),
+      content: const Text("Are you sure you want to close this report ?"),
+      actions: [okButton, NoButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: widget._futureReports,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    crossAxisSpacing: 1,
-                    mainAxisSpacing: 1,
-                    mainAxisExtent: 120),
+          if(!snapshot.hasData) {
+            return const CircularProgressIndicator();
+          }
+          else if (snapshot.hasData) {
+            return ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: widget._AllReports.length,
                 shrinkWrap: true,
@@ -176,7 +228,7 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                   return Wrap(
                     children: [
                       Dismissible(
-                        direction: DismissDirection.endToStart,
+                        direction: DismissDirection.startToEnd,
                         key: Key(widget._AllReports[index]["id"]),
                         child: Container(
                           width: 400,
@@ -244,17 +296,17 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                           ),
                         ),
                         onDismissed: (direction) {
-                          setState(() {
-                            widget._AllReports.removeAt(index);
+                          setState(() async{
+                           await showAlertDialogDelete(context,widget._AllReports[index]["id"],index);
                           });
                         },
                         background: Container(
                             color: Colors.red,
                             child: Container(
-                              padding: const EdgeInsets.fromLTRB(200, 0, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(0, 0, 220, 0),
                               child: const Center(
-                                  child: Text("Dissmiss",
-                                      textScaleFactor: 3,
+                                  child: Text("Close Report",
+                                      textScaleFactor: 2.5, textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                             )),
                       )
@@ -281,10 +333,8 @@ class _reportBugsGridState extends State<reportBugsGrid> {
 
   @override
   void initState() {
-    //
-    widget._futureReports =
-        BugReportController.getAllReports(widget._AllReports);
-
+    widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+    Session.setUser(widget.user);
     super.initState();
   }
 }

@@ -105,30 +105,7 @@ _Rank="1";
 _id_Col="1";
 _image=image;
 _isAdmin=isAdmin;
-
   }
-
-
-
-
-
-
- /* factory UserE.fromJson(Map<String,dynamic> json){
-    return UserE(
-      _id : json["Id"],
-      Rank :json["Rank"],
-      address:json["address"],
-      birth: json["birthdate"],
-      email: json["email"],
-      id_Col: json["id_Col"],
-      level :json["level"],
-      password: json["password"],
-      username :json["username"],
-
-
-
-    ); */
-
   }
 
 

@@ -8,7 +8,7 @@ import '../controllers/authentication_service.dart';
 import '../session.dart';
 
 class NavigationTab extends StatelessWidget {
-  static const String Appname ="Card Card App";
+  static const String Appname ="WildDraw";
   const NavigationTab({Key? key}) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class NavigationTab extends StatelessWidget {
             children: [
               AppBar(
                 automaticallyImplyLeading: false,
-                title: const Text(Appname),
+                title: const Text("WildDraw",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 30),),
               ),
               ListTile(
                 title: Row(
@@ -30,7 +30,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Profile"),
+                    Text("Profile",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -44,7 +44,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Friends List"),
+                    Text("Friends List",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -58,7 +58,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Daily quests"),
+                    Text("Daily quests",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -72,7 +72,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Card Collection"),
+                    Text("Rules and Cards",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -86,7 +86,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Polls"),
+                    Text("Polls",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -100,7 +100,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Report Bugs"),
+                    Text("Report Bugs",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -114,7 +114,7 @@ class NavigationTab extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    Text("Se déconnecter"),
+                    Text("Log out",style: TextStyle(fontFamily: 'Windy-Wood-Demo',fontSize: 20,fontWeight: FontWeight.w600),),
                   ],
                 ),
                 onTap: () {
@@ -136,18 +136,18 @@ class NavigationTab extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(Icons.wysiwyg),
-                text: "Publications",
+                text: "Posts",
               ),
               Tab(
-                icon: Icon(Icons.attach_money),
-                text: "Market Place",
+                icon: Icon(Icons.assignment_late_outlined),
+                text: "More info",
               )
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-          actualiteView(),PublicationView(),Center(child: Text("On Going...",textScaleFactor: 2),)
+          actualiteView(),PublicationView(),MoreInfo()
         ],)
       ),
     );

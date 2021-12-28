@@ -1,5 +1,8 @@
+import 'package:cardgameapp/controllers/usercontroller.dart';
+import 'package:cardgameapp/views/create_a_poll.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cardgameapp/controllers/usercontroller.dart';
 
 class PublicationCard extends StatelessWidget {
   late final String _id_user;
@@ -22,16 +25,24 @@ class PublicationCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(_username,
-                style: const TextStyle(
-                color: Colors.black,
-                fontFamily: 'Windy-Wood-Demo',
-                fontSize: 25,
-                decorationColor: Colors.black
-            ),
+            Row(
+              children: [ const CircleAvatar(
+                backgroundImage: NetworkImage("https://www.logolynx.com/images/logolynx/4b/4beebce89d681837ba2f4105ce43afac.png", scale: 1),
+                radius: 20,
+              ),
+                const SizedBox(width: 10,),
+                Text(_username,
+                    style: const TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Windy-Wood-Demo',
+                    fontSize: 25,
+                    decorationColor: Colors.black
+                ),
+                ),
+              ],
             ),
             const SizedBox(
-              height: 5,
+              height: 10,
             ),
             Text(_content, textScaleFactor: 2,
               style: const TextStyle(
