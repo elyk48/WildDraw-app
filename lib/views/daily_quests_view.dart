@@ -120,72 +120,83 @@ class _DailyQuestsState extends State<DailyQuests> {
 
                             ///the quest data view as a card
                             return Container(
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: AnimatedOpacity(
-                                  duration: Duration(microseconds: 300),
-                                  opacity: _opacity,
-                                  child: Card(
-                                    semanticContainer: true,
-                                    shadowColor: Colors.black,
-                                    elevation: 10,
-                                    borderOnForeground: true,
-                                    margin: const EdgeInsets.all(8),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                          image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/Images/scroll2.png"),
-                                        fit: BoxFit.fitWidth,
-                                        alignment: Alignment.topCenter,
-                                      )),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              ///reroll button
-                                              InkWell(
-                                                child: IconButton(
-                                                  icon: Image.asset(
-                                                      'assets/Images/reroll.png'),
-                                                  iconSize: 50,
-                                                  onPressed: () async {
-                                                    late String usercurrentId;
-                                                    usercurrentId = FirebaseAuth
-                                                        .instance
-                                                        .currentUser!
-                                                        .uid;
-                                                    CollectionReference users =
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                'users');
-                                                    users
-                                                        .doc(usercurrentId)
-                                                        .collection("rerolled")
-                                                        .doc(usercurrentId)
-                                                        .get()
-                                                        .then((value) async {
-                                                      setState(() {
-                                                        rerolled =
-                                                            value.data()![
-                                                                "rerolled"];
+                              child: AnimatedOpacity(
+                                duration: Duration(microseconds: 300),
+                                opacity: _opacity,
+                                child: Card(
+                                  semanticContainer: true,
+                                  shadowColor: Colors.black,
+                                  elevation: 10,
+                                  borderOnForeground: true,
+                                  margin: const EdgeInsets.all(8),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/Images/try.png"),
+                                              fit: BoxFit.fill,
+                                              alignment: Alignment.topCenter,
+                                            )),
+                                        child: Row(
+                                          children: [
+                                            ///reroll button
+                                            InkWell(
+                                              child: Column(
+                                                children: [const Text("Reroll",style: TextStyle(
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily:
+                                                    'Windy-Wood-Demo',
+                                                    fontSize: 15.5,
+                                                    decorationThickness:
+                                                    4,
+                                                    color:Colors.black87,
+                                                    )),
+                                                  IconButton(
+                                                    icon: Image.asset(
+                                                        'assets/Images/reroll.png'),
+                                                    iconSize: 50,
+                                                    onPressed: () async {
+                                                      late String usercurrentId;
+                                                      usercurrentId = FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid;
+                                                      CollectionReference users =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'users');
+                                                      users
+                                                          .doc(usercurrentId)
+                                                          .collection("rerolled")
+                                                          .doc(usercurrentId)
+                                                          .get()
+                                                          .then((value) async {
+                                                        setState(() {
+                                                          rerolled =
+                                                              value.data()![
+                                                                  "rerolled"];
+                                                        });
                                                       });
-                                                    });
 
-                                                    if (rerolled == false) {
-                                                      userC.Reroll(docId);
-                                                    } else {
-                                                      print(
-                                                          "wait 24h before the next reroll");
-                                                    }
-                                                  },
-                                                ),
+                                                      if (rerolled == false) {
+                                                        userC.Reroll(docId);
+                                                      } else {
+                                                        print(
+                                                            "wait 24h before the next reroll");
+                                                      }
+                                                    },
+                                                  ),
+                                                ],
                                               ),
+                                            ),
 
-                                              /// quest data view
-                                              Column(
+                                            /// quest data view
+                                            Container(
+                                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                              child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.center,
                                                 verticalDirection:
@@ -239,32 +250,33 @@ class _DailyQuestsState extends State<DailyQuests> {
                                                                 offset: Offset(
                                                                     -1.5, -1.5),
                                                                 color: Colors
-                                                                    .white),
+                                                                    .yellow),
                                                             Shadow(
                                                                 // bottomRight
                                                                 offset: Offset(
                                                                     1.5, -1.5),
                                                                 color: Colors
-                                                                    .white),
+                                                                    .yellowAccent),
                                                             Shadow(
                                                                 // topRight
 
                                                                 offset: Offset(
                                                                     1.5, 1.5),
                                                                 color: Colors
-                                                                    .white),
+                                                                    .amberAccent),
                                                             Shadow(
                                                                 // topLeft
                                                                 offset: Offset(
                                                                     -1.5, 1.5),
                                                                 color: Colors
-                                                                    .white),
+                                                                    .amber),
                                                           ])),
 
                                                   ///quest decription
                                                   Text(Qdesc,
                                                       textScaleFactor: 1.4,
                                                       style: const TextStyle(
+                                                        fontWeight: FontWeight.w600,
                                                           fontFamily:
                                                               'Windy-Wood-Demo',
                                                           fontSize: 15.5,
@@ -287,12 +299,12 @@ class _DailyQuestsState extends State<DailyQuests> {
                                                                     .white10),
                                                           ])),
                                                 ],
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),

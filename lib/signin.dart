@@ -230,9 +230,17 @@ class _SignInPageState extends State<SignInPage> {
               Navigator.of(context, rootNavigator: true).pop('dialog');
               showAlertDialog(
                   context, "Wrong Email and/or Password, please try again");
-            } else {
+            } else if(e.toString() == "LateInitializationError: Field 'myId' has not been initialized."){
+              print(e.toString());
+              Navigator.of(context, rootNavigator: true).pop('dialog');
               showAlertDialog(context,
-                  "An Unknown Error has occurred please try again, later");
+                  "Seems like this User doesn't exist, please consider registering");
+            }
+            else{
+              print(e.toString());
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+              showAlertDialog(context,
+                  "An unknown error has occurred, please try again");
             }
           }
         },

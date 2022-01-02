@@ -86,15 +86,18 @@ class _ProfileState extends State<Profile> {
                         ),
                         child: Column(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white54,
-                              radius: 100,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(user.image, scale: 1),
-                                  radius: 100,
+                            Container(
+                              padding: EdgeInsets.fromLTRB(0, 30,0,0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white54,
+                                radius: 80,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(user.image, scale: 1),
+                                    radius: 80,
+                                  ),
                                 ),
                               ),
                             ),
@@ -269,7 +272,7 @@ class _ProfileState extends State<Profile> {
                                   child: Row(
                                     children: [
                                       const Text(
-                                        "Address : ",
+                                        "Address: ",
                                         textScaleFactor: 1,
                                         style: TextStyle(
                                           fontFamily: 'Windy-Wood-Demo',
@@ -279,7 +282,7 @@ class _ProfileState extends State<Profile> {
                                         ),
                                       ),
                                       Text(
-                                        user.address,
+                                        user.address.substring(0,10)+"****",
                                         textScaleFactor: 1,
                                         style: const TextStyle(
                                           fontFamily: 'Windy-Wood-Demo',

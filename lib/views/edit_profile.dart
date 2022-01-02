@@ -507,7 +507,7 @@ class _EditProfile extends State<EditProfile> {
                               cursorColor: Colors.amber,
                               initialValue: user.birth,
                               decoration: const InputDecoration(
-                                labelText: "Birth date",
+                                labelText: "Birth Year",
                                 hintText: 'Birth date',
                                 contentPadding:
                                     EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -538,12 +538,19 @@ class _EditProfile extends State<EditProfile> {
                                 user.birth = value!;
                               },
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "the birthdate must not be empty";
-                                } else if (int.parse(value.toString()) > 2021) {
-                                  return "the birthdate is incorrect !";
+                                if (isNumeric(value!)) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Birth Year shouldn't be empty";
+                                  } else if (int.parse(value.toString()) >
+                                      DateTime.now().year) {
+                                    return "You aren't even born yet !";
+                                  } else if (int.parse(value.toString()) < 1900) {
+                                    return "No one that old exists";
+                                  } else if (value.length > 4) {
+                                    return "Incorrect year format, please type only the year";
+                                  }
                                 } else {
-                                  return null;
+                                  return "Incorrect year format, please type only the year";
                                 }
                               },
                             ),
@@ -679,5 +686,11 @@ class _EditProfile extends State<EditProfile> {
               content: Text(
                   "Please confirm your idendity by loging in again and we will update your profile"),
             ));
+  }
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return int.tryParse(s) != null;
   }
 }

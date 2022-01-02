@@ -313,9 +313,9 @@ class _SignupState extends State<Signup> {
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return "Le username ne doit pas etre vide";
+                        return "Username shouldn't be empty";
                       } else if (value.length < 5) {
-                        return "Le username doit avoir au moins 5 caractères";
+                        return "Username Should be at least 5 Characters long";
                       } else {
                         return null;
                       }
@@ -385,9 +385,9 @@ class _SignupState extends State<Signup> {
                       String pattern =
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
                       if (value == null || value.isEmpty) {
-                        return "L'adresse email ne doit pas etre vide";
+                        return "Email address shouldn't be empty";
                       } else if (!RegExp(pattern).hasMatch(value)) {
-                        return "L'adresse email est incorrecte";
+                        return "Email address format incorrect";
                       } else {
                         return null;
                       }
@@ -414,7 +414,7 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: "Password",
-                      hintText: "at least 5 char",
+                      hintText: "At least 5 characters long",
                       hintStyle: TextStyle(
                           color: Colors.black54,
                           fontFamily: 'Windy-Wood-Demo',
@@ -456,9 +456,9 @@ class _SignupState extends State<Signup> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Le mot de passe ne doit pas etre vide";
+                        return "Password shouldn't be empty";
                       } else if (value.length < 5) {
-                        return "Le mot de passe doit avoir au moins 5 caractères";
+                        return "Password should be at least 5 characters long";
                       } else {
                         return null;
                       }
@@ -525,19 +525,26 @@ class _SignupState extends State<Signup> {
                       user.birth = value!;
                     },
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "L'année de naissance ne doit pas etre vide";
-                      } else if (int.parse(value.toString()) > 2021) {
-                        return "L'année de naissance est incorrecte";
+                      if (isNumeric(value!)) {
+                        if (value == null || value.isEmpty) {
+                          return "Birth Year shouldn't be empty";
+                        } else if (int.parse(value.toString()) >
+                            DateTime.now().year) {
+                          return "You aren't even born yet !";
+                        } else if (int.parse(value.toString()) < 1900) {
+                          return "No one that old exists";
+                        } else if (value.length > 4) {
+                          return "Incorrect year format, please type only the year";
+                        }
                       } else {
-                        return null;
+                        return "Incorrect year format, please type only the year";
                       }
                     },
                   ),
                 ),
                 Container(
                   alignment: Alignment.topCenter,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
@@ -546,7 +553,7 @@ class _SignupState extends State<Signup> {
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
                     textAlign: TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Windy-Wood-Demo',
                       fontSize: 20,
                       color: Colors.black54,
@@ -598,9 +605,9 @@ class _SignupState extends State<Signup> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "L'adresse email ne doit pas etre vide";
-                      } else if (value.length < 20) {
-                        return "Le mot de passe doit avoir au moins 10 caractères";
+                        return "Address shouldn't be empty";
+                      } else if (value.length < 10) {
+                        return "Address should at least be 10 characters long";
                       } else {
                         return null;
                       }
@@ -626,5 +633,12 @@ class _SignupState extends State<Signup> {
         ),
       ],
     );
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return int.tryParse(s) != null;
   }
 }
