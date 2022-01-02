@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData CustomDataTheme() {
   final base  = ThemeData.dark();
-  final mainColor = Colors.black;
+  const mainColor = Colors.black;
   return base.copyWith(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

@@ -24,83 +24,73 @@ class _SignupState extends State<Signup> {
   late String? _Rank;
   late String? _id_Col;
   late File _image;
-  late String _imageLink="https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
+  late String _imageLink =
+      "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
 
-  Future getImage()  async {
-
-    final   image= await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       //_image= image as FileImage;
     });
   }
-  late final UserE user = new UserE.NewUser("email" ,"password","username","birthdate","address","image",false);
-  userController userC= userController();
+
+  late final UserE user = new UserE.NewUser(
+      "email", "password", "username", "birthdate", "address", "image", false);
+  userController userC = userController();
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-
-
 
   @override
   Widget build(BuildContext context) {
 //////////////Validate Button//////////
-    final Validatebtn =
-
-    SizedBox(
-
+    final Validatebtn = SizedBox(
       child: Container(
-
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                  "assets/Images/Scroll.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-            )),
-
+          image: AssetImage("assets/Images/Scroll.png"),
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
+        )),
         child: InkWell(
-
-
           onTap: () async {
-
             if (_keyForm.currentState!.validate()) {
               _keyForm.currentState!.save();
 
               await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: user.email,
-                  password: user.password.toString());
-              user.id =await FirebaseAuth.instance.currentUser!.uid;
+                  email: user.email, password: user.password.toString());
+              user.id = await FirebaseAuth.instance.currentUser!.uid;
               Map<String, dynamic> userData = {
                 "username": user.username,
-                "uid" :user.id
+                "uid": user.id
               };
-              user.image=_imageLink;
-              await userC.addUser(user.email, user.password, user.username,user.birth,user.address,user.image);
+              user.image = _imageLink;
+              await userC.addUser(user.email, user.password, user.username,
+                  user.birth, user.address, user.image);
 
               _keyForm.currentState!.reset();
               Navigator.pushReplacementNamed(context, "/singin");
             }
-
           },
-          child:Padding(
-            padding: const EdgeInsets.fromLTRB(43, 12, 12, 13),
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(43, 12, 12, 13),
             child: Text(
               'Validate',
               style: TextStyle(
                 shadows: [
                   Shadow(
-                    // bottomLeft
+                      // bottomLeft
                       offset: Offset(-1.5, -1.5),
                       color: Colors.red),
                   Shadow(
-                    // bottomRight
+                      // bottomRight
                       offset: Offset(1.5, -1.5),
                       color: Colors.amber),
                   Shadow(
-                    // topRight
+                      // topRight
                       offset: Offset(1.5, 1.5),
                       color: Colors.amber),
                   Shadow(
-                    // topLeft
+                      // topLeft
                       offset: Offset(-1.5, 1.5),
                       color: Colors.red),
                 ],
@@ -112,57 +102,44 @@ class _SignupState extends State<Signup> {
             ),
           ),
         ),
-
-
-
       ),
       height: 50,
       width: 160,
-
     );
     /***************Cancel Button***************/
-    final Cancelbtn =
-    SizedBox(
-
+    final Cancelbtn = SizedBox(
       child: Container(
-
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                  "assets/Images/Scroll.png"),
-              fit: BoxFit.fitWidth,
-              alignment: Alignment.topCenter,
-            )),
-
+          image: AssetImage("assets/Images/Scroll.png"),
+          fit: BoxFit.fitWidth,
+          alignment: Alignment.topCenter,
+        )),
         child: InkWell(
-
-
-          onTap: (){
-
+          onTap: () {
             _keyForm.currentState!.reset();
             Navigator.pushReplacementNamed(context, "/singin");
-
           },
-          child:Padding(
-            padding: const EdgeInsets.fromLTRB(43, 12, 12, 13),
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(43, 12, 12, 13),
             child: Text(
               'Cancel',
               style: TextStyle(
                 shadows: [
                   Shadow(
-                    // bottomLeft
+                      // bottomLeft
                       offset: Offset(-1.5, -1.5),
                       color: Colors.red),
                   Shadow(
-                    // bottomRight
+                      // bottomRight
                       offset: Offset(1.5, -1.5),
                       color: Colors.amber),
                   Shadow(
-                    // topRight
+                      // topRight
                       offset: Offset(1.5, 1.5),
                       color: Colors.amber),
                   Shadow(
-                    // topLeft
+                      // topLeft
                       offset: Offset(-1.5, 1.5),
                       color: Colors.red),
                 ],
@@ -174,13 +151,9 @@ class _SignupState extends State<Signup> {
             ),
           ),
         ),
-
-
-
       ),
       height: 50,
       width: 160,
-
     );
     return Stack(
       children: [
@@ -190,273 +163,247 @@ class _SignupState extends State<Signup> {
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
         ),
-
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: const Text("Register",
+            title: const Text(
+              "Register",
               style: TextStyle(
-
                 fontFamily: 'Windy-Wood-Demo',
                 fontWeight: FontWeight.bold,
-
               ),
             ),
             backgroundColor: Colors.black54,
             foregroundColor: Colors.amberAccent,
           ),
           body: Form(
-
             key: _keyForm,
             child: ListView(
-
               children: [
-
                 SizedBox(
-
                   child: Container(
-
                     alignment: Alignment.topCenter,
                     margin: const EdgeInsets.fromLTRB(40, 10, 40, 5),
-                    child: Text("WildDraw",textScaleFactor: 3,style: TextStyle(
-                        fontFamily: 'Windy-Wood-Demo',
-                        color: Colors.black,
-                        shadows: [
-                          Shadow(
-                            // bottomLeft
-                              offset: Offset(-1.5, -1.5),
-                              color: Colors.white),
-                          Shadow(
-                            // bottomRight
-                              offset: Offset(1.5, -1.5),
-                              color: Colors.white),
-                          Shadow(
-                            // topRight
-                              offset: Offset(1.5, 1.5),
-                              color: Colors.white),
-                          Shadow(
-                            // topLeft
-                              offset: Offset(-1.5, 1.5),
-                              color: Colors.white),
-                        ]) ),
+                    child: const Text("WildDraw",
+                        textScaleFactor: 3,
+                        style: TextStyle(
+                            fontFamily: 'Windy-Wood-Demo',
+                            color: Colors.black,
+                            shadows: [
+                              Shadow(
+                                  // bottomLeft
+                                  offset: Offset(-1.5, -1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                  // bottomRight
+                                  offset: Offset(1.5, -1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                  // topRight
+                                  offset: Offset(1.5, 1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                  // topLeft
+                                  offset: Offset(-1.5, 1.5),
+                                  color: Colors.white),
+                            ])),
                   ),
                 ),
-
-
                 Container(
                   alignment: Alignment.center,
                   margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-                  child:   CircleAvatar(
+                  child: CircleAvatar(
                     backgroundColor: Colors.white54,
                     radius: 100,
                     child: Padding(
                       padding: const EdgeInsets.all(10),
                       child: CircleAvatar(
-                        backgroundImage:
-                        NetworkImage(_imageLink, scale: 1),
+                        backgroundImage: NetworkImage(_imageLink, scale: 1),
                         radius: 100,
                       ),
                     ),
                   ),
                 ),
-
                 Container(
                   height: 65,
                   alignment: Alignment.topCenter,
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: IconButton(
-                    icon: Image.asset("assets/Images/edit3.png"
-
-                    ),
+                    icon: Image.asset("assets/Images/edit3.png"),
                     iconSize: 60,
                     onPressed: () async {
-
-                      var _image= (await ImagePicker().pickImage(source: ImageSource.gallery))  ;
-                      FirebaseStorage fs =FirebaseStorage.instance;
-                      Reference rootref =fs.ref();
-                      Reference picFolderRef  =rootref.child("profilePics").child("image");
-                      File file =File(_image!.path);
-                      picFolderRef.putFile(file).whenComplete(() => null).then((storageTask) async {
+                      var _image = (await ImagePicker()
+                          .pickImage(source: ImageSource.gallery));
+                      FirebaseStorage fs = FirebaseStorage.instance;
+                      Reference rootref = fs.ref();
+                      Reference picFolderRef =
+                          rootref.child("profilePics").child("image");
+                      File file = File(_image!.path);
+                      picFolderRef
+                          .putFile(file)
+                          .whenComplete(() => null)
+                          .then((storageTask) async {
                         String Link = await storageTask.ref.getDownloadURL();
                         print("Image Uploaded");
                         setState(() {
-                          _imageLink= Link;
-
+                          _imageLink = Link;
                         });
-
                       });
-
                     },
-
-
                   ),
-
-
                 ),
-
-
-
-
                 Container(
-                  decoration: BoxDecoration(
-
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image:
-                        AssetImage("assets/Images/try.png"),
+                        image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.topCenter),
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 30, 10, 10),
                   child: TextFormField(
                     cursorColor: Colors.amber,
-                        style: TextStyle(
-
-                          fontFamily: 'Windy-Wood-Demo',
-                          fontSize: 20,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: const TextStyle(
+                      fontFamily: 'Windy-Wood-Demo',
+                      fontSize: 20,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                    ),
                     keyboardType: TextInputType.text,
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Username",
                       hintText: 'username',
                       hintStyle: TextStyle(
-                          color:  Colors.black54,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold
-
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-
+                          color: Colors.black54,
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
-                      labelStyle:  new TextStyle(color: Colors.black,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold,
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            // bottomLeft
+                              // bottomLeft
                               offset: Offset(-1.5, -1.5),
                               color: Colors.red),
                           Shadow(
-                            // bottomRight
+                              // bottomRight
                               offset: Offset(1.5, -1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topRight
+                              // topRight
                               offset: Offset(1.5, 1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topLeft
+                              // topLeft
                               offset: Offset(-1.5, 1.5),
                               color: Colors.red),
                         ],
-
                       ),
                     ),
                     onSaved: (String? value) {
                       user.username = value!;
                     },
                     validator: (String? value) {
-                      if(value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return "Le username ne doit pas etre vide";
-                      }
-                      else if(value.length < 5) {
+                      } else if (value.length < 5) {
                         return "Le username doit avoir au moins 5 caractères";
-                      }
-                      else {
+                      } else {
                         return null;
                       }
                     },
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image:
-                        AssetImage("assets/Images/try.png"),
+                        image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.topCenter),
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: TextFormField(
-                    style: TextStyle(
-
+                    style: const TextStyle(
                       fontFamily: 'Windy-Wood-Demo',
                       fontSize: 20,
                       color: Colors.black54,
                       fontWeight: FontWeight.bold,
                     ),
                     cursorColor: Colors.amber,
-
                     keyboardType: TextInputType.emailAddress,
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Email",
                       hintText: 'Email',
                       hintStyle: TextStyle(
-                          color:  Colors.black54,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold
-
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          color: Colors.black54,
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
-                      labelStyle:  new TextStyle(color: Colors.black,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold,
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            // bottomLeft
+                              // bottomLeft
                               offset: Offset(-1.5, -1.5),
                               color: Colors.red),
                           Shadow(
-                            // bottomRight
+                              // bottomRight
                               offset: Offset(1.5, -1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topRight
+                              // topRight
                               offset: Offset(1.5, 1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topLeft
+                              // topLeft
                               offset: Offset(-1.5, 1.5),
                               color: Colors.red),
                         ],
-
                       ),
                     ),
                     onSaved: (String? value) {
                       user.email = value!;
                     },
                     validator: (String? value) {
-                      String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-                      if(value == null || value.isEmpty) {
+                      String pattern =
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+                      if (value == null || value.isEmpty) {
                         return "L'adresse email ne doit pas etre vide";
-                      }
-                      else if(!RegExp(pattern).hasMatch(value)) {
+                      } else if (!RegExp(pattern).hasMatch(value)) {
                         return "L'adresse email est incorrecte";
-                      }
-                      else {
+                      } else {
                         return null;
                       }
                     },
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image:
-                        AssetImage("assets/Images/try.png"),
+                        image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.topCenter),
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: TextFormField(
-                    style: TextStyle(
-
+                    style: const TextStyle(
                       fontFamily: 'Windy-Wood-Demo',
                       fontSize: 20,
                       color: Colors.black54,
@@ -464,73 +411,70 @@ class _SignupState extends State<Signup> {
                     ),
                     obscureText: true,
                     cursorColor: Colors.amber,
-
                     keyboardType: TextInputType.emailAddress,
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Password",
                       hintText: "at least 5 char",
                       hintStyle: TextStyle(
-                          color:  Colors.black54,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold
-
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          color: Colors.black54,
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
-                      labelStyle: new TextStyle(color: Colors.black,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold,
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            // bottomLeft
+                              // bottomLeft
                               offset: Offset(-1.5, -1.5),
                               color: Colors.red),
                           Shadow(
-                            // bottomRight
+                              // bottomRight
                               offset: Offset(1.5, -1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topRight
+                              // topRight
                               offset: Offset(1.5, 1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topLeft
+                              // topLeft
                               offset: Offset(-1.5, 1.5),
                               color: Colors.red),
                         ],
-
                       ),
                     ),
                     onSaved: (String? value) {
                       user.password = value!;
                     },
                     validator: (value) {
-                      if(value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return "Le mot de passe ne doit pas etre vide";
-                      }
-                      else if(value.length < 5) {
+                      } else if (value.length < 5) {
                         return "Le mot de passe doit avoir au moins 5 caractères";
-                      }
-                      else {
+                      } else {
                         return null;
                       }
                     },
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(
-
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image:
-                        AssetImage("assets/Images/try.png"),
+                        image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.topCenter),
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                   child: TextFormField(
-                    style: TextStyle(
-
+                    style: const TextStyle(
                       fontFamily: 'Windy-Wood-Demo',
                       fontSize: 20,
                       color: Colors.black54,
@@ -538,55 +482,54 @@ class _SignupState extends State<Signup> {
                     ),
                     keyboardType: TextInputType.datetime,
                     cursorColor: Colors.amber,
-
-
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Birth date",
                       hintText: 'exp:1998',
                       hintStyle: TextStyle(
-                          color:  Colors.black54,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold
-
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          color: Colors.black54,
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
-                      labelStyle: new TextStyle(color: Colors.black,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold,
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            // bottomLeft
+                              // bottomLeft
                               offset: Offset(-1.5, -1.5),
                               color: Colors.red),
                           Shadow(
-                            // bottomRight
+                              // bottomRight
                               offset: Offset(1.5, -1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topRight
+                              // topRight
                               offset: Offset(1.5, 1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topLeft
+                              // topLeft
                               offset: Offset(-1.5, 1.5),
                               color: Colors.red),
                         ],
-
                       ),
                     ),
                     onSaved: (String? value) {
                       user.birth = value!;
                     },
                     validator: (value) {
-                      if(value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return "L'année de naissance ne doit pas etre vide";
-                      }
-                      else if(int.parse(value.toString()) > 2021) {
+                      } else if (int.parse(value.toString()) > 2021) {
                         return "L'année de naissance est incorrecte";
-                      }
-                      else {
+                      } else {
                         return null;
                       }
                     },
@@ -595,91 +538,84 @@ class _SignupState extends State<Signup> {
                 Container(
                   alignment: Alignment.topCenter,
                   decoration: BoxDecoration(
-
                     image: DecorationImage(
-                        image:
-                        AssetImage("assets/Images/try.png"),
+                        image: AssetImage("assets/Images/try.png"),
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.topCenter),
                   ),
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
                     textAlign: TextAlign.left,
-
                     style: TextStyle(
-
                       fontFamily: 'Windy-Wood-Demo',
                       fontSize: 20,
                       color: Colors.black54,
                       fontWeight: FontWeight.bold,
                     ),
-
                     cursorColor: Colors.amber,
-
                     keyboardType: TextInputType.text,
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Address",
                       hintText: 'Address',
                       hintStyle: TextStyle(
-                          color:  Colors.black87,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold
-
-                      ),
-                      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          color: Colors.black87,
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontWeight: FontWeight.bold),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black54),
                       ),
-                      labelStyle:  new TextStyle(color: Colors.black,fontFamily: 'Windy-Wood-Demo',fontWeight:FontWeight.bold,
+                      labelStyle: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
-                            // bottomLeft
+                              // bottomLeft
                               offset: Offset(-1.5, -1.5),
                               color: Colors.red),
                           Shadow(
-                            // bottomRight
+                              // bottomRight
                               offset: Offset(1.5, -1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topRight
+                              // topRight
                               offset: Offset(1.5, 1.5),
                               color: Colors.amber),
                           Shadow(
-                            // topLeft
+                              // topLeft
                               offset: Offset(-1.5, 1.5),
                               color: Colors.red),
                         ],
-
                       ),
                     ),
                     onSaved: (String? value) {
                       user.address = value!;
                     },
                     validator: (value) {
-                      if(value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return "L'adresse email ne doit pas etre vide";
-                      }
-                      else if(value.length < 20) {
+                      } else if (value.length < 20) {
                         return "Le mot de passe doit avoir au moins 10 caractères";
-                      }
-                      else {
+                      } else {
                         return null;
                       }
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
-
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
                     Validatebtn,
                     const SizedBox(
-                      width:30,
+                      width: 30,
                     ),
                     Cancelbtn,
                   ],
@@ -689,7 +625,6 @@ class _SignupState extends State<Signup> {
           ),
         ),
       ],
-
     );
   }
 }

@@ -22,7 +22,7 @@ class _CollectionState extends State<Collection> {
           if (snapshot.hasData) {
             return Center(
               child: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 child: Column(
                   children: [
                     Container(
@@ -33,7 +33,7 @@ class _CollectionState extends State<Collection> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: const Text(
                             "Check out our game concept and card examples !",
                             textScaleFactor: 1.3,
@@ -55,7 +55,7 @@ class _CollectionState extends State<Collection> {
               ),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         });
   }
 
@@ -84,7 +84,7 @@ class CardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       decoration: BoxDecoration(
         color: color,
       ),
@@ -92,7 +92,7 @@ class CardView extends StatelessWidget {
         child: Stack(children: [
           Image.asset("assets/Images/EmptyCard.png"),
           Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 100),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 100),
               child: const Center(child: CircularProgressIndicator())),
           Image.network(_card._cardUrl),
         ]),

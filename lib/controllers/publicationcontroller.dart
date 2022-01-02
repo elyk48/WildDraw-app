@@ -1,11 +1,6 @@
 import 'package:cardgameapp/entities/publication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 late String idGenerated;
-
 class publicationController{
   static CollectionReference publications = FirebaseFirestore.instance.collection('publications');
   Future<Publication> addPublication(Publication pub) async{

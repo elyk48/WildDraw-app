@@ -1,6 +1,5 @@
 import 'package:cardgameapp/entities/bug_report.dart';
 import 'package:cardgameapp/entities/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../session.dart';

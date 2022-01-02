@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 ///Quest class
 class Quest extends StatelessWidget {
-
 
 late String _id;
 late String _Qtitle;

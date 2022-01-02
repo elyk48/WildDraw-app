@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-class AuthenticationService{
-final FirebaseAuth _firebaseAuth;
+
+class AuthenticationService {
+  final FirebaseAuth _firebaseAuth;
 
   //Initialise this Service as FirebaseAuth
   AuthenticationService(this._firebaseAuth);
@@ -10,38 +10,36 @@ final FirebaseAuth _firebaseAuth;
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
   //SignIn function
-  Future<String> signIn({required String email, required String password,String? name})async {
+  Future<String> signIn(
+      {required String email, required String password, String? name}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return "Signed in";
-
-    }on FirebaseAuthException catch(e){
-        return e.message.toString();
+    } on FirebaseAuthException catch (e) {
+      return e.message.toString();
     }
   }
 
-
 //SignUp function
-Future<String> signUp({required String email, required String password})async{
-  try {
-    await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-    return "Signed up";
-  }on FirebaseAuthException catch(e){
-    return e.message.toString();
+  Future<String> signUp(
+      {required String email, required String password}) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return "Signed up";
+    } on FirebaseAuthException catch (e) {
+      return e.message.toString();
+    }
   }
-}
-
 
 //SignOut function
-Future<void> signOut()async {
+  Future<void> signOut() async {
     await _firebaseAuth.signOut();
-}
+  }
 
-Future<User?> getUser( )async{
-
-  final CUuser =_firebaseAuth.currentUser;
-
-  return CUuser;
-
-}
+  Future<User?> getUser() async {
+    final CUuser = _firebaseAuth.currentUser;
+    return CUuser;
+  }
 }

@@ -11,7 +11,7 @@ class CreateQuest extends StatefulWidget {
 /// create a quest view
 class _CreateQuestState extends State<CreateQuest> {
   ///instance of a quest
-  late final Quest quest = new Quest(" Default","Default","Default","Default");
+  late final Quest quest = Quest(" Default","Default","Default","Default");
   ///instance of the quest controller
   QuestController QuestC= QuestController();
   ///Global key to access and access the current state
@@ -20,7 +20,7 @@ class _CreateQuestState extends State<CreateQuest> {
   Widget build(BuildContext context) {
     /// the validation button
     final Validatebtn = Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -41,14 +41,14 @@ class _CreateQuestState extends State<CreateQuest> {
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
-        child: Text('Validate', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
+        child: const Text('Validate', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
       ),
     );
 
 
     ///the cancel button
     final Cancelbtn = Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -62,7 +62,7 @@ class _CreateQuestState extends State<CreateQuest> {
         },
         padding: EdgeInsets.all(20),
         color: Colors.black54,
-        child: Text('Cancel', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
+        child: const Text('Cancel', style: TextStyle(color: Colors.amberAccent,fontSize: 15)),
       ),
     );
 
@@ -72,9 +72,9 @@ class _CreateQuestState extends State<CreateQuest> {
 
       appBar: AppBar(
 
-        title: Text("Add a Daily Quest!! "),
+        title: const Text("Add a Daily Quest!! "),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 40,),
           ///button to retrun to the dailyquest view
           onPressed: () => Navigator.of(context).pushReplacementNamed("/DailyQuests"),
         ),
@@ -92,7 +92,7 @@ class _CreateQuestState extends State<CreateQuest> {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.fromLTRB(40, 30, 40, 10),
-              child: Text("Add your Quest !",textScaleFactor: 2),
+              child: const Text("Add your Quest !",textScaleFactor: 2),
             ),
 
 

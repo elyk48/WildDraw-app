@@ -4,8 +4,6 @@ import 'package:cardgameapp/entities/user.dart';
 import 'package:cardgameapp/session.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-
 class MoreInfo extends StatelessWidget {
   const MoreInfo({Key? key}) : super(key: key);
 
@@ -53,7 +51,7 @@ class MoreInfo extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(20, 80, 20,20),
+                padding: const EdgeInsets.fromLTRB(20, 80, 20,20),
                 child: const Text("Hello there !\nYou're probably wondering what is this app all about,"
                     " we're 2 students from university trying to make an app to promote our next university project, which will be a digital card game like no other !\n\n"
                     "What is so special about our game ?\n\n"
@@ -81,18 +79,12 @@ class MoreInfo extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
 class PublicationView extends StatefulWidget {
   const PublicationView({Key? key}) : super(key: key);
 
   @override
   _PublicationViewState createState() => _PublicationViewState();
 }
-
 class _PublicationViewState extends State<PublicationView> {
   //late SharedPreferences prefs;
   late List<dynamic> _AllPubs = [];
@@ -111,7 +103,6 @@ class _PublicationViewState extends State<PublicationView> {
   Widget build(BuildContext context) {
     return FBPublicationList();
   }
-
   FutureBuilder<List> FBPublicationList() {
     late Publication pub = Publication.newPub(
         "Bienvenue à esprit Méteo !", user.id, user.username);
@@ -315,14 +306,12 @@ class _PublicationViewState extends State<PublicationView> {
       },
     );
   }
-
   @override
   void initState() {
     futurepubs = getAllPubs(_AllPubs);
     super.initState();
     Session.setUser(user);
   }
-
   Future<List> getAllPubs(List<dynamic> l) async {
     QuerySnapshot querySnapshot;
     try {
@@ -346,7 +335,6 @@ class _PublicationViewState extends State<PublicationView> {
     }
     return _AllPubs;
   }
-
   static Future<void> deletePublication(String docId) async {
     CollectionReference publications =
         FirebaseFirestore.instance.collection('publications');

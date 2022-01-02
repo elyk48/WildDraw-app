@@ -1,9 +1,7 @@
 import 'package:cardgameapp/controllers/bugreportcontroller.dart';
 import 'package:cardgameapp/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../session.dart';
 
 class BugReportForm extends StatefulWidget {
@@ -27,7 +25,6 @@ class _BugReportFormState extends State<BugReportForm> {
     Session.setUser(user);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -168,31 +165,34 @@ class reportBugsGrid extends StatefulWidget {
 }
 
 class _reportBugsGridState extends State<reportBugsGrid> {
-
-  Future<void> showAlertDialogDelete(BuildContext context, String id, int index) async{
+  Future<void> showAlertDialogDelete(
+      BuildContext context, String id, int index) async {
     // Create button
     Widget okButton = ElevatedButton(
       child: const Text("Yes I wanna Close it"),
       onPressed: () {
-        if(index>1)
-          widget._AllReports.removeAt(index+1);
-        else if(index==1)
+        if (index > 1) {
+          widget._AllReports.removeAt(index + 1);
+        } else if (index == 1) {
           widget._AllReports.removeAt(0);
+        }
         Navigator.of(context, rootNavigator: true).pop('dialog');
         setState(() {
           BugReportController.deleteBugReport(widget._AllReports[index]["id"]);
           widget._AllReports = <dynamic>[];
-          widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+          widget._futureReports =
+              BugReportController.getAllReports(widget._AllReports);
         });
       },
     );
     Widget NoButton = ElevatedButton(
-      child: Text("Nope"),
-      onPressed: (){
+      child: const Text("Nope"),
+      onPressed: () {
         Navigator.of(context, rootNavigator: true).pop('dialog');
         setState(() {
           widget._AllReports = <dynamic>[];
-          widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+          widget._futureReports =
+              BugReportController.getAllReports(widget._AllReports);
         });
       },
     );
@@ -216,10 +216,9 @@ class _reportBugsGridState extends State<reportBugsGrid> {
     return FutureBuilder(
         future: widget._futureReports,
         builder: (context, snapshot) {
-          if(!snapshot.hasData) {
+          if (!snapshot.hasData) {
             return const CircularProgressIndicator();
-          }
-          else if (snapshot.hasData) {
+          } else if (snapshot.hasData) {
             return ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: widget._AllReports.length,
@@ -296,8 +295,9 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                           ),
                         ),
                         onDismissed: (direction) {
-                          setState(() async{
-                           await showAlertDialogDelete(context,widget._AllReports[index]["id"],index);
+                          setState(() async {
+                            await showAlertDialogDelete(context,
+                                widget._AllReports[index]["id"], index);
                           });
                         },
                         background: Container(
@@ -306,7 +306,8 @@ class _reportBugsGridState extends State<reportBugsGrid> {
                               padding: const EdgeInsets.fromLTRB(0, 0, 220, 0),
                               child: const Center(
                                   child: Text("Close Report",
-                                      textScaleFactor: 2.5, textAlign: TextAlign.center,
+                                      textScaleFactor: 2.5,
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(color: Colors.white))),
                             )),
                       )
@@ -333,7 +334,8 @@ class _reportBugsGridState extends State<reportBugsGrid> {
 
   @override
   void initState() {
-    widget._futureReports = BugReportController.getAllReports(widget._AllReports);
+    widget._futureReports =
+        BugReportController.getAllReports(widget._AllReports);
     Session.setUser(widget.user);
     super.initState();
   }
@@ -407,7 +409,7 @@ class BugReport {
 showAlertDialog(BuildContext context) {
   // Create button
   Widget okButton = ElevatedButton(
-    child: Text("OK"),
+    child: const Text("OK"),
     onPressed: () {
       Navigator.of(context).pop();
       Navigator.pushReplacementNamed(context, "/navTab");
@@ -416,9 +418,9 @@ showAlertDialog(BuildContext context) {
 
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Report"),
-    content:
-        Text("Report has been sent, we will review it as soon as possible !"),
+    title: const Text("Report"),
+    content: const Text(
+        "Report has been sent, we will review it as soon as possible !"),
     actions: [
       okButton,
     ],

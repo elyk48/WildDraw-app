@@ -1,12 +1,8 @@
 import 'dart:math';
-
 import 'package:cardgameapp/entities/quest.dart';
 import 'package:cardgameapp/entities/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class userController {
@@ -38,46 +34,30 @@ class userController {
 
     user1.id = usercurrentId;
     print(user1.id);
-
     final now = DateTime.now();
-
-
-
-
     DateTime dateTime = DateTime(now.year,now.month,now.day-1);
-
     users.doc(usercurrentId).collection("rerolled").doc(usercurrentId).set({
       "rerolled":true,
       "LastRerolled":dateTime,
-
     });
-
     return Userref;
   }
-
   CollectionReference DailyQuests =
       FirebaseFirestore.instance.collection('quests');
-
   ///a function to add the quests
   Future<void> addQuest2() async {
     Quest q1 = Quest("0", "0", "0", "0");
     Quest q2;
     Quest q3;
     Map<String, dynamic> a;
-
     ///creating a quest instance with the variables passed to the parameter
-
     usercurrentId = FirebaseAuth.instance.currentUser!.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
     ///a random instance to generate a random id for the document
-    var rng = new Random();
-
+    var rng = Random();
     QuerySnapshot querySnapshot;
     List<Map<String, dynamic>> Quests = [];
-
     querySnapshot = await DailyQuests.get();
-
     for (var doc in querySnapshot.docs.toList()) {
       a = {
         "Qdescription": doc["Qdescription"],
@@ -116,7 +96,7 @@ class userController {
     prefs.setInt('myTimestampKey', timestamp);
     usercurrentId = FirebaseAuth.instance.currentUser!.uid;
     Quest q1 = Quest("0", "0", "0", "0");
-    var rng = new Random();
+    var rng = Random();
     Map<String, dynamic> a;
     QuerySnapshot querySnapshot;
     List<Map<String, dynamic>> Quests = [];
