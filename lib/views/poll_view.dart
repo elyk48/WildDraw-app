@@ -131,10 +131,8 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                           return Column(
                                             children: <Widget>[
                                               Container(
-                                                margin:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 16.0,
-                                                    vertical: 8.0),
+
+
                                                 decoration: BoxDecoration(
                                                   color: Colors.amberAccent,
                                                   border: Border.all(
@@ -178,14 +176,14 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                         .collection('users')
                                                         .doc(uid);
                                                     doc.get().then((
-                                                        value) async {
+                                                        value)  {
                                                       ///testing if the user already voted
                                                       if (value.exists) {
                                                         print(value.get(
                                                             "vote"));
                                                         if (value.get('vote') !=
                                                             myoptions.id) {
-                                                          await FirebaseFirestore
+                                                           FirebaseFirestore
                                                               .instance
                                                               .collection(
                                                               'poll')
@@ -236,6 +234,9 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                           });
                                                         }
                                                       }
+
+
+
 
                                                       ///if its not the case
                                                       else {

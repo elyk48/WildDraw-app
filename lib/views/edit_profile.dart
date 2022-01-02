@@ -387,6 +387,8 @@ initialValue: myUsername,
         print(e);
       });
   }
+
+
   updateUser(UserE user){
     var id=  FirebaseAuth.instance.currentUser!.uid;
     FirebaseFirestore.instance.collection("users").doc(id).set({

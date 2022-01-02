@@ -43,7 +43,21 @@ import 'package:shared_preferences/shared_preferences.dart';
        "isAdmin": user1.isAdmin
      })
 
+
+
          .catchError((error) => print("Failed to add user : $error"));
+     final now = DateTime.now();
+
+
+
+
+     DateTime dateTime = DateTime(now.year,now.month,now.day-1);
+
+     users.doc(usercurrentId).collection("rerolled").doc(usercurrentId).set({
+       "rerolled":true,
+       "LastRerolled":dateTime,
+
+     });
 
      user1.id = usercurrentId;
      print(user1.id);

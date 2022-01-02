@@ -62,11 +62,18 @@ class _SignInPageState extends State<SignInPage> {
             _keyForm.currentState!.save();
             ;
 
-            await context.read<AuthenticationService>().signIn(
-                  email: _email.toString(),
-                  password: _password.toString(),
-                );
+            try {
+              await context.read<AuthenticationService>().signIn(
+                email: _email.toString(),
+                password: _password.toString(),
+              ).catchError((e) {
+                print("aaaaaaaaaaaaaa");
+              });
+              ;
+            }catch(e){
+              print("eeeeeeeeeeeeee");
 
+            }
             final user = await context.read<AuthenticationService>().getUser();
             CollectionReference users =
                 FirebaseFirestore.instance.collection('users');
@@ -120,6 +127,7 @@ class _SignInPageState extends State<SignInPage> {
               if (hours >= 24) {
                 users.doc(user.uid).collection("rerolled").doc(user.uid).set({
                   "rerolled": false,
+                  "LastRerolled":DateR,
                 });
               }
             }
