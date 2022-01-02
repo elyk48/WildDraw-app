@@ -39,7 +39,15 @@ class _DailyQuestsState extends State<DailyQuests> {
           backgroundColor: Colors.black54,
           foregroundColor: Colors.amberAccent,
 
-          title: Text("Daily Quests"),
+          title: Text("Daily Quests",
+            style: TextStyle(
+
+              fontFamily: 'Windy-Wood-Demo',
+              fontWeight: FontWeight.bold,
+            ),
+
+
+          ),
 
           ///a button to return to the home page
           leading: IconButton(
