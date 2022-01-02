@@ -39,14 +39,21 @@ class _SignInPageState extends State<SignInPage> {
   late var rerolled = true;
   late var pressed = false;
 
-  UserE userConnected = UserE.NewUser("dummy@dumb.du", "dumb123", "Dummy", "1969", "Dumb,Dumb,Dumb,Dumb,dumb", "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9",false);
+  UserE userConnected = UserE.NewUser(
+      "dummy@dumb.du",
+      "dumb123",
+      "Dummy",
+      "1969",
+      "Dumb,Dumb,Dumb,Dumb,dumb",
+      "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9",
+      false);
 
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
+
   @override
   void initState() {
-    SharedPreferences.getInstance().then((value){
-      if(value.getString("id")==null)
-      {
+    SharedPreferences.getInstance().then((value) {
+      if (value.getString("id") == null) {
         value.setString("id", "");
         value.setString("email", "");
         value.setString("rank", "");
@@ -61,9 +68,10 @@ class _SignInPageState extends State<SignInPage> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    showAlertDialog(BuildContext context,String Message) {
+    showAlertDialog(BuildContext context, String Message) {
       // Create button
       Widget NoButton = ElevatedButton(
         child: const Text("Ok"),
@@ -73,8 +81,11 @@ class _SignInPageState extends State<SignInPage> {
       );
       // Create AlertDialog
       AlertDialog alert = AlertDialog(
-        title: const Text("Authentication",textAlign: TextAlign.center,),
-        content:  Text(Message,textAlign: TextAlign.center),
+        title: const Text(
+          "Authentication",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(Message, textAlign: TextAlign.center),
         actions: [Center(child: NoButton)],
       );
 
@@ -86,13 +97,25 @@ class _SignInPageState extends State<SignInPage> {
         },
       );
     }
+
     showWaiting(BuildContext context) {
       // Create AlertDialog
       AlertDialog alert = const AlertDialog(
-        actionsPadding: EdgeInsets.fromLTRB(0,0,0,10),
-        title: Text("Authentication",textAlign: TextAlign.center,),
-        content:  Text("Connection, please give us a second...\nClick away if you'd like",textAlign: TextAlign.center,),
-        actions: [Center(child: CircularProgressIndicator(color: Colors.pink,))],
+        actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        title: Text(
+          "Authentication",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          "Connection, please give us a second...\nClick away if you'd like",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Center(
+              child: CircularProgressIndicator(
+                color: Colors.pink,
+              ))
+        ],
       );
 
       // show the dialog
@@ -121,93 +144,97 @@ class _SignInPageState extends State<SignInPage> {
         ),
         onPressed: () async {
           try {
-            if(!pressed){showWaiting(context);
-            if (_keyForm.currentState!.validate()) {
-              _keyForm.currentState!.save();
+            if (!pressed) {
+              showWaiting(context);
+              if (_keyForm.currentState!.validate()) {
+                _keyForm.currentState!.save();
 
-              await context.read<AuthenticationService>().signIn(
-                email: _email.toString(),
-                password: _password.toString(),
-              );
+                await context.read<AuthenticationService>().signIn(
+                  email: _email.toString(),
+                  password: _password.toString(),
+                );
 
-              CollectionReference users =
-              FirebaseFirestore.instance.collection('users');
+                CollectionReference users =
+                FirebaseFirestore.instance.collection('users');
 
-              final user =
-              await context.read<AuthenticationService>().getUser();
-              SharedPreferences prefs = await SharedPreferences.getInstance();
+                final user =
+                await context.read<AuthenticationService>().getUser();
+                SharedPreferences prefs = await SharedPreferences.getInstance();
 
-              await FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(user!.uid)
-                  .get()
-                  .then((ds) {
-                myId = ds.data()!["Id"];
-                myUsername = ds.data()!['username'];
-                myEmail = ds.data()!['email'];
-                myRank = ds.data()!['Rank'];
-                myPassword = ds.data()!['password'];
-                mylevel = ds.data()!['level'];
-                myaddress = ds.data()!['address'];
-                myImage = ds.data()!['image'];
-                myBirthdate = ds.data()!['birthdate'];
-                isAdmin = ds.data()!["isAdmin"];
-              }).catchError((e) {
-                print(e);
-              });
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user!.uid)
+                    .get()
+                    .then((ds) {
+                  myId = ds.data()!["Id"];
+                  myUsername = ds.data()!['username'];
+                  myEmail = ds.data()!['email'];
+                  myRank = ds.data()!['Rank'];
+                  myPassword = ds.data()!['password'];
+                  mylevel = ds.data()!['level'];
+                  myaddress = ds.data()!['address'];
+                  myImage = ds.data()!['image'];
+                  myBirthdate = ds.data()!['birthdate'];
+                  isAdmin = ds.data()!["isAdmin"];
+                }).catchError((e) {
+                  print(e);
+                });
 
-              await users
-                  .doc(user.uid)
-                  .collection("rerolled")
-                  .doc(user.uid)
-                  .get()
-                  .then((ds) async {
-                Timestamp date = await ds.data()!["LastRerolled"];
-                DateR = date.toDate();
-                rerolled = await ds.data()!["rerolled"];
-              }).catchError((e) {
-                print(e);
-              });
+                await users
+                    .doc(user.uid)
+                    .collection("rerolled")
+                    .doc(user.uid)
+                    .get()
+                    .then((ds) async {
+                  Timestamp date = await ds.data()!["LastRerolled"];
+                  DateR = date.toDate();
+                  rerolled = await ds.data()!["rerolled"];
+                }).catchError((e) {
+                  print(e);
+                });
 
-              if (DateR != null) {
-                DateTime now = DateTime.now();
-                Duration timeDifference = now.difference(DateR);
-                int hours = timeDifference.inHours;
-                print(hours);
-                if (hours >= 24) {
-                  users.doc(user.uid).collection("rerolled").doc(user.uid).set({
-                    "LastRerolled": DateR,
-                    "rerolled": false,
-                  });
+                if (DateR != null) {
+                  DateTime now = DateTime.now();
+                  Duration timeDifference = now.difference(DateR);
+                  int hours = timeDifference.inHours;
+                  print(hours);
+                  if (hours >= 24) {
+                    users
+                        .doc(user.uid)
+                        .collection("rerolled")
+                        .doc(user.uid)
+                        .set({
+                      "LastRerolled": DateR,
+                      "rerolled": false,
+                    });
+                  }
                 }
-              }
-              prefs.setString("id", myId);
-              prefs.setString("email", myEmail);
-              prefs.setString("rank", myRank);
-              prefs.setString("level", mylevel);
-              prefs.setString("password", myPassword);
-              prefs.setString("address", myaddress);
-              prefs.setString("birth", myBirthdate);
-              prefs.setString("image", myImage);
-              prefs.setBool("isAdmin", isAdmin);
-              prefs.setString("username", myUsername);
-              prefs.setString("rerolledDate", DateR.toString());
-              prefs.setBool("rerolled", rerolled);
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-              Navigator.pushReplacementNamed(context, "/home");
-            }}
-          } catch (e) {
-            if(e.toString()=="Null check operator used on a null value")
-              {
+                prefs.setString("id", myId);
+                prefs.setString("email", myEmail);
+                prefs.setString("rank", myRank);
+                prefs.setString("level", mylevel);
+                prefs.setString("password", myPassword);
+                prefs.setString("address", myaddress);
+                prefs.setString("birth", myBirthdate);
+                prefs.setString("image", myImage);
+                prefs.setBool("isAdmin", isAdmin);
+                prefs.setString("username", myUsername);
+                prefs.setString("rerolledDate", DateR.toString());
+                prefs.setBool("rerolled", rerolled);
                 Navigator.of(context, rootNavigator: true).pop('dialog');
-                showAlertDialog(context,"Wrong Email and/or Password, please try again");
+                Navigator.pushReplacementNamed(context, "/home");
               }
-            else
-              {
-                showAlertDialog(context,"An Unknown Error has occurred please try again, later");
-              }
+            }
+          } catch (e) {
+            if (e.toString() == "Null check operator used on a null value") {
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+              showAlertDialog(
+                  context, "Wrong Email and/or Password, please try again");
+            } else {
+              showAlertDialog(context,
+                  "An Unknown Error has occurred please try again, later");
+            }
           }
-
         },
         color: Colors.black54,
         child: const Text('Log In',
@@ -242,19 +269,30 @@ class _SignInPageState extends State<SignInPage> {
       resizeToAvoidBottomInset: false,
       body: Form(
         key: _keyForm,
-        child: Stack(
-          children:[ Container( decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage("assets/Images/Login page.png"),
-              fit: BoxFit.cover,
+        child: Stack(children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/Images/Login page.png"),
+                fit: BoxFit.cover,
+              ),
             ),
-          ),),
-            Column(
+          ),
+          Center(
+            child: Column(
               children: [
                 const SizedBox(height: 366),
                 //email
                 Container(
-                  padding: const EdgeInsets.fromLTRB(70, 0, 50, 0),
+                  width: 300,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/Images/bg_text.png"),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                  padding: const EdgeInsets.fromLTRB(30, 5, 50, 0),
                   child: TextFormField(
                     style: const TextStyle(
                         color: Colors.black,
@@ -267,7 +305,8 @@ class _SignInPageState extends State<SignInPage> {
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: "Email",
-                      labelStyle: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w600),
+                      labelStyle: TextStyle(
+                          color: Colors.deepPurple, fontWeight: FontWeight.w600),
                     ),
                     onSaved: (String? value) {
                       _email = value;
@@ -283,43 +322,54 @@ class _SignInPageState extends State<SignInPage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 5.0),
-                TextFormField(
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Windy-Wood-Demo',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      decorationColor: Colors.black),
-                  autofocus: false,
-                  cursorColor: Colors.black,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding:
-                    EdgeInsets.fromLTRB(70, 0, 50, 0),
-                    labelStyle: TextStyle(color: Colors.deepPurple,fontWeight: FontWeight.w600),
-                    labelText: "Password",
+                const SizedBox(height: 10.0),
+                Container(
+                  width: 300,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/Images/bg_text.png"),
+                      fit: BoxFit.fill,
+                    ),
                   ),
-                  onSaved: (String? value) {
-                    _password = value;
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Le username ne doit pas etre vide";
-                    } else if (value.length < 5) {
-                      return "Le username doit avoir au moins 5 caractères";
-                    } else {
-                      return null;
-                    }
-                  },
+                  child: TextFormField(
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Windy-Wood-Demo',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        decorationColor: Colors.black),
+                    autofocus: false,
+                    cursorColor: Colors.black,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.fromLTRB(30, 10, 50, 0),
+                      labelStyle: TextStyle(
+                          color: Colors.deepPurple, fontWeight: FontWeight.w600),
+                      labelText: "Password",
+                    ),
+                    onSaved: (String? value) {
+                      _password = value;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return "Le username ne doit pas etre vide";
+                      } else if (value.length < 5) {
+                        return "Le username doit avoir au moins 5 caractères";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
                 loginButton,
                 RegisterButton,
                 forgotLabel,
               ],
-            ),]
-        ),
+            ),
+          ),
+        ]),
       ),
     );
   }
