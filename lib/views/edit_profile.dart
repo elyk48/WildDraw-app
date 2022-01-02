@@ -419,9 +419,9 @@ class _EditProfile extends State<EditProfile> {
                                 String pattern =
                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
                                 if (value == null || value.isEmpty) {
-                                  return "the mail address must not be empty";
+                                  return "Email address must not be empty";
                                 } else if (!RegExp(pattern).hasMatch(value)) {
-                                  return "the mail address is incorrect !";
+                                  return "Email address is incorrect !";
                                 } else {
                                   return null;
                                 }
@@ -476,9 +476,9 @@ class _EditProfile extends State<EditProfile> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "the password must not be empty";
+                                  return "Password must not be empty";
                                 } else if (value.length < 5) {
-                                  return "the password must have at least 5 characters";
+                                  return "Password must have at least 5 characters";
                                 } else {
                                   return null;
                                 }
@@ -609,9 +609,9 @@ class _EditProfile extends State<EditProfile> {
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "the address must not be empty";
-                                } else if (value.length < 20) {
-                                  return "the address must have at least  10 characters";
+                                  return "Address must not be empty";
+                                } else if (value.length < 10) {
+                                  return "Address must have at least  10 characters";
                                 } else {
                                   return null;
                                 }
