@@ -176,55 +176,104 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                                     .docs[j]
                                                                 ["votes"] /
                                                             100,
-                                                        center: Text(
-                                                            snapshot2.data
-                                                                        .docs[j]
-                                                                    ["name"] +
-                                                                "  " +
-                                                                ((snapshot2.data.docs[j]["votes"] /
-                                                                            100) *
-                                                                        100)
-                                                                    .toString(),
-                                                            textScaleFactor:
-                                                                1.5,
-                                                            style: const TextStyle(
-                                                                fontFamily:
-                                                                    'Windy-Wood-Demo',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                                shadows: [
-                                                                  Shadow(
-                                                                      // bottomLeft
-                                                                      offset: Offset(
-                                                                          -1.5,
-                                                                          -1.5),
+                                                        center: Row(
+                                                          children: [
+                                                            Text(
+                                                                snapshot2.data
+                                                                            .docs[j]
+                                                                        [
+                                                                        "name"],
+                                                                textScaleFactor:
+                                                                    1.5,
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        'Windy-Wood-Demo',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    shadows: [
+                                                                      Shadow(
+                                                                          // bottomLeft
+                                                                          offset: Offset(
+                                                                              -1.5,
+                                                                              -1.5),
+                                                                          color:
+                                                                              Colors.black54),
+                                                                      Shadow(
+                                                                          // bottomRight
+                                                                          offset: Offset(
+                                                                              1.5,
+                                                                              -1.5),
+                                                                          color:
+                                                                              Colors.black54),
+                                                                      Shadow(
+                                                                          // topRight
+                                                                          offset: Offset(
+                                                                              1.5,
+                                                                              1.5),
+                                                                          color:
+                                                                              Colors.black54),
+                                                                      Shadow(
+                                                                          // topLeft
+                                                                          offset: Offset(
+                                                                              -1.5,
+                                                                              1.5),
+                                                                          color:
+                                                                              Colors.black54),
+                                                                    ])
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                                              child: Text(
+                                                                      ((snapshot2.data.docs[j]["votes"] /
+                                                                          100) *
+                                                                          100)
+                                                                          .toInt().toString(),
+                                                                  textScaleFactor:
+                                                                  1.5,
+                                                                  style: const TextStyle(
+                                                                      fontFamily:
+                                                                      'Windy-Wood-Demo',
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
                                                                       color: Colors
-                                                                          .black54),
-                                                                  Shadow(
-                                                                      // bottomRight
-                                                                      offset: Offset(
-                                                                          1.5,
-                                                                          -1.5),
-                                                                      color: Colors
-                                                                          .black54),
-                                                                  Shadow(
-                                                                      // topRight
-                                                                      offset: Offset(
-                                                                          1.5,
-                                                                          1.5),
-                                                                      color: Colors
-                                                                          .black54),
-                                                                  Shadow(
-                                                                      // topLeft
-                                                                      offset: Offset(
-                                                                          -1.5,
-                                                                          1.5),
-                                                                      color: Colors
-                                                                          .black54),
-                                                                ])),
+                                                                          .white,
+                                                                      shadows: [
+                                                                        Shadow(
+                                                                          // bottomLeft
+                                                                            offset: Offset(
+                                                                                -1.5,
+                                                                                -1.5),
+                                                                            color: Colors
+                                                                                .black54),
+                                                                        Shadow(
+                                                                          // bottomRight
+                                                                            offset: Offset(
+                                                                                1.5,
+                                                                                -1.5),
+                                                                            color: Colors
+                                                                                .black54),
+                                                                        Shadow(
+                                                                          // topRight
+                                                                            offset: Offset(
+                                                                                1.5,
+                                                                                1.5),
+                                                                            color: Colors
+                                                                                .black54),
+                                                                        Shadow(
+                                                                          // topLeft
+                                                                            offset: Offset(
+                                                                                -1.5,
+                                                                                1.5),
+                                                                            color: Colors
+                                                                                .black54),
+                                                                      ])),
+                                                            )
+                                                          ],
+                                                        ),
                                                         linearStrokeCap:
                                                             LinearStrokeCap
                                                                 .roundAll,
