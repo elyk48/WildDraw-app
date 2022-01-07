@@ -10,7 +10,7 @@ class Session{
   static late final bool isAdmin;
   static late UserE CurrentUser;
 
- static Future<void> setUser(UserE user) async
+ static Future<UserE> setUser(UserE user) async
   {
     var prefs = await SharedPreferences.getInstance().then((value){return value;});
     user.id = prefs.getString("id")!;
@@ -25,6 +25,7 @@ class Session{
     user.password = prefs.getString("password")!;
 
     print("From Session class Username is : "+user.username+" isAdmin: "+user.isAdmin.toString()+" Rank: "+user.Rank+" image: "+user.image);
+    return user;
   }
 
   static Future<void> SetCurrentUser()

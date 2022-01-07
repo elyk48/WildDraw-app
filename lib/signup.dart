@@ -34,7 +34,7 @@ class _SignupState extends State<Signup> {
     });
   }
 
-  late final UserE user = new UserE.NewUser(
+  late final UserE user = UserE.NewUser(
       "email", "password", "username", "birthdate", "address", "image", false);
   userController userC = userController();
 

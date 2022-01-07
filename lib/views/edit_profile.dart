@@ -240,10 +240,10 @@ class _EditProfile extends State<EditProfile> {
             key: _keyForm,
             child: FutureBuilder(
                 future: Session.setUser(user),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
                     return Text("Loading data...Please wait");
-                  } else {
+                  } else{
                     return ListView(
                       children: [
                         Container(
@@ -650,8 +650,8 @@ class _EditProfile extends State<EditProfile> {
 
   @override
   void initState() {
-    super.initState();
     Session.setUser(user);
+    super.initState();
   }
 
   updateUser(UserE user) {
