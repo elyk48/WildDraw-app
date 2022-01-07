@@ -34,15 +34,6 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
           backgroundColor: Colors.black54,
           foregroundColor: Colors.amberAccent,
           title: const Text("Polls"),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-              size: 40,
-            ),
-            onPressed: () =>
-                Navigator.of(context).pushReplacementNamed("/home"),
-          ),
         ),
 
         ///stream builder used for the stream of data
@@ -171,13 +162,12 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                             140,
                                                         animation: true,
                                                         lineHeight: 30.0,
-                                                        animationDuration: 2500,
-                                                        percent: snapshot2.data
+                                                        animationDuration: 200,
+                                                        percent:  snapshot2.data
                                                                     .docs[j]
-                                                                ["votes"] /
-                                                            100,
-                                                        center: Row(
-                                                          children: [
+                                                                ["votes"]/100,
+                                                           center: Row(
+                                                           children: [
                                                             Text(
                                                                 snapshot2.data
                                                                             .docs[j]
@@ -225,12 +215,9 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                                     ])
                                                             ),
                                                             Padding(
-                                                              padding: const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                                               child: Text(
-                                                                      ((snapshot2.data.docs[j]["votes"] /
-                                                                          100) *
-                                                                          100)
-                                                                          .toInt().toString(),
+                                                                      ": "+snapshot2.data.docs[j]["votes"].toString()+" votes",
                                                                   textScaleFactor:
                                                                   1.5,
                                                                   style: const TextStyle(
@@ -274,106 +261,108 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
                                                             )
                                                           ],
                                                         ),
+                                                        backgroundColor: Colors.white,
                                                         linearStrokeCap:
                                                             LinearStrokeCap
                                                                 .roundAll,
-                                                        progressColor:
-                                                            const Color(
-                                                                0xFF911A00),
+                                                        progressColor: Colors.pink,
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                                 onTap: () async {
-                                                  if (!wait) {
-                                                    wait = true;
-                                                    //print(wait);
-                                                    var doc = FirebaseFirestore
-                                                        .instance
-                                                        .collection('poll')
-                                                        .doc(snapshot
-                                                            .data.docs[i].id)
-                                                        .collection('users')
-                                                        .doc(user.id);
-                                                    await doc
-                                                        .get()
-                                                        .then((value) async {
-                                                      if (!value.exists) {
-                                                        var doc2 =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'poll')
-                                                                .doc(snapshot
-                                                                    .data
-                                                                    .docs[i]
-                                                                    .id)
-                                                                .collection(
-                                                                    'options')
-                                                                .doc(snapshot2
-                                                                    .data
+                                                  setState(() async{
+                                                    if (!wait) {
+                                                      wait = true;
+                                                      //print(wait);
+                                                      var doc = FirebaseFirestore
+                                                          .instance
+                                                          .collection('poll')
+                                                          .doc(snapshot
+                                                          .data.docs[i].id)
+                                                          .collection('users')
+                                                          .doc(user.id);
+                                                      await doc
+                                                          .get()
+                                                          .then((value) async {
+                                                        if (!value.exists) {
+                                                          var doc2 =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              'poll')
+                                                              .doc(snapshot
+                                                              .data
+                                                              .docs[i]
+                                                              .id)
+                                                              .collection(
+                                                              'options')
+                                                              .doc(snapshot2
+                                                              .data
+                                                              .docs[j]
+                                                              .id);
+                                                          await doc2.update({
+                                                            'votes': 1 +
+                                                                snapshot2.data
                                                                     .docs[j]
-                                                                    .id);
-                                                        await doc2.update({
-                                                          'votes': 1 +
-                                                              snapshot2.data
-                                                                      .docs[j]
-                                                                  ["votes"]
-                                                        });
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('poll')
-                                                            .doc(snapshot.data
-                                                                .docs[i].id)
-                                                            .collection('users')
-                                                            .doc(user.id)
-                                                            .set({
-                                                          "vote": snapshot2
-                                                              .data.docs[j].id,
-                                                        });
-                                                      } else if (snapshot2.data
-                                                              .docs[j].id ==
-                                                          value
-                                                              .data()!["vote"]
-                                                              .toString()) {
-                                                        print("Same vote !");
-                                                        var doc2 =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'poll')
-                                                                .doc(snapshot
-                                                                    .data
-                                                                    .docs[i]
-                                                                    .id)
-                                                                .collection(
-                                                                    'options')
-                                                                .doc(snapshot2
-                                                                    .data
-                                                                    .docs[j]
-                                                                    .id);
-                                                        await doc2.update({
-                                                          'votes': snapshot2
-                                                                      .data
-                                                                      .docs[j]
-                                                                  ["votes"] -
-                                                              1
-                                                        });
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('poll')
-                                                            .doc(snapshot.data
-                                                                .docs[i].id)
-                                                            .collection('users')
-                                                            .doc(user.id)
-                                                            .delete();
-                                                      }
-                                                      wait = false;
-                                                    });
-                                                    print("Option Chosen: " +
-                                                        snapshot2.data.docs[j]
-                                                            ["name"]);
-                                                  }
+                                                                ["votes"]
+                                                          });
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection('poll')
+                                                              .doc(snapshot.data
+                                                              .docs[i].id)
+                                                              .collection('users')
+                                                              .doc(user.id)
+                                                              .set({
+                                                            "vote": snapshot2
+                                                                .data.docs[j].id,
+                                                          });
+                                                        } else if (snapshot2.data
+                                                            .docs[j].id ==
+                                                            value
+                                                                .data()!["vote"]
+                                                                .toString()) {
+                                                          print("Same vote !");
+                                                          var doc2 =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                              'poll')
+                                                              .doc(snapshot
+                                                              .data
+                                                              .docs[i]
+                                                              .id)
+                                                              .collection(
+                                                              'options')
+                                                              .doc(snapshot2
+                                                              .data
+                                                              .docs[j]
+                                                              .id);
+                                                          await doc2.update({
+                                                            'votes': snapshot2
+                                                                .data
+                                                                .docs[j]
+                                                            ["votes"] -
+                                                                1
+                                                          });
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection('poll')
+                                                              .doc(snapshot.data
+                                                              .docs[i].id)
+                                                              .collection('users')
+                                                              .doc(user.id)
+                                                              .delete();
+                                                        }
+                                                        wait = false;
+                                                      });
+                                                      print("Option Chosen: " +
+                                                          snapshot2.data.docs[j]
+                                                          ["name"]);
+                                                    }
+                                                  });
+
                                                 },
                                               )
                                           ],
@@ -420,4 +409,5 @@ class _MyPollDisplayState extends State<MyPollDisplay> {
       setState(() => isAdmin = prefs.getBool("isAdmin")!);
     });
   }
+
 }

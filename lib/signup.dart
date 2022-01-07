@@ -270,6 +270,12 @@ class _SignupState extends State<Signup> {
                     ),
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color:  Colors.limeAccent
+                      ),
                       labelText: "Username",
                       hintText: 'username',
                       hintStyle: TextStyle(
@@ -340,6 +346,12 @@ class _SignupState extends State<Signup> {
                     cursorColor: Colors.amber,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color:  Colors.limeAccent
+                      ),
                       labelText: "Email",
                       hintText: 'Email',
                       hintStyle: TextStyle(
@@ -413,6 +425,12 @@ class _SignupState extends State<Signup> {
                     cursorColor: Colors.amber,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color:  Colors.limeAccent
+                      ),
                       labelText: "Password",
                       hintText: "At least 5 characters long",
                       hintStyle: TextStyle(
@@ -483,6 +501,12 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.datetime,
                     cursorColor: Colors.amber,
                     decoration: const InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color:  Colors.limeAccent
+                      ),
                       labelText: "Birth date",
                       hintText: 'exp:1998',
                       hintStyle: TextStyle(
@@ -562,6 +586,12 @@ class _SignupState extends State<Signup> {
                     cursorColor: Colors.amber,
                     keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
+                      errorStyle: TextStyle(
+                          fontFamily: 'Windy-Wood-Demo',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color:  Colors.limeAccent
+                      ),
                       labelText: "Address",
                       hintText: 'Address',
                       hintStyle: TextStyle(

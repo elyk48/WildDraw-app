@@ -2,7 +2,6 @@ import 'package:cardgameapp/views/actualite_view.dart';
 import 'package:cardgameapp/views/publications_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controllers/authentication_service.dart';
 import '../session.dart';
