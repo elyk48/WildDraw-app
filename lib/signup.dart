@@ -20,9 +20,6 @@ class _SignupState extends State<Signup> {
   late String? _password;
   late String? _birth;
   late String? _address;
-  late String? _Level;
-  late String? _Rank;
-  late String? _id_Col;
   late File _image;
   late String _imageLink =
       "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
@@ -30,7 +27,6 @@ class _SignupState extends State<Signup> {
   Future getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
-      //_image= image as FileImage;
     });
   }
 

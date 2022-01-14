@@ -87,9 +87,7 @@ class _DailyQuestsState extends State<DailyQuests> {
                               color: Colors.white),
                         ])),
               ),
-              const SizedBox(
-                height: 60,
-              ),
+
               StreamBuilder(
                 ///getting the stream of data from firebase store
                 stream: FirebaseFirestore.instance
@@ -101,12 +99,12 @@ class _DailyQuestsState extends State<DailyQuests> {
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (!snapshot.hasData) {
                     return const LinearProgressIndicator();
-                  } else {
+                  } else if(snapshot.data!=null){
                     return Expanded(
                       child: ListView.builder(
 
                           ///the number of items in the snapshot..
-                          itemCount: 4,
+                          itemCount: snapshot.data.docs.length,
                           itemBuilder: (context, index) {
                             ///getting a single quest using the index..
                             DocumentSnapshot myquest =
@@ -120,197 +118,195 @@ class _DailyQuestsState extends State<DailyQuests> {
 
                             ///the quest data view as a card
                             return Container(
-                              child: AnimatedOpacity(
-                                duration: Duration(microseconds: 300),
-                                opacity: _opacity,
-                                child: Card(
-                                  semanticContainer: true,
-                                  shadowColor: Colors.black,
-                                  elevation: 10,
-                                  borderOnForeground: true,
-                                  margin: const EdgeInsets.all(8),
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/Images/try.png"),
-                                              fit: BoxFit.fill,
-                                              alignment: Alignment.topCenter,
-                                            )),
-                                        child: Row(
-                                          children: [
-                                            ///reroll button
-                                            InkWell(
-                                              child: Column(
-                                                children: [const Text("Reroll",style: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontFamily:
-                                                    'Windy-Wood-Demo',
-                                                    fontSize: 15.5,
-                                                    decorationThickness:
-                                                    4,
-                                                    color:Colors.black87,
-                                                    )),
-                                                  IconButton(
-                                                    icon: Image.asset(
-                                                        'assets/Images/reroll.png'),
-                                                    iconSize: 50,
-                                                    onPressed: () async {
-                                                      late String usercurrentId;
-                                                      usercurrentId = FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .uid;
-                                                      CollectionReference users =
-                                                          FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'users');
-                                                      users
-                                                          .doc(usercurrentId)
-                                                          .collection("rerolled")
-                                                          .doc(usercurrentId)
-                                                          .get()
-                                                          .then((value) async {
-                                                        setState(() {
-                                                          rerolled =
-                                                              value.data()![
-                                                                  "rerolled"];
-                                                        });
+                              child: Card(
+                                semanticContainer: true,
+                                shadowColor: Colors.black,
+                                elevation: 10,
+                                borderOnForeground: true,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/Images/try.png"),
+                                            fit: BoxFit.fill,
+                                            alignment: Alignment.topCenter,
+                                          )),
+                                      child: Row(
+                                        children: [
+                                          ///reroll button
+                                          InkWell(
+                                            child: Column(
+                                              children: [const Text("Reroll",style: TextStyle(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontFamily:
+                                                  'Windy-Wood-Demo',
+                                                  fontSize: 15.5,
+                                                  decorationThickness:
+                                                  4,
+                                                  color:Colors.black87,
+                                                  )),
+                                                IconButton(
+                                                  icon: Image.asset(
+                                                      'assets/Images/reroll.png'),
+                                                  iconSize: 40,
+                                                  onPressed: () async {
+                                                    late String usercurrentId;
+                                                    usercurrentId = FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid;
+                                                    CollectionReference users =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'users');
+                                                    users
+                                                        .doc(usercurrentId)
+                                                        .collection("rerolled")
+                                                        .doc(usercurrentId)
+                                                        .get()
+                                                        .then((value) async {
+                                                      setState(() {
+                                                        rerolled =
+                                                            value.data()![
+                                                                "rerolled"];
                                                       });
+                                                    });
 
-                                                      if (rerolled == false) {
-                                                        userC.Reroll(docId);
-                                                      } else {
-                                                        print(
-                                                            "wait 24h before the next reroll");
-                                                      }
-                                                    },
-                                                  ),
-                                                ],
-                                              ),
+                                                    if (rerolled == false) {
+                                                      userC.Reroll(docId);
+                                                    } else {
+                                                      print(
+                                                          "wait 24h before the next reroll");
+                                                    }
+                                                  },
+                                                ),
+                                              ],
                                             ),
+                                          ),
 
-                                            /// quest data view
-                                            Container(
-                                              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                verticalDirection:
-                                                    VerticalDirection.down,
-                                                children: [
-                                                  ///Title
-                                                  Text(questTitle,
-                                                      textScaleFactor: 1.7,
-                                                      style: const TextStyle(
-                                                          fontFamily:
-                                                              'Windy-Wood-Demo',
-                                                          color: Colors.white,
-                                                          shadows: [
-                                                            Shadow(
-                                                                // bottomLeft
-                                                                offset: Offset(
-                                                                    -1.5, -1.5),
-                                                                color: Colors
-                                                                    .black),
-                                                            Shadow(
-                                                                // bottomRight
-                                                                offset: Offset(
-                                                                    1.5, -1.5),
-                                                                color: Colors
-                                                                    .black),
-                                                            Shadow(
-                                                                // topRight
-                                                                blurRadius: 5,
-                                                                offset: Offset(
-                                                                    1.5, 1.5),
-                                                                color: Colors
-                                                                    .black),
-                                                            Shadow(
-                                                                // topLeft
-                                                                offset: Offset(
-                                                                    -1.5, 1.5),
-                                                                color: Colors
-                                                                    .black),
-                                                          ])),
+                                          /// quest data view
+                                          Container(
+                                            padding: const EdgeInsets.fromLTRB(5, 20, 0, 15),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              verticalDirection:
+                                                  VerticalDirection.down,
+                                              children: [
+                                                ///Title
+                                                Text(questTitle,
+                                                    textScaleFactor: 1.7,
+                                                    style: const TextStyle(
+                                                        fontFamily:
+                                                            'Windy-Wood-Demo',
+                                                        color: Colors.white,
+                                                        shadows: [
+                                                          Shadow(
+                                                              // bottomLeft
+                                                              offset: Offset(
+                                                                  -1.5, -1.5),
+                                                              color: Colors
+                                                                  .black),
+                                                          Shadow(
+                                                              // bottomRight
+                                                              offset: Offset(
+                                                                  1.5, -1.5),
+                                                              color: Colors
+                                                                  .black),
+                                                          Shadow(
+                                                              // topRight
+                                                              blurRadius: 5,
+                                                              offset: Offset(
+                                                                  1.5, 1.5),
+                                                              color: Colors
+                                                                  .black),
+                                                          Shadow(
+                                                              // topLeft
+                                                              offset: Offset(
+                                                                  -1.5, 1.5),
+                                                              color: Colors
+                                                                  .black),
+                                                        ])),
 
-                                                  ///quest level
-                                                  Text(level,
-                                                      textScaleFactor: 1,
-                                                      style: const TextStyle(
-                                                          fontFamily:
-                                                              'Windy-Wood-Demo',
-                                                          color: Colors.black,
-                                                          shadows: [
-                                                            Shadow(
-                                                                // bottomLeft
-                                                                offset: Offset(
-                                                                    -1.5, -1.5),
-                                                                color: Colors
-                                                                    .yellow),
-                                                            Shadow(
-                                                                // bottomRight
-                                                                offset: Offset(
-                                                                    1.5, -1.5),
-                                                                color: Colors
-                                                                    .yellowAccent),
-                                                            Shadow(
-                                                                // topRight
+                                                ///quest level
+                                                Text(level,
+                                                    textScaleFactor: 1,
+                                                    style: const TextStyle(
+                                                        fontFamily:
+                                                            'Windy-Wood-Demo',
+                                                        color: Colors.black,
+                                                        shadows: [
+                                                          Shadow(
+                                                              // bottomLeft
+                                                              offset: Offset(
+                                                                  -1.5, -1.5),
+                                                              color: Colors
+                                                                  .yellow),
+                                                          Shadow(
+                                                              // bottomRight
+                                                              offset: Offset(
+                                                                  1.5, -1.5),
+                                                              color: Colors
+                                                                  .yellowAccent),
+                                                          Shadow(
+                                                              // topRight
 
-                                                                offset: Offset(
-                                                                    1.5, 1.5),
-                                                                color: Colors
-                                                                    .amberAccent),
-                                                            Shadow(
-                                                                // topLeft
-                                                                offset: Offset(
-                                                                    -1.5, 1.5),
-                                                                color: Colors
-                                                                    .amber),
-                                                          ])),
+                                                              offset: Offset(
+                                                                  1.5, 1.5),
+                                                              color: Colors
+                                                                  .amberAccent),
+                                                          Shadow(
+                                                              // topLeft
+                                                              offset: Offset(
+                                                                  -1.5, 1.5),
+                                                              color: Colors
+                                                                  .amber),
+                                                        ])),
 
-                                                  ///quest decription
-                                                  Text(Qdesc,
-                                                      textScaleFactor: 1.4,
-                                                      style: const TextStyle(
-                                                        fontWeight: FontWeight.w600,
-                                                          fontFamily:
-                                                              'Windy-Wood-Demo',
-                                                          fontSize: 15.5,
-                                                          decorationThickness:
-                                                              4,
-                                                          color:
-                                                              Color(0xFF911A00),
-                                                          shadows: [
-                                                            Shadow(
-                                                                // bottomLeft
-                                                                offset: Offset(
-                                                                    -1.5, -1.5),
-                                                                color: Colors
-                                                                    .white10),
-                                                            Shadow(
-                                                                // bottomRight
-                                                                offset: Offset(
-                                                                    1.5, -1.5),
-                                                                color: Colors
-                                                                    .white10),
-                                                          ])),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                                ///quest decription
+                                                Text(Qdesc,
+                                                    textScaleFactor: 1.1,
+                                                    style: const TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                        fontFamily:
+                                                            'Windy-Wood-Demo',
+                                                        fontSize: 15.5,
+                                                        decorationThickness:
+                                                            4,
+                                                        color:
+                                                            Color(0xFF911A00),
+                                                        shadows: [
+                                                          Shadow(
+                                                              // bottomLeft
+                                                              offset: Offset(
+                                                                  -1.5, -1.5),
+                                                              color: Colors
+                                                                  .white10),
+                                                          Shadow(
+                                                              // bottomRight
+                                                              offset: Offset(
+                                                                  1.5, -1.5),
+                                                              color: Colors
+                                                                  .white10),
+                                                        ])),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             );
                           }),
                     );
+                  }
+                  else {
+                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),
