@@ -21,10 +21,10 @@ class _FriendsListState extends State<FriendsList> {
       children: [
 
         Image.asset(
-          "assets/Images/oldwood.jpg",
+          "assets/Images/backboard.png",
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
+          fit: BoxFit.fill,
         ),
         Scaffold(
           backgroundColor: Colors.transparent,

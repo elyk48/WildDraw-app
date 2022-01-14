@@ -87,11 +87,11 @@ class _ProfileState extends State<Profile> {
                         child: Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.fromLTRB(0, 30,0,0),
+                              padding: const EdgeInsets.fromLTRB(0, 30,0,0),
                               child: CircleAvatar(
                                 backgroundColor: Colors.white54,
                                 radius: 80,
-                                child: Padding(
+                                  child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: CircleAvatar(
                                     backgroundImage:
@@ -423,10 +423,10 @@ class _ProfileState extends State<Profile> {
 
     return Stack(children: [
       Image.asset(
-        "assets/Images/oldwood.jpg",
+        "assets/Images/backboard.png",
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
       Scaffold(
         backgroundColor: Colors.transparent,

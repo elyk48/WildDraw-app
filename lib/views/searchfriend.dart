@@ -39,10 +39,10 @@ class _SearchFriendState extends State<SearchFriend> {
     final size = MediaQuery.of(context).size;
     return Stack(children: [
       Image.asset(
-        "assets/Images/oldwood.jpg",
+        "assets/Images/backboard.png",
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
       Scaffold(
         backgroundColor: Colors.transparent,
@@ -140,34 +140,36 @@ class _SearchFriendState extends State<SearchFriend> {
                       )),
                       child: InkWell(
                         onTap: onSearch,
-                        child: const Padding(
-                          padding: EdgeInsets.fromLTRB(35, 8, 12, 13),
-                          child: Text(
-                            'Search',
-                            style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                    // bottomLeft
-                                    offset: Offset(-1.5, -1.5),
-                                    color: Colors.red),
-                                Shadow(
-                                    // bottomRight
-                                    offset: Offset(1.5, -1.5),
-                                    color: Colors.amber),
-                                Shadow(
-                                    // topRight
-                                    offset: Offset(1.5, 1.5),
-                                    color: Colors.amber),
-                                Shadow(
-                                    // topLeft
-                                    offset: Offset(-1.5, 1.5),
-                                    color: Colors.red),
-                              ],
-                              color: Colors.black,
-                              fontFamily: 'Windy-Wood-Demo',
-                              fontSize: 14,
+                        child: Container(
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: const Center(
+                            child: Text(
+                              'Search',
+                              style: TextStyle(
+                                shadows: [
+                                  Shadow(
+                                      // bottomLeft
+                                      offset: Offset(-1.5, -1.5),
+                                      color: Colors.red),
+                                  Shadow(
+                                      // bottomRight
+                                      offset: Offset(1.5, -1.5),
+                                      color: Colors.amber),
+                                  Shadow(
+                                      // topRight
+                                      offset: Offset(1.5, 1.5),
+                                      color: Colors.amber),
+                                  Shadow(
+                                      // topLeft
+                                      offset: Offset(-1.5, 1.5),
+                                      color: Colors.red),
+                                ],
+                                color: Colors.black,
+                                fontFamily: 'Windy-Wood-Demo',
+                                fontSize: 14,
+                              ),
+                              textScaleFactor: 1.3,
                             ),
-                            textScaleFactor: 1.3,
                           ),
                         ),
                       ),
