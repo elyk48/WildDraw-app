@@ -16,31 +16,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfile extends State<EditProfile> {
-  late String? _id;
-  late String? _username;
-  late String? _email;
-  late String? _password;
-  late String? _birth;
-  late String? _address;
-  late String? _Level;
-  late String? _Rank;
-  late String? _id_Col;
-  late File _image;
-  late String _imageLink =
-      "https://firebasestorage.googleapis.com/v0/b/cardgameapp-1960b.appspot.com/o/Defaultimg.png?alt=media&token=f02be4f5-e70c-4c16-8f7a-52c70cd7b0b9";
-
-  var myId;
-  var myEmail;
-
-  var myUsername;
-
-  var myRank;
-  var myPassword;
-  var mylevel;
-
-  var myaddress;
-  var myBirthdate;
-  var myImage;
+  late String _imageLink = user.image;
   var isAdmin = false;
 
   late final UserE user = UserE.NewUser(
@@ -51,6 +27,34 @@ class _EditProfile extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    showWaiting2(BuildContext context) {
+      // Create AlertDialog
+      AlertDialog alert = const AlertDialog(
+        actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+        title: Text(
+          "Setting up Account",
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          "Give us a second while we're editing your account your Account...",
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          Center(
+              child: CircularProgressIndicator(
+                color: Colors.pink,
+              ))
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
     showWaiting(BuildContext context) {
       // Create AlertDialog
       AlertDialog alert = const AlertDialog(
@@ -121,14 +125,17 @@ class _EditProfile extends State<EditProfile> {
         )),
         child: InkWell(
           onTap: () async {
+            showWaiting2(context);
             if (_keyForm.currentState!.validate()) {
               _keyForm.currentState!.save();
               user.image = _imageLink;
               await updateUser(user);
-              _showAlert(context);
-              await Future.delayed(Duration(seconds: 4));
+              await Future.delayed(const Duration(seconds: 4));
               _keyForm.currentState!.reset();
+              Navigator.of(context, rootNavigator: true)
+                  .pop('dialog');
               Navigator.pushReplacementNamed(context, "/singin");
+              _showAlert(context);
             }
           },
           child: const Padding(
@@ -219,7 +226,7 @@ class _EditProfile extends State<EditProfile> {
     return Stack(
       children: [
         Image.asset(
-          "assets/Images/oldwood.jpg",
+          "assets/Images/backboard.png",
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
@@ -272,7 +279,7 @@ class _EditProfile extends State<EditProfile> {
                             onPressed: () async {
                               var _image = await ImagePicker().pickImage(
                                   source: ImageSource
-                                      .gallery) /*.then((value) => showWaiting(context)))*/;
+                                      .gallery);
                               FirebaseStorage fs = FirebaseStorage.instance;
                               Reference rootref = fs.ref();
                               Reference picFolderRef =
@@ -683,7 +690,7 @@ class _EditProfile extends State<EditProfile> {
         builder: (context) => const AlertDialog(
               title: Text("Confirm your identity"),
               content: Text(
-                  "Please confirm your idendity by loging in again and we will update your profile"),
+                  "Please confirm your identity by logging in again and we will update your profile."),
             ));
   }
   bool isNumeric(String s) {

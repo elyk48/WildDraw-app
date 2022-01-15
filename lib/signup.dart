@@ -30,6 +30,35 @@ class _SignupState extends State<Signup> {
     });
   }
 
+  showWaiting(BuildContext context) {
+    // Create AlertDialog
+    AlertDialog alert = const AlertDialog(
+      actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+      title: Text(
+        "Setting up Account",
+        textAlign: TextAlign.center,
+      ),
+      content: Text(
+        "Give us a second while we're setting up your Account...",
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        Center(
+            child: CircularProgressIndicator(
+              color: Colors.pink,
+            ))
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   late final UserE user = UserE.NewUser(
       "email", "password", "username", "birthdate", "address", "image", false);
   userController userC = userController();
@@ -49,6 +78,7 @@ class _SignupState extends State<Signup> {
         )),
         child: InkWell(
           onTap: () async {
+            showWaiting(context);
             if (_keyForm.currentState!.validate()) {
               _keyForm.currentState!.save();
 
@@ -64,6 +94,8 @@ class _SignupState extends State<Signup> {
                   user.birth, user.address, user.image);
 
               _keyForm.currentState!.reset();
+              Navigator.of(context, rootNavigator: true)
+                  .pop('dialog');
               Navigator.pushReplacementNamed(context, "/singin");
             }
           },
@@ -154,7 +186,7 @@ class _SignupState extends State<Signup> {
     return Stack(
       children: [
         Image.asset(
-          "assets/Images/oldwood.jpg",
+          "assets/Images/backboard.png",
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
