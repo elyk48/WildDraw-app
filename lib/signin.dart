@@ -152,7 +152,9 @@ class _SignInPageState extends State<SignInPage> {
                 await context.read<AuthenticationService>().signIn(
                   email: _email.toString(),
                   password: _password.toString(),
-                );
+                ).then((value){
+                  Navigator.of(context, rootNavigator: true).pop('dialog');
+                });
 
                 CollectionReference users =
                 FirebaseFirestore.instance.collection('users');
@@ -185,10 +187,10 @@ class _SignInPageState extends State<SignInPage> {
                     .collection("rerolled")
                     .doc(user.uid)
                     .get()
-                    .then((ds) async {
-                  Timestamp date = await ds.data()!["LastRerolled"];
+                    .then((ds){
+                  Timestamp date =  ds.data()!["LastRerolled"];
                   DateR = date.toDate();
-                  rerolled = await ds.data()!["rerolled"];
+                  rerolled =ds.data()!["rerolled"];
                 }).catchError((e) {
                   print(e);
                 });
@@ -221,7 +223,6 @@ class _SignInPageState extends State<SignInPage> {
                 prefs.setString("username", myUsername);
                 prefs.setString("rerolledDate", DateR.toString());
                 prefs.setBool("rerolled", rerolled);
-                Navigator.of(context, rootNavigator: true).pop('dialog');
                 Navigator.pushReplacementNamed(context, "/home");
               }
             }
